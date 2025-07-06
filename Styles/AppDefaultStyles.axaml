@@ -6,6 +6,29 @@
         </Border>
     </Design.PreviewWith>
     
+    <Style Selector="ListBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Style for ListBoxItem to remove default border, background, and triggers -->
+    <Style Selector="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style Selector="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
         <Setter Property="FontSize" Value="14"></Setter>
@@ -22,9 +45,6 @@
         <Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
         <Setter Property="FontSize" Value="14"></Setter>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"></Setter>
-    </Style>
-    
-    <Style Selector="CheckBox">
     </Style>
     
     <Style Selector="Button">
