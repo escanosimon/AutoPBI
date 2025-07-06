@@ -1,0 +1,22 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <controls:WorkspaceItem />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|WorkspaceItem">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6 4" CornerRadius="6" Name="{TemplateBinding WorkspaceId}">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{TemplateBinding Text}"/>
+                        <CheckBox Grid.Column="2" VerticalAlignment="Center"></CheckBox>
+                    </Grid>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

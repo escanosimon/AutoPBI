@@ -1,0 +1,51 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    
+    <Style Selector="TextBox">
+        <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
+        <Setter Property="FontSize" Value="14"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource NeutralMuted}"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}"></Setter>
+        <Setter Property="CornerRadius" Value="8"></Setter>
+        <Setter Property="Padding" Value="12 6"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+    </Style>
+    
+    <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource Inter}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
+        <Setter Property="FontSize" Value="14"></Setter>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"></Setter>
+    </Style>
+    
+    <Style Selector="CheckBox">
+    </Style>
+    
+    <Style Selector="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource Inter}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
+        <Setter Property="FontSize" Value="14"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Cursor" Value="Hand"></Setter>
+    </Style>
+    
+    <Style Selector="Button.Primary:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource PrimaryDark}"></Setter>
+    </Style>
+    
+    <Style Selector="Button.Outline:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource PrimaryLight}"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource Primary}"></Setter>
+    </Style>
+    
+    <Style Selector="Button.Ghost:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}"></Setter>
+    </Style>
+</Styles>

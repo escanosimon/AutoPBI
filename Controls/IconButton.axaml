@@ -1,0 +1,48 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <controls:IconButton />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|IconButton">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button Classes="Ghost" VerticalAlignment="Stretch" CornerRadius="12" Padding="12 0" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}"/>
+                    </StackPanel>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|IconButton.Primary">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" VerticalAlignment="Stretch" CornerRadius="12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                        <Label Foreground="{DynamicResource White}" Content="{TemplateBinding Text}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|IconButton.Outline">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource Primary}" Padding="8 0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
+                        <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Primary}"/>
+                    </StackPanel>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

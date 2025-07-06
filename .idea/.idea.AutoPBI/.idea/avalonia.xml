@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="App.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/IconButton.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
+        <entry key="MainWindow.axaml" value="AutoPBI.csproj" />
+        <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

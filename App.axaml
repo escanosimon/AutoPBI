@@ -1,0 +1,29 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AutoPBI.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/ReportItem.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/WorkspaceItem.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/IconButton.axaml"></StyleInclude>
+    </Application.Styles>
+             
+    <Application.Resources>
+        <SolidColorBrush x:Key="Background">#FAFAFA</SolidColorBrush>
+        <SolidColorBrush x:Key="White">#FAFAFA</SolidColorBrush>
+        <SolidColorBrush x:Key="Neutral">#DFDFDF</SolidColorBrush>
+        <SolidColorBrush x:Key="NeutralMuted">#EDEDED</SolidColorBrush>
+        <SolidColorBrush x:Key="Foreground">#403F44</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundMuted">#76757A</SolidColorBrush>
+        <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryDark">#0F6152</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
+        
+        <FontFamily x:Key="InterRegular">/Assets/Fonts/Inter-Regular.otf#Inter</FontFamily>
+        <FontFamily x:Key="InterMedium">/Assets/Fonts/Inter-Medium.otf#Inter Medium</FontFamily>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.3.2"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.2"/>
+        <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.2"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.2">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\Fonts\" />
+      <Folder Include="Assets\Images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\Images\arrow-up-from-bracket.svg" />
+      <AvaloniaResource Include="Assets\Images\arrow-up-from-bracket.svg" />
+      <None Remove="Assets\Images\brackets-curly.svg" />
+      <AvaloniaResource Include="Assets\Images\brackets-curly.svg" />
+      <None Remove="Assets\Images\copy.svg" />
+      <AvaloniaResource Include="Assets\Images\copy.svg" />
+      <None Remove="Assets\Images\file-chart-column.svg" />
+      <AvaloniaResource Include="Assets\Images\file-chart-column.svg" />
+      <None Remove="Assets\Images\Power_BI_Logo.svg" />
+      <AvaloniaResource Include="Assets\Images\Power_BI_Logo.svg" />
+      <None Remove="Assets\Images\rotate-exclamation.svg" />
+      <AvaloniaResource Include="Assets\Images\rotate-exclamation.svg" />
+      <None Remove="Assets\Images\users.svg" />
+      <AvaloniaResource Include="Assets\Images\users.svg" />
+      <None Remove="Assets\Fonts\Inter-Medium.otf" />
+      <AvaloniaResource Include="Assets\Fonts\Inter-Medium.otf" />
+      <None Remove="Assets\Fonts\Inter-Regular.otf" />
+      <AvaloniaResource Include="Assets\Fonts\Inter-Regular.otf" />
+    </ItemGroup>
+</Project>

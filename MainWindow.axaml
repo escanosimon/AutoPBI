@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="clr-namespace:AutoPBI.Controls"
+        mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="400"
+        Width="750" Height="600"
+        x:Class="AutoPBI.MainWindow"
+        Title="AutoPBI">
+    <Grid Background="{DynamicResource Background}" ColumnDefinitions="220, *" RowDefinitions="56, *">
+        <Border Grid.ColumnSpan="2" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
+            <Grid ColumnDefinitions="*, *">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/Power_BI_Logo.svg}" Height="24" Margin="0 0 8 0"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}">AutoPBI</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+                    <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Upload" Classes="Primary"></c:IconButton>
+                    <c:IconButton Text="Log in" Margin="8 0 0 0"></c:IconButton>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="0" Padding="16 16 4 16">
+            <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
+                <Grid RowDefinitions="Auto, Auto, *">
+                    <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
+                    <TextBox Grid.Row="1" Margin="0 0 0 12">Search</TextBox>
+                    <StackPanel Grid.Row="2">
+                        <c:WorkspaceItem Text="sdfs"></c:WorkspaceItem>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1" Padding="4 16 16 16">
+            <Border Padding="16">
+                <Grid RowDefinitions="Auto, Auto, *">
+                    <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Reports</TextBlock>
+                    <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
+                        <TextBox>Search</TextBox>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <c:IconButton Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
+                            <c:IconButton Path="/Assets/Images/copy.svg" Text="Copy To" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
+                            <c:IconButton Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Grid.Row="2">
+                        <c:ReportItem Text="asdfad"></c:ReportItem>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</Window>
