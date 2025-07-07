@@ -4,14 +4,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:c="clr-namespace:AutoPBI.Controls"
         xmlns:vm="clr-namespace:AutoPBI.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="400"
-        Width="750" Height="600"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="300"
+        Width="1000" Height="750"
+        x:Name="MainWindow"
         x:Class="AutoPBI.MainView"
         x:DataType="vm:MainViewModel"
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
-    <Grid Background="{DynamicResource Background}" ColumnDefinitions="220, *" RowDefinitions="56, *">
+    <Grid Background="{DynamicResource Background}" ColumnDefinitions="300, *" RowDefinitions="56, *">
         <Border Grid.ColumnSpan="2" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
             <Grid ColumnDefinitions="*, *">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
@@ -28,19 +29,19 @@
         </Border>
         <Border Grid.Row="1" Grid.Column="0" Padding="16 16 4 16">
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
-                <Grid RowDefinitions="Auto, Auto, *, Auto">
+                <Grid RowDefinitions="Auto, Auto, *, 36">
                     <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
                     <TextBox Grid.Row="1" Margin="0 0 0 12">Search</TextBox>
-                    <ScrollViewer Grid.Row="2">
+                    <ScrollViewer Grid.Row="2" Margin="0 0 0 12">
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <c:WorkspaceItem Id="{Binding Id}" Text="{Binding Name}"></c:WorkspaceItem>
+                                    <c:WorkspaceItem Command="{Binding DataContext.SelectWorkspaceCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    
+                    <c:IconButton Command="{Binding FetchReportsCommand}" Background="Blue" Grid.Row="3" Path="/Assets/Images/arrows-rotate.svg" Text="Load Reports" Classes="Primary" HorizontalAlignment="Stretch" />
                 </Grid>
             </Border>
         </Border>
@@ -58,22 +59,32 @@
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="2">
-                        <ItemsControl Grid.Row="2" ItemsSource="{Binding Workspaces}">
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding SelectedWorkspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical" Margin="0 0 0 24">
-                                        <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
-                                            <CheckBox Name="{Binding Id}" VerticalAlignment="Center"></CheckBox>
-                                            <Svg Grid.Column="1" Path="/Assets/Images/users.svg" Height="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
-                                            <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center">
-                                                <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
-                                            </Border>
-                                        </Grid>
+                                        <Button
+                                            Padding="0" Margin="0"
+                                            Command="{Binding DataContext.SelectAllReportsCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"
+                                            >
+                                            <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
+                                                <CheckBox Name="{Binding Id}" VerticalAlignment="Center"
+                                                          IsChecked="{Binding IsAllReportsSelected}"
+                                                          IsHitTestVisible="False"
+                                                ></CheckBox>
+                                                <Svg Grid.Column="1" Path="/Assets/Images/users.svg" Height="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
+                                                <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center">
+                                                    <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
+                                                </Border>
+                                            </Grid>
+                                        </Button>
                                         <ItemsControl ItemsSource="{Binding Reports}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Id="{Binding Id}" Text="{Binding Name}"></c:ReportItem>
+                                                    <c:ReportItem Id="{Binding Id}" Text="{Binding Name}" IsChecked="{Binding IsSelected}"
+                                                                  Command="{Binding DataContext.SelectReportCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding }"
+                                                                  ></c:ReportItem>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

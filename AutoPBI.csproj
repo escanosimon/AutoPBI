@@ -50,5 +50,7 @@
       <AvaloniaResource Include="Assets\Fonts\Inter-Regular.otf" />
       <None Remove="Assets\Images\arrow-down-to-line.svg" />
       <AvaloniaResource Include="Assets\Images\arrow-down-to-line.svg" />
+      <None Remove="Assets\Images\arrows-rotate.svg" />
+      <AvaloniaResource Include="Assets\Images\arrows-rotate.svg" />
     </ItemGroup>
 </Project>

@@ -22,8 +22,8 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" VerticalAlignment="Stretch" CornerRadius="12">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Command="{TemplateBinding Command}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 10 0" VerticalAlignment="Center"/>
                         <Label Foreground="{DynamicResource White}" Content="{TemplateBinding Text}" VerticalAlignment="Center"/>
                     </StackPanel>

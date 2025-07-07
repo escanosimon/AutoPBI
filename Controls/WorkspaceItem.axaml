@@ -9,11 +9,11 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Name="{TemplateBinding Id}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6 4" CornerRadius="6">
+                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6 4" CornerRadius="6">
                     <Grid ColumnDefinitions="Auto, *, Auto">
                         <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{TemplateBinding Text}"/>
-                        <CheckBox Grid.Column="2" VerticalAlignment="Center"></CheckBox>
+                        <CheckBox Grid.Column="2" VerticalAlignment="Center" IsChecked="{TemplateBinding IsChecked}" IsHitTestVisible="False"></CheckBox>
                     </Grid>
                 </Button>
             </ControlTemplate>
