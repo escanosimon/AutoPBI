@@ -1,3 +1,4 @@
+using System;
 using AutoPBI.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -11,8 +12,9 @@ public partial class MainView : Window
         InitializeComponent();
     }
 
-    private void BtnLogIn_OnPointerPressed(object sender, PointerPressedEventArgs e)
+    private void BtnLogIn_OnClick(object sender, PointerPressedEventArgs e)
     {
+        Console.Error.WriteLine("First...");
         ((MainViewModel) DataContext!).Login();
     }
 }

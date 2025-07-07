@@ -9,7 +9,7 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Classes="Ghost" Padding="6 4" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch" Name="{TemplateBinding ReportId}">
+                <Button Name="{TemplateBinding Id}" Classes="Ghost" Padding="6 4" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
                     <Grid ColumnDefinitions="Auto, Auto, *">
                         <CheckBox Grid.Column="0" VerticalAlignment="Center" Margin="0 0 8 0"></CheckBox>
                         <Svg Grid.Column="1" Path="/Assets/Images/file-chart-column.svg" VerticalAlignment="Center" Height="12" Margin="0 0 8 0"/>

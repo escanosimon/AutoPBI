@@ -9,7 +9,7 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Button HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6 4" CornerRadius="6" Name="{TemplateBinding WorkspaceId}">
+                <Button Name="{TemplateBinding Id}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6 4" CornerRadius="6">
                     <Grid ColumnDefinitions="Auto, *, Auto">
                         <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{TemplateBinding Text}"/>

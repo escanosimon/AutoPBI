@@ -22,22 +22,25 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Upload" Classes="Primary"></c:IconButton>
-                    <c:IconButton Name="BtnLogIn" PointerPressed="BtnLogIn_OnPointerPressed" Text="Log in" Margin="8 0 0 0"></c:IconButton>
+                    <c:IconButton Name="BtnLogIn" Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}"></c:IconButton>
                 </StackPanel>
             </Grid>
         </Border>
         <Border Grid.Row="1" Grid.Column="0" Padding="16 16 4 16">
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
-                <Grid RowDefinitions="Auto, Auto, *">
+                <Grid RowDefinitions="Auto, Auto, *, Auto">
                     <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
                     <TextBox Grid.Row="1" Margin="0 0 0 12">Search</TextBox>
-                    <ItemsControl Grid.Row="2" ItemsSource="{Binding Workspaces}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <c:WorkspaceItem Text="{Binding Name}"></c:WorkspaceItem>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ScrollViewer Grid.Row="2">
+                        <ItemsControl ItemsSource="{Binding Workspaces}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <c:WorkspaceItem Id="{Binding Id}" Text="{Binding Name}"></c:WorkspaceItem>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    
                 </Grid>
             </Border>
         </Border>
@@ -54,9 +57,31 @@
                             <c:IconButton Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
                         </StackPanel>
                     </Grid>
-                    <StackPanel Grid.Row="2">
-                        <c:ReportItem Text="asdfad" />
-                    </StackPanel>
+                    <ScrollViewer Grid.Row="2">
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding Workspaces}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="0 0 0 24">
+                                        <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
+                                            <CheckBox Name="{Binding Id}" VerticalAlignment="Center"></CheckBox>
+                                            <Svg Grid.Column="1" Path="/Assets/Images/users.svg" Height="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
+                                            <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center">
+                                                <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
+                                            </Border>
+                                        </Grid>
+                                        <ItemsControl ItemsSource="{Binding Reports}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <c:ReportItem Id="{Binding Id}" Text="{Binding Name}"></c:ReportItem>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </Grid>
             </Border>
         </Border>

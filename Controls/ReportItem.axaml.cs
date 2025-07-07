@@ -6,13 +6,13 @@ namespace AutoPBI.Controls;
 
 public class ReportItem : TemplatedControl
 {
-    public static readonly StyledProperty<string> ReportIdProperty = AvaloniaProperty.Register<ReportItem, string>(
-        nameof(ReportId));
+    public static readonly StyledProperty<string> IdProperty = AvaloniaProperty.Register<ReportItem, string>(
+        nameof(Id));
 
-    public string ReportId
+    public string Id
     {
-        get => GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        get => GetValue(IdProperty);
+        set => SetValue(IdProperty, value);
     }
     
     public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<ReportItem, string>(

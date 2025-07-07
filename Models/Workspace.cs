@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AutoPBI.Models
@@ -7,7 +8,7 @@ namespace AutoPBI.Models
     {
         private string? _id;
         private string? _name;
-        private List<Report> _reports = [];
+        private ObservableCollection<Report> _reports = [];
 
         public string? Id
         {
@@ -21,7 +22,7 @@ namespace AutoPBI.Models
             set => SetProperty(ref _name, value);
         }
 
-        public List<Report> Reports
+        public ObservableCollection<Report> Reports
         {
             get => _reports;
             set => SetProperty(ref _reports, value);
