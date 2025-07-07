@@ -26,11 +26,11 @@
 
     <ItemGroup>
       <Folder Include="Assets\Fonts\" />
-      <Folder Include="Assets\Images\" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Assets\Images\arrow-up-from-bracket.svg" />
+      <AvaloniaResource Include="Assets\Images\arrow-down-to-line-bg.svg" />
       <AvaloniaResource Include="Assets\Images\arrow-up-from-bracket.svg" />
       <None Remove="Assets\Images\brackets-curly.svg" />
       <AvaloniaResource Include="Assets\Images\brackets-curly.svg" />

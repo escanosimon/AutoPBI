@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="App.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/CheckBox.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/IconButton.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />

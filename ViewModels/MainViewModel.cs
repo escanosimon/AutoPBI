@@ -14,6 +14,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
+    
+    [ObservableProperty] private bool _downloadModalIsOpen = false;
 
     private PsRunner _ps;
     
@@ -21,6 +23,9 @@ public partial class MainViewModel : ViewModelBase
     {
         _ps = new PsRunner();
     }
+
+    [RelayCommand]
+    private void DownloadButtonPressed() => DownloadModalIsOpen ^= true;
 
     [RelayCommand]
     public void Login()

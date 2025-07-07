@@ -29,8 +29,10 @@
         </Setter>
     </Style>
     
-    <Style Selector="^:pressed">
-        <Style Selector=""></Style>
+    <Style Selector="CheckBox:pressed">
+        <Style Selector="^ /template/ Border#NormalRectangle">
+            <Setter Property="Background" Value="Red" />
+        </Style>
     </Style>
     
     <Style Selector="TextBox">
