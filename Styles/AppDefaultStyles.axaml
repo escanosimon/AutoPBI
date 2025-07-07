@@ -29,6 +29,10 @@
         </Setter>
     </Style>
     
+    <Style Selector="^:pressed">
+        <Style Selector=""></Style>
+    </Style>
+    
     <Style Selector="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
         <Setter Property="FontSize" Value="14"></Setter>

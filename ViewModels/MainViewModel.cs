@@ -14,8 +14,6 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
-    [ObservableProperty] private string _username = "simon.escano@amcsgroup.com";
-    [ObservableProperty] private string _password = "Onacsenomis8_";
 
     private PsRunner _ps;
     
@@ -28,10 +26,7 @@ public partial class MainViewModel : ViewModelBase
     public void Login()
     {
         var result = _ps.Execute(
-            $"$password = '{Password}' | ConvertTo-SecureString -asPlainText -Force",
-            $"$username = '{Username}'",
-            "$credential = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $username, $password",
-            "Connect-PowerBIServiceAccount -Credential $credential"
+            "Connect-PowerBIServiceAccount"
         );
         if (result.Error.Count > 0)
         {

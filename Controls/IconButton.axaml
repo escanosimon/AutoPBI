@@ -6,7 +6,6 @@
     </Design.PreviewWith>
 
     <Style Selector="controls|IconButton">
-        <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
                 <Button Command="{TemplateBinding Command}" Classes="Ghost" VerticalAlignment="Stretch" CornerRadius="12" Padding="12 0" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}">
@@ -19,7 +18,6 @@
     </Style>
     
     <Style Selector="controls|IconButton.Primary">
-        <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
                 <Button Command="{TemplateBinding Command}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="12">
@@ -33,7 +31,6 @@
     </Style>
     
     <Style Selector="controls|IconButton.Outline">
-        <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
                 <Button Command="{TemplateBinding Command}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
@@ -44,5 +41,10 @@
                 </Button>
             </ControlTemplate>
         </Setter>
+    </Style>
+    
+    <Style Selector="controls|IconButton.Disabled">
+        <Setter Property="Opacity" Value="0.5"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
     </Style>
 </Styles>
