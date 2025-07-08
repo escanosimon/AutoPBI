@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using AutoPBI.Models;
 using AutoPBI.Services;
+using AutoPBI.ViewModels.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -14,21 +13,34 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
+    [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
     
-    [ObservableProperty] private bool _downloadModalIsOpen = false;
+    [ObservableProperty] private PopupViewModel _downloadPopup;
+    
+    private readonly PsRunner _ps = new();
 
-    private PsRunner _ps;
-    
     public MainViewModel()
     {
-        _ps = new PsRunner();
+        DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
+    }
+
+    private PopupViewModel AddPopup(PopupViewModel popup)
+    {
+        Popups.Add(popup);
+        return popup;
     }
 
     [RelayCommand]
-    private void DownloadButtonPressed() => DownloadModalIsOpen ^= true;
-
+    private void OpenPopup(PopupViewModel selectedPopup)
+    {
+        foreach (var popup in Popups)
+        {
+            popup.IsVisible = popup == selectedPopup;
+        }
+    }
+    
     [RelayCommand]
-    public void Login()
+    private void Login()
     {
         var result = _ps.Execute(
             "Connect-PowerBIServiceAccount"

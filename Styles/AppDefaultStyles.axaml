@@ -61,6 +61,18 @@
         <Setter Property="Cursor" Value="Hand"></Setter>
     </Style>
     
+    <Style Selector="Button.PopupBackground">
+        <Setter Property="Background" Value="{DynamicResource ForegroundSemiTransparent}"></Setter>
+        <Setter Property="CornerRadius" Value="0"></Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        <Setter Property="Cursor" Value="Arrow"></Setter>
+    </Style>
+    
+    <Style Selector="Button.PopupBackground:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ForegroundSemiTransparent}"/>
+    </Style>
+    
     <Style Selector="Button.Primary:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource PrimaryDark}"></Setter>
     </Style>

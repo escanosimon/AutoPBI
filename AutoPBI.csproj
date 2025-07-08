@@ -52,5 +52,18 @@
       <AvaloniaResource Include="Assets\Images\arrow-down-to-line.svg" />
       <None Remove="Assets\Images\arrows-rotate.svg" />
       <AvaloniaResource Include="Assets\Images\arrows-rotate.svg" />
+      <None Remove="Assets\Images\check.svg" />
+      <AvaloniaResource Include="Assets\Images\check.svg" />
+      <None Remove="Assets\Images\xmark.svg" />
+      <AvaloniaResource Include="Assets\Images\xmark.svg" />
+      <None Remove="Assets\Images\triangle-exclamation.svg" />
+      <AvaloniaResource Include="Assets\Images\triangle-exclamation.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\MainView.axaml.cs">
+        <DependentUpon>MainView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

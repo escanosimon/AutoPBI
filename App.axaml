@@ -10,6 +10,7 @@
         <StyleInclude Source="Controls/ReportItem.axaml"></StyleInclude>
         <StyleInclude Source="Controls/WorkspaceItem.axaml"></StyleInclude>
         <StyleInclude Source="Controls/IconButton.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/StatusIcon.axaml"></StyleInclude>
     </Application.Styles>
              
     <Application.Resources>
@@ -18,10 +19,18 @@
         <SolidColorBrush x:Key="Neutral">#DFDFDF</SolidColorBrush>
         <SolidColorBrush x:Key="NeutralMuted">#EDEDED</SolidColorBrush>
         <SolidColorBrush x:Key="Foreground">#403F44</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundSemiTransparent">#1A403F44</SolidColorBrush>
         <SolidColorBrush x:Key="ForegroundMuted">#76757A</SolidColorBrush>
         <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryDark">#0F6152</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
+        
+        <SolidColorBrush x:Key="Success">#a7f3d0</SolidColorBrush>
+        <SolidColorBrush x:Key="SuccessDark">#10b981</SolidColorBrush>
+        <SolidColorBrush x:Key="Warning">#fef08a</SolidColorBrush>
+        <SolidColorBrush x:Key="WarningDark">#eab308</SolidColorBrush>
+        <SolidColorBrush x:Key="Error">#fecdd3</SolidColorBrush>
+        <SolidColorBrush x:Key="ErrorDark">#f43f5e</SolidColorBrush>
         
         <FontFamily x:Key="InterRegular">/Assets/Fonts/Inter-Regular.otf#Inter</FontFamily>
         <FontFamily x:Key="InterMedium">/Assets/Fonts/Inter-Medium.otf#Inter Medium</FontFamily>

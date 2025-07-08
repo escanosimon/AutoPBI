@@ -7,10 +7,16 @@
         <entry key="Controls/CheckBox.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/IconButton.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/StatusIcon.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="MainView.axaml" value="AutoPBI.csproj" />
         <entry key="MainWindow.axaml" value="AutoPBI.csproj" />
+        <entry key="Popups/DownloadPopup.axaml" value="AutoPBI.csproj" />
         <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/DownloadPopupView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/DownloadPopupViewModel.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/TestPopup.axaml" value="AutoPBI.csproj" />
       </map>
     </option>
   </component>

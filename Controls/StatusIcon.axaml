@@ -1,0 +1,40 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/1806/xaml"
+        xmlns:controls="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <controls:StatusIcon Classes="Warning" />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StatusIcon.Success">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Success}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
+                    <Svg Path="/Assets/Images/check.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|StatusIcon.Warning">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Warning}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
+                    <Svg Path="/Assets/Images/triangle-exclamation.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|StatusIcon.Error">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Error}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ErrorDark}">
+                    <Svg Path="/Assets/Images/xmark.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -8,7 +8,7 @@
     <Style Selector="controls|IconButton">
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" Classes="Ghost" VerticalAlignment="Stretch" CornerRadius="12" Padding="12 0" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}">
+                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Ghost" VerticalAlignment="Stretch" CornerRadius="12" Padding="12 0" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}"/>
                     </StackPanel>
@@ -20,7 +20,7 @@
     <Style Selector="controls|IconButton.Primary">
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="12">
+                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="12">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 10 0" VerticalAlignment="Center"/>
                         <Label Foreground="{DynamicResource White}" Content="{TemplateBinding Text}" VerticalAlignment="Center"/>
@@ -33,7 +33,7 @@
     <Style Selector="controls|IconButton.Outline">
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
+                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
                         <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Primary}"/>

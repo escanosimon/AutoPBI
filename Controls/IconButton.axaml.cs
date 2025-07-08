@@ -17,6 +17,15 @@ public class IconButton : TemplatedControl
         get => GetValue(CommandProperty);
         set => SetValue(CommandProperty, value);
     }
+
+    public static readonly StyledProperty<object?> CommandParameterProperty = AvaloniaProperty.Register<IconButton, object?>(
+        nameof(CommandParameter));
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
     
     public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<IconButton, string>(
         nameof(Text));
