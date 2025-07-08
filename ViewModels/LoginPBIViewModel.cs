@@ -24,7 +24,7 @@ namespace AutoPBI.ViewModels
             set => this.RaiseAndSetIfChanged(ref _email, value);
         }
 
-        private string _password = "";
+        private string _password = "";  
         public string Password
         {
             get => _password;
@@ -48,8 +48,9 @@ namespace AutoPBI.ViewModels
                 ExecuteSubmitAsync,
                 canExecute,
                 AvaloniaScheduler.Instance
-            );
+            );      
         }
+
 
         private async Task ExecuteSubmitAsync()
         {

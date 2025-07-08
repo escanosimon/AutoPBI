@@ -42,15 +42,8 @@ public partial class MainViewModel : ViewModelBase
         var loginWindow = new LoginPBI(this);
         loginWindow.Show();
     }
-    
-    //
-    
+
     private PsRunner _ps;
-    
-    // public MainViewModel()
-    // {
-    //     _ps = new PsRunner();
-    // }
 
     [RelayCommand]
     public void Login()
@@ -71,9 +64,8 @@ public partial class MainViewModel : ViewModelBase
             FetchWorkspaces();
         }
     }
-
-
-    internal void FetchWorkspaces()
+    
+    private void FetchWorkspaces()
     {
         var results = _ps.Execute("Get-PowerBIWorkspace -All");
 
@@ -117,7 +109,8 @@ public partial class MainViewModel : ViewModelBase
             {
                 try
                 {
-                    var report = new Report(obj.Properties["Id"].Value.ToString(),
+                    var report = new Report(    
+                        obj.Properties["Id"].Value.ToString(),
                         obj.Properties["Name"].Value.ToString(),
                         obj.Properties["WebUrl"].Value.ToString(),
                         obj.Properties["DatasetId"].Value.ToString(),
