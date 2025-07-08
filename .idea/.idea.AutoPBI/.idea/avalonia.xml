@@ -6,6 +6,8 @@
         <entry key="App.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/CheckBox.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/IconButton.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/LoginDialog.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/LoginView.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="MainView.axaml" value="AutoPBI.csproj" />

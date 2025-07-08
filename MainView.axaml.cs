@@ -10,11 +10,15 @@ public partial class MainView : Window
     public MainView()
     {
         InitializeComponent();
+        DataContext = new MainViewModel(); // Ensure ViewModel is set as DataContext
     }
 
-    private void BtnLogIn_OnClick(object sender, PointerPressedEventArgs e)
+    private async void BtnLogIn_OnClick(object sender, PointerPressedEventArgs e)
     {
-        Console.Error.WriteLine("First...");
-        ((MainViewModel) DataContext!).Login();
+        var loginView = new LoginView
+        {
+            DataContext = DataContext // Share the same ViewModel instance
+        };
+        await loginView.ShowDialog(this);
     }
 }
