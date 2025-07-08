@@ -11,9 +11,9 @@ public class Report : ObservableObject
     private string? _webUrl;
     private string? _datasetId;
     private bool? _isSelected;
-    private Workspace _workspace;
+    private Workspace? _workspace;
 
-    public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace workspace)
+    public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
     {
         Status = "TestClass";
         Id = id;
@@ -60,7 +60,7 @@ public class Report : ObservableObject
         set => SetProperty(ref _isSelected, value);
     }
 
-    public Workspace Workspace
+    public Workspace? Workspace
     {
         get => _workspace;
         set => SetProperty(ref _workspace, value);

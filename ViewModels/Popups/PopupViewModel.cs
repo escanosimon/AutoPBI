@@ -9,7 +9,7 @@ public abstract partial class PopupViewModel: ViewModelBase
     [ObservableProperty] private MainViewModel _mainViewModel;
     [ObservableProperty] private IDialogService _dialogService = null!;
 
-    protected PopupViewModel(MainViewModel mainViewModel, DialogService dialogService)
+    protected PopupViewModel(MainViewModel mainViewModel)
     {
         IsVisible = false;
         MainViewModel = mainViewModel;

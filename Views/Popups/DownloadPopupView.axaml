@@ -24,7 +24,7 @@
                             <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <c:ReportItem Text="{Binding Name}" IsChecked="{Binding IsSelected}" IsHitTestVisible="False" Classes="Loading"></c:ReportItem>
+                                        <c:ReportItem Text="{Binding Name}" IsChecked="{Binding IsSelected}" IsHitTestVisible="False"></c:ReportItem>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

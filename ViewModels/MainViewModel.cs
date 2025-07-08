@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
@@ -15,12 +16,13 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
     [ObservableProperty] private PopupViewModel _downloadPopup;
+    
+    [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PsRunner _ps = new();
 
     public MainViewModel()
     {
-        var dialogService = new DialogService();
-        DownloadPopup = AddPopup(new DownloadPopupViewModel(this, dialogService));
+        DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -58,10 +60,9 @@ public partial class MainViewModel : ViewModelBase
     {
         var result = Ps.Execute("Get-PowerBIWorkspace -All");
 
-        foreach (var obj in result.Objects)
+        foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
+                     obj.Properties["Name"].Value.ToString())))
         {
-            var workspace = new Workspace(obj.Properties["Id"].Value.ToString(),
-                obj.Properties["Name"].Value.ToString());
             Workspaces.Add(workspace);
         }
     }
@@ -122,7 +123,7 @@ public partial class MainViewModel : ViewModelBase
     private void SelectReport(Report report)
     {
         report.IsSelected = !report.IsSelected;
-        report.Workspace.CheckSelectedReports();
+        report.Workspace?.CheckSelectedReports();
         
         if (report.IsSelected)
         {

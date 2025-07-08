@@ -9,13 +9,12 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class DownloadPopupViewModel : PopupViewModel
 {
-    public DownloadPopupViewModel(MainViewModel mainViewModel, DialogService dialogService) : base(mainViewModel, dialogService)
+    public DownloadPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
-        DialogService = dialogService;
     }
 
-    public DownloadPopupViewModel() : base(new MainViewModel(), new DialogService()) {}
+    public DownloadPopupViewModel() : base(new MainViewModel()) {}
 
     [RelayCommand]
     private void Close()
@@ -26,13 +25,13 @@ public partial class DownloadPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Download()
     {
-        var options = new FolderPickerOpenOptions()
+        var options = new FolderPickerOpenOptions
         {
             Title = "Select destination folder",
             AllowMultiple = false
         };
 
-        var destinationFolder = await DialogService.OpenFolderDialogAsync(options);
+        var destinationFolder = await MainViewModel.DialogService.OpenFolderDialogAsync(options);
         if (destinationFolder == null) return;
 
         foreach (var report in MainViewModel.SelectedReports)
