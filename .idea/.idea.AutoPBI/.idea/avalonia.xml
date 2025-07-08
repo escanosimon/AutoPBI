@@ -11,6 +11,8 @@
         <entry key="MainView.axaml" value="AutoPBI.csproj" />
         <entry key="MainWindow.axaml" value="AutoPBI.csproj" />
         <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/LoginPBI.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
       </map>
     </option>
   </component>

@@ -34,7 +34,7 @@
                     <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Download" Classes="Primary" />
-                            <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding DownloadButtonPressedCommand}"></c:IconButton>
+                            <!-- <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding DownloadButtonPressedCommand}"></c:IconButton> -->
                         </StackPanel>
                     </Border>
                 </Grid>
@@ -51,7 +51,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Upload" Classes="Primary"></c:IconButton>
-                    <c:IconButton Name="LoginButton" Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}"></c:IconButton>
+                    <c:IconButton Name="LoginButton" Text="Log in" Margin="8 0 0 0" Command="{Binding LoginWindowCommand}"></c:IconButton>
                 </StackPanel>
             </Grid>
         </Border>
@@ -80,7 +80,7 @@
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
                         <TextBox>Search</TextBox>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <c:IconButton Name="DownloadButton" Command="{Binding DownloadButtonPressedCommand}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
+                            <!-- <c:IconButton Name="DownloadButton" Command="{Binding DownloadButtonPressedCommand}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton> -->
                             <c:IconButton Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
                             <c:IconButton Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
                             <c:IconButton Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>

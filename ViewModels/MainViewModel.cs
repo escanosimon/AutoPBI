@@ -6,6 +6,9 @@ using AutoPBI.Models;
 using AutoPBI.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using AutoPBI.Views;
+
+
 
 namespace AutoPBI.ViewModels;
 
@@ -16,23 +19,49 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     
     [ObservableProperty] private bool _downloadModalIsOpen = false;
-
-    private PsRunner _ps;
     
+    [ObservableProperty] private string _email = "";
+    [ObservableProperty] private string _password = "";
+
+    
+    // [ObservableProperty] private string _username = "russell.palma@amcsgroup.com";
+    // [ObservableProperty] private string _password = "E519C9pDs!";
+    // pakidelete lang boss, we even
+
+
+    public ICommand LoginWindowCommand { get; }
+
     public MainViewModel()
     {
         _ps = new PsRunner();
+        LoginWindowCommand = new RelayCommand(ShowLoginWindow);
     }
 
-    [RelayCommand]
-    private void DownloadButtonPressed() => DownloadModalIsOpen ^= true;
+    private void ShowLoginWindow()
+    {
+        var loginWindow = new LoginPBI(this);
+        loginWindow.Show();
+    }
+    
+    //
+    
+    private PsRunner _ps;
+    
+    // public MainViewModel()
+    // {
+    //     _ps = new PsRunner();
+    // }
 
     [RelayCommand]
     public void Login()
     {
         var result = _ps.Execute(
-            "Connect-PowerBIServiceAccount"
+            $"$password = '{Password}' | ConvertTo-SecureString -asPlainText -Force",
+            $"$username = '{Email}'",
+            "$credential = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $username, $password",
+            "Connect-PowerBIServiceAccount -Credential $credential"
         );
+            
         if (result.Error.Count > 0)
         {
             Console.Error.WriteLine(result.Error.ToString());
@@ -42,8 +71,9 @@ public partial class MainViewModel : ViewModelBase
             FetchWorkspaces();
         }
     }
-    
-    private void FetchWorkspaces()
+
+
+    internal void FetchWorkspaces()
     {
         var results = _ps.Execute("Get-PowerBIWorkspace -All");
 

@@ -11,6 +11,7 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.2" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.2" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.2" />
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.2" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2" />
@@ -52,5 +53,12 @@
       <AvaloniaResource Include="Assets\Images\arrow-down-to-line.svg" />
       <None Remove="Assets\Images\arrows-rotate.svg" />
       <AvaloniaResource Include="Assets\Images\arrows-rotate.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\MainView.axaml.cs">
+        <DependentUpon>MainView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
