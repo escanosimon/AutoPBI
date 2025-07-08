@@ -17,12 +17,6 @@ public partial class DownloadPopupViewModel : PopupViewModel
     public DownloadPopupViewModel() : base(new MainViewModel()) {}
 
     [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-    }
-
-    [RelayCommand]
     private async void Download()
     {
         var options = new FolderPickerOpenOptions

@@ -1,5 +1,6 @@
 ﻿using AutoPBI.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
@@ -13,5 +14,11 @@ public abstract partial class PopupViewModel: ViewModelBase
     {
         IsVisible = false;
         MainViewModel = mainViewModel;
+    }
+    
+    [RelayCommand]
+    private void Close()
+    {
+        IsVisible = false;
     }
 }
