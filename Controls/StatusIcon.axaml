@@ -1,16 +1,28 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/1806/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:li="using:LoadingIndicators.Avalonia"
         xmlns:controls="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <controls:StatusIcon Classes="Warning" />
+        <controls:StatusIcon Classes="Loading" />
     </Design.PreviewWith>
 
     <Style Selector="controls|StatusIcon.Success">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Success}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
-                    <Svg Path="/Assets/Images/check.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                <Border Background="{DynamicResource Success}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
+                    <Svg Path="/Assets/Images/check.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|StatusIcon.Loading">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource NeutralMuted}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Neutral}">
+                    <li:LoadingIndicator IsActive="True" Mode="Arc" SpeedRatio="1.2" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}" />
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -20,8 +32,8 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Warning}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
-                    <Svg Path="/Assets/Images/triangle-exclamation.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                <Border Background="{DynamicResource Warning}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
+                    <Svg Path="/Assets/Images/triangle-exclamation.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -31,8 +43,8 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Error}" Height="18" Width="18" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ErrorDark}">
-                    <Svg Path="/Assets/Images/xmark.svg" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                <Border Background="{DynamicResource Error}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ErrorDark}">
+                    <Svg Path="/Assets/Images/xmark.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
                 </Border>
             </ControlTemplate>
         </Setter>
