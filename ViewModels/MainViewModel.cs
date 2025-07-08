@@ -14,14 +14,13 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
-    
     [ObservableProperty] private PopupViewModel _downloadPopup;
-    
-    private readonly PsRunner _ps = new();
+    [ObservableProperty] private PsRunner _ps = new();
 
     public MainViewModel()
     {
-        DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
+        var dialogService = new DialogService();
+        DownloadPopup = AddPopup(new DownloadPopupViewModel(this, dialogService));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -42,7 +41,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void Login()
     {
-        var result = _ps.Execute(
+        var result = Ps.Execute(
             "Connect-PowerBIServiceAccount"
         );
         if (result.Error.Count > 0)
@@ -57,9 +56,9 @@ public partial class MainViewModel : ViewModelBase
     
     private void FetchWorkspaces()
     {
-        var results = _ps.Execute("Get-PowerBIWorkspace -All");
+        var result = Ps.Execute("Get-PowerBIWorkspace -All");
 
-        foreach (var obj in results.Objects)
+        foreach (var obj in result.Objects)
         {
             var workspace = new Workspace(obj.Properties["Id"].Value.ToString(),
                 obj.Properties["Name"].Value.ToString());
@@ -93,7 +92,7 @@ public partial class MainViewModel : ViewModelBase
         if (SelectedWorkspaces.Count == 0) return;
         foreach (var workspace in SelectedWorkspaces)
         {
-            var result = _ps.Execute($"Get-PowerBIReport -WorkspaceId '{workspace.Id}'");
+            var result = Ps.Execute($"Get-PowerBIReport -WorkspaceId '{workspace.Id}'");
 
             foreach (var obj in result.Objects)
             {

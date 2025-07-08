@@ -1,5 +1,4 @@
 using AutoPBI.ViewModels;
-using AutoPBI.Views;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;

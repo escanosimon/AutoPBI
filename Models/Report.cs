@@ -1,9 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AutoPBI.Models;
 
 public class Report : ObservableObject
 {
+    private string _status = string.Empty;
     private string? _id;
     private string? _name;
     private string? _webUrl;
@@ -13,14 +15,21 @@ public class Report : ObservableObject
 
     public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace workspace)
     {
+        Status = "TestClass";
         Id = id;
         Name = name;
         WebUrl = webUrl;
         DatasetId = datasetId;
-        _workspace = workspace;
+        Workspace = workspace;
         IsSelected = false;
     }
     
+    public string Status
+    {
+        get => _status;
+        set => SetProperty(ref _status, value);
+    }
+ 
     public string? Id
     {
         get => _id;

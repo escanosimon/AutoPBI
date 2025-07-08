@@ -5,7 +5,7 @@
         <c:ReportItem Classes="Warning"/>
     </Design.PreviewWith>
 
-    <Style Selector="c|ReportItem">
+    <Style Selector="c|ReportItem.Default">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -26,7 +26,7 @@
             <ControlTemplate>
                 <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Name="{TemplateBinding Id}" Classes="Ghost" Padding="6" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
                     <Grid ColumnDefinitions="Auto, Auto, *">
-                        <c:StatusIcon Classes="Loading" Margin="0 0 12 0" />
+                        <c:StatusIcon Classes="Success" Margin="0 0 12 0" />
                         <Svg Grid.Column="1" Path="/Assets/Images/file-chart-column.svg" VerticalAlignment="Center" Height="12" Margin="0 0 8 0"/>
                         <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{TemplateBinding Text}" />
                     </Grid>
