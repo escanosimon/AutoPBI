@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
-             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+             xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="450"
              x:Class="AutoPBI.Views.Popups.ScriptPopupView"
              x:DataType="vm:ScriptPopupViewModel">
     <Design.DataContext><vm:ScriptPopupViewModel></vm:ScriptPopupViewModel></Design.DataContext>
@@ -13,7 +14,7 @@
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
                 IsVisible="{Binding IsVisible}"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="300">
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Script Reports</TextBlock>
@@ -39,15 +40,26 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <ScrollViewer IsVisible="{Binding IsScriptShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedWorkspaces}" Padding="8">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <c:WorkspaceItem Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
+                                    <c:IconButton
+                                        IsVisible="{Binding ImportButtonVisibility}"
+                                        Command="{Binding ImportScriptCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Path="/Assets/Images/copy.svg"
+                                        Text="Import C# Script"
+                                        Classes="Outline" />
+                                    <avaloniaEdit:TextEditor
+                                        x:Name="ScriptEditor"
+                                        IsVisible="{Binding EditScriptVisibility}"
+                                        Document="{Binding ScriptContents, Mode=TwoWay}"
+                                        Padding="8"
+                                        FontFamily="Consolas,Menlo,Monaco,Courier New,monospace"
+                                        FontSize="11"
+                                        ShowLineNumbers="True"
+                                        SyntaxHighlighting="C#"
+                                        WordWrap="True"
+                                        Foreground="{DynamicResource Foreground}"
+                                        LineNumbersForeground="{DynamicResource PrimaryLight}"/>
                                 </Grid>
                             </Border>
                         </Grid>

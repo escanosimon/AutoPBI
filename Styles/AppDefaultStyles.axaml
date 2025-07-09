@@ -8,35 +8,35 @@
     
     <Style Selector="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush" Value="{DynamicResource NeutralMuted}"></Setter>
-        <Setter Property="Foreground" Value="{DynamicResource Foreground}"></Setter>
-        <Setter Property="CornerRadius" Value="8"></Setter>
-        <Setter Property="Padding" Value="12 6"></Setter>
-        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource NeutralMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12 6" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
     
     <Style Selector="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="TextTrimming" Value="CharacterEllipsis"></Setter>
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
     
     <Style Selector="Button">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
         <Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="BorderThickness" Value="0"></Setter>
-        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
     </Style>
     
     <Style Selector="Button.PopupBackground">
-        <Setter Property="Background" Value="{DynamicResource ForegroundSemiTransparent}"></Setter>
-        <Setter Property="CornerRadius" Value="0"></Setter>
-        <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
-        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-        <Setter Property="Cursor" Value="Arrow"></Setter>
+        <Setter Property="Background" Value="{DynamicResource ForegroundSemiTransparent}" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Cursor" Value="Arrow" />
     </Style>
     
     <Style Selector="Button.PopupBackground:pointerover /template/ ContentPresenter">
@@ -44,20 +44,20 @@
     </Style>
     
     <Style Selector="Button.Primary:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource PrimaryDark}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource PrimaryDark}" />
     </Style>
     
     <Style Selector="Button.Outline:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource PrimaryLight}"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush" Value="{DynamicResource Primary}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource PrimaryLight}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Primary}" />
     </Style>
     
     <Style Selector="Button.Ghost:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource NeutralMuted}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
     
     <Style Selector="Button.Switch">
-        <Setter Property="Background" Value="{DynamicResource NeutralMuted}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
 </Styles>

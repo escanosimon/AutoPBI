@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels;
 
+
 public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] private User _user = null!;
@@ -78,6 +79,14 @@ public partial class MainViewModel : ViewModelBase
     {
         var result = await Ps.Execute("Get-PowerBIWorkspace -All");
 
+        foreach (var obj in result.Objects)
+        {
+            foreach (var prop in obj.Properties)
+            {
+                Console.WriteLine($"{prop.Name}: {prop.Value}");
+            }
+        }
+
         foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
                      obj.Properties["Name"].Value.ToString())))
         {
@@ -93,6 +102,7 @@ public partial class MainViewModel : ViewModelBase
         if (workspace.IsSelected)
         {
             SelectedWorkspaces.Add(workspace);
+            Console.Error.WriteLine($"Workspace: " + workspace.Id);
         }
         else
         {
@@ -146,6 +156,7 @@ public partial class MainViewModel : ViewModelBase
         if (report.IsSelected)
         {
             SelectedReports.Add(report);
+            Console.Error.WriteLine($"Report: " + report.DatasetId);
         }
         else
         {

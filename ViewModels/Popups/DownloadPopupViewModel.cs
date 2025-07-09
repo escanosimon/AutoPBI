@@ -36,7 +36,11 @@ public partial class DownloadPopupViewModel : PopupViewModel
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsDownloading) return;
+            if (!IsDownloading)
+            {
+                Close();
+                return;
+            }
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
             var result = await MainViewModel.Ps.Execute(

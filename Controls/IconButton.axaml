@@ -33,8 +33,8 @@
     <Style Selector="controls|IconButton.Outline">
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
                         <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Primary}"/>
                     </StackPanel>
