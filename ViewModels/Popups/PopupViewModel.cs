@@ -9,7 +9,7 @@ public abstract partial class PopupViewModel: ViewModelBase
 
     protected PopupViewModel(MainViewModel mainViewModel)
     {
-        IsVisible = false;
+        IsVisible = true;
         MainViewModel = mainViewModel;
     }
 }

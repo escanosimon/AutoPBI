@@ -15,6 +15,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
     
+    [ObservableProperty] private PopupViewModel _clonePopup;
     [ObservableProperty] private PopupViewModel _downloadPopup;
     
     private readonly PsRunner _ps = new();
@@ -22,6 +23,8 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
+        ClonePopup = AddPopup(new ClonePopupViewModel(this));
+
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
