@@ -76,6 +76,7 @@
                                     <StackPanel Orientation="Vertical" Margin="0 0 0 24">
                                         <Button
                                             Padding="0" Margin="0 0 0 12"
+                                            IsEnabled="{Binding Reports.Count}"
                                             Command="{Binding DataContext.SelectAllReportsCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"
                                             >
                                             <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
