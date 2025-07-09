@@ -35,15 +35,6 @@ public class ReportItem : TemplatedControl
         set => SetValue(CommandParameterProperty, value);
     }
     
-    public static readonly StyledProperty<string> IdProperty = AvaloniaProperty.Register<ReportItem, string>(
-        nameof(Id));
-
-    public string Id
-    {
-        get => GetValue(IdProperty);
-        set => SetValue(IdProperty, value);
-    }
-    
     public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<ReportItem, string>(
         nameof(Text), "Unnamed");
 
