@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
@@ -73,8 +74,8 @@ public partial class MainViewModel : ViewModelBase
             FetchWorkspaces();
         }
     }
-    
-    private async void FetchWorkspaces()
+
+    internal async Task FetchWorkspaces()
     {
         var result = await Ps.Execute("Get-PowerBIWorkspace -All");
 
@@ -117,7 +118,8 @@ public partial class MainViewModel : ViewModelBase
             {
                 try
                 {
-                    var report = new Report(obj.Properties["Id"].Value.ToString(),
+                    var report = new Report(
+                        obj.Properties["Id"].Value.ToString(),
                         obj.Properties["Name"].Value.ToString(),
                         obj.Properties["WebUrl"].Value.ToString(),
                         obj.Properties["DatasetId"].Value.ToString(),

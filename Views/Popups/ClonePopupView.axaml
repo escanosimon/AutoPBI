@@ -6,8 +6,13 @@
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
              x:Class="AutoPBI.Views.Popups.ClonePopupView"
+             x:Name="ClonePopupWindow"
              x:DataType="vm:ClonePopupViewModel">
-    <Design.DataContext><vm:ClonePopupViewModel></vm:ClonePopupViewModel></Design.DataContext>
+    <Design.DataContext>
+        <vm:ClonePopupViewModel>
+        
+        </vm:ClonePopupViewModel>
+    </Design.DataContext>
     <Grid>
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
@@ -31,30 +36,53 @@
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>
                                     <ScrollViewer IsVisible="{Binding !IsCloneShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <c:ReportItem Status="{Binding Status}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" IsHitTestVisible="False"></c:ReportItem>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
+                                        <Grid RowDefinitions="Auto,*">
+                                            <TextBlock Text="No reports selected" 
+                                                       IsVisible="{Binding !CloneSelectedReports.Count}"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,20,0,0"
+                                                       Foreground="{DynamicResource NeutralMuted}"/>
+                                            <ItemsControl Grid.Row="1" 
+                                                          ItemsSource="{Binding CloneSelectedReports}" 
+                                                          Padding="8">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <c:ReportItem Status="{Binding Status}" 
+                                                                      Text="{Binding Name}" 
+                                                                      IsChecked="{Binding IsSelected}" 
+                                                                      IsHitTestVisible="False"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
                                     </ScrollViewer>
+
+
                                     <ScrollViewer IsVisible="{Binding IsCloneShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedWorkspaces}" Padding="8">
+                                        <ItemsControl ItemsSource="{Binding CloneWorkspaces}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:WorkspaceItem Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
+                                                    <c:WorkspaceItem 
+                                                        Command="{Binding DataContext.SelectWorkspaceCommand, ElementName=ClonePopupWindow, FallbackValue={x:Null}}" 
+                                                        CommandParameter="{Binding}" 
+                                                        Text="{Binding Name}" 
+                                                        IsChecked="{Binding IsSelected}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
+
                                 </Grid>
                             </Border>
                         </Grid>
                     </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Clone" Classes="Primary" Command="{Binding CloneCommand}" />
+                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" 
+                                      Text="Clone" 
+                                      Classes="Primary" 
+                                      Command="{Binding CloneCommand}"
+                                      IsEnabled="{Binding CanClone}" />
                         <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>
