@@ -18,6 +18,7 @@
         <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupViewModel.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/ScriptPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/TestPopup.axaml" value="AutoPBI.csproj" />
       </map>
     </option>

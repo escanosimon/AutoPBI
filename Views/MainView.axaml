@@ -19,9 +19,11 @@
             <ColumnDefinition MinWidth="250" Width="2*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <Border Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1" >
+        
+        <Grid Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
-        </Border>
+            <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
+        </Grid>
         
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
             <Grid ColumnDefinitions="*, *">
@@ -64,7 +66,7 @@
                         <TextBox Watermark="Search reports" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
+                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
                             <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
                             <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
                         </StackPanel>

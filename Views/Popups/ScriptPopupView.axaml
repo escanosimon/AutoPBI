@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
+             xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
+             x:Class="AutoPBI.Views.Popups.ScriptPopupView"
+             x:DataType="vm:ScriptPopupViewModel">
+    <Design.DataContext><vm:ScriptPopupViewModel></vm:ScriptPopupViewModel></Design.DataContext>
+    <Grid>
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
+        
+        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
+                IsVisible="{Binding IsVisible}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="300">
+            <Grid RowDefinitions="Auto, *, 56">
+                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Script Reports</TextBlock>
+                </Border>
+                <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <c:ReportItem Status="{Binding Status}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" IsHitTestVisible="False"></c:ReportItem>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+                </Border>
+                <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Script" Classes="Primary" Command="{Binding ScriptCommand}" />
+                        <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -19,7 +19,9 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
+    
     [ObservableProperty] private PopupViewModel _downloadPopup;
+    [ObservableProperty] private PopupViewModel _scriptPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PsRunner _ps = new();
@@ -27,6 +29,7 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
+        ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
