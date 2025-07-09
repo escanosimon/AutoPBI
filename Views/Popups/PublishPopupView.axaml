@@ -1,0 +1,77 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
+             xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
+             xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="450"
+             x:Name="PublishPopupControl"
+             x:Class="AutoPBI.Views.Popups.PublishPopupView"
+             x:DataType="vm:PublishPopupViewModel">
+    <Design.DataContext><vm:PublishPopupViewModel></vm:PublishPopupViewModel></Design.DataContext>
+    <Grid>
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
+        
+        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
+                IsVisible="{Binding IsVisible}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
+            <Grid RowDefinitions="Auto, *, 56">
+                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Publish Reports</TextBlock>
+                </Border>   
+                    <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                        <Grid RowDefinitions="Auto, *">
+                            <c:ToggleButtonGroup
+                                Boolean="{Binding IsWorkspacesShown}"
+                                NotBoolean="{Binding !IsWorkspacesShown}"
+                                Command1="{Binding ShowPbixFilesCommand}"
+                                Command2="{Binding ShowWorkspacesCommand}"
+                                Text1="Selected Reports"
+                                Text2="Select Workspaces"
+                                />
+                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                                <Grid>
+                                    <ScrollViewer IsVisible="{Binding !IsWorkspacesShown}">
+                                        <ItemsControl ItemsSource="{Binding SelectedPbixFilePaths}" Padding="8">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <c:ReportItem Text="{Binding}" IsHitTestVisible="False"></c:ReportItem>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                    <c:IconButton
+                                        IsVisible="{Binding ImportButtonVisibility}"
+                                        Command="{Binding ImportPbixFilesCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Path="/Assets/Images/copy.svg"
+                                        Text="Import Power BI Files"
+                                        Classes="Outline" />
+                                    <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
+                                        <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <c:WorkspaceItem
+                                                        Command="{Binding SelectCommand}"
+                                                        Text="{Binding Name}" 
+                                                        IsChecked="{Binding IsSelected}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Publish" Classes="Primary" Command="{Binding PublishCommand}" />
+                        <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

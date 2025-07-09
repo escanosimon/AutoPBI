@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,74 +18,88 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
-public partial class ScriptPopupViewModel : PopupViewModel
+public partial class PublishPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isScripting;
-    [ObservableProperty] private bool _isScriptShown;
+    [ObservableProperty] private bool _isPublishing;
+    [ObservableProperty] private bool _isWorkspacesShown;
     [ObservableProperty] private bool _importButtonVisibility;
-    [ObservableProperty] private bool _editScriptVisibility;
-    [ObservableProperty] private string? _selectedScriptPath;
-    [ObservableProperty] private TextDocument _scriptContents;
+    [ObservableProperty] private bool _selectedPbixFilesVisibility;
+    [ObservableProperty] private ObservableCollection<string> _selectedPbixFilePaths = [];
     
-    public ScriptPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public PublishPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+        UpdateVisibilities();
     }
 
-    public ScriptPopupViewModel() : base(new MainViewModel()) {}
+    public PublishPopupViewModel() : base(new MainViewModel()) {}
 
     [RelayCommand]
-    private void ShowScript()
+    private void ShowWorkspaces()
     {
-        IsScriptShown = true;
+        IsWorkspacesShown = true;
         UpdateVisibilities();
     }
 
     [RelayCommand]
-    private void ShowReports()
+    private void ShowPbixFiles()
     {
-        IsScriptShown = false;
+        IsWorkspacesShown = false;
         UpdateVisibilities();
     }
 
     [RelayCommand]
-    private async void ImportScript()
+    private async void ImportPbixFiles()
     {
         var options = new FilePickerOpenOptions
         {
-            Title = "Select C# File",
-            AllowMultiple = false,
+            Title = "Select Power BI Files",
+            AllowMultiple = true,
             FileTypeFilter = new[]
             {
-                new FilePickerFileType("C# Files")
+                new FilePickerFileType("Power BI Files")
                 {
-                    Patterns = new[] { "*.cs" }
+                    Patterns = ["*.pbix"]
                 }
             }
         };
 
-        SelectedScriptPath = (await MainViewModel.DialogService.OpenFileDialogAsync(options)).FirstOrDefault();
-        if (SelectedScriptPath == null) return;
-        ScriptContents = new TextDocument(await File.ReadAllTextAsync(SelectedScriptPath));
+        var selectedFiles = await MainViewModel.DialogService.OpenFileDialogAsync(options);
+        var enumerable = selectedFiles as string[] ?? selectedFiles.ToArray();
+        if (!enumerable!.Any())
+        {
+            SelectedPbixFilePaths.Clear();
+            UpdateVisibilities();
+            return;
+        }
+
+        // Ensure that selectedFiles consists of strings, or access the appropriate property
+        SelectedPbixFilePaths = new ObservableCollection<string>(
+            enumerable!.Where(file => file.EndsWith(".pbix", StringComparison.OrdinalIgnoreCase)));
         UpdateVisibilities();
     }
 
     [RelayCommand]
-    private async void Script()
+    private void SelectPublishWorkspace(Workspace? selectedWorkspace)
     {
-        if (SelectedScriptPath == null)
+        MainViewModel.SelectWorkspaceCommand?.Execute(selectedWorkspace);
+    }
+
+    [RelayCommand]
+    private async void Publish()
+    {
+        if (SelectedPbixFilePaths.Count == 0)
         {
             Close();
             return;
         };
-        await File.WriteAllTextAsync(SelectedScriptPath, ScriptContents.Text);
         
-        IsScripting = true;
-        ShowReports();
+        IsPublishing = true;
+        ShowPbixFiles();
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsScripting) return;
+            if (!IsPublishing) return;
             
             report.Status = Report.StatusType.Loading;
             
@@ -100,7 +115,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
                             $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={username};Password={password}")
                         .Add($"{report.DatasetId}")
                         .Add("-S")
-                        .Add($"{SelectedScriptPath}")
+                        .Add($"{SelectedPbixFilePaths}")
                         .Add("-D")
                     )
                     .WithStandardOutputPipe(PipeTarget.ToDelegate(Console.WriteLine))
@@ -122,9 +137,9 @@ public partial class ScriptPopupViewModel : PopupViewModel
     {
         IsVisible = false;
         
-        if (!IsScripting) return;
-        Console.Error.WriteLine("Script stopped...");
-        IsScripting =  false;
+        if (!IsPublishing) return;
+        Console.Error.WriteLine("Publish stopped...");
+        IsPublishing =  false;
         foreach (var report in MainViewModel.SelectedReports)
         {
             report.Status = Report.StatusType.Selectable;
@@ -133,7 +148,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
 
     private void UpdateVisibilities()
     {
-        ImportButtonVisibility = IsScriptShown && (SelectedScriptPath == null);
-        EditScriptVisibility = IsScriptShown && (SelectedScriptPath != null);
+        ImportButtonVisibility = !IsWorkspacesShown && (SelectedPbixFilePaths.Count == 0);
+        SelectedPbixFilesVisibility = IsWorkspacesShown && (SelectedPbixFilePaths.Count != 0);
     }
 }

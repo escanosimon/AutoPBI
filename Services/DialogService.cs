@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -27,13 +28,13 @@ public class DialogService : IDialogService
         return result?.FirstOrDefault()?.Path.LocalPath;
     }
 
-    public async Task<string?> OpenFileDialogAsync(FilePickerOpenOptions? options = null)
+    public async Task<IEnumerable<string>> OpenFileDialogAsync(FilePickerOpenOptions? options = null)
     {
         var topLevel = TopLevel.GetTopLevel(Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop 
             ? desktop.MainWindow 
             : null);
             
-        if (topLevel == null) return null;
+        if (topLevel == null) return null!;
 
         options ??= new FilePickerOpenOptions
         {
@@ -41,7 +42,8 @@ public class DialogService : IDialogService
             AllowMultiple = false
         };
 
+        
         var result = await topLevel.StorageProvider.OpenFilePickerAsync(options);
-        return result?.FirstOrDefault()?.Path.LocalPath;
+        return result?.Select(file => file.Path.LocalPath) ?? [];
     }
 }

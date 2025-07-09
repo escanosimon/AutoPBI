@@ -25,6 +25,7 @@
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
             <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
             <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
+            <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
         </Grid>
         
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
@@ -36,7 +37,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                    <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Upload" Classes="Primary"></c:IconButton>
+                    <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}" />
                     <c:IconButton Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}" IsVisible="{Binding !IsLoggedIn}" />
                     <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
                 </StackPanel>
@@ -51,7 +52,7 @@
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <c:WorkspaceItem Command="{Binding DataContext.SelectWorkspaceCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
+                                    <c:WorkspaceItem Command="{Binding SelectCommand}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

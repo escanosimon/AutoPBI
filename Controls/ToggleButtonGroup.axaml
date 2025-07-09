@@ -19,7 +19,7 @@
                             Padding="6" BorderBrush="{DynamicResource Neutral}" 
                             IsHitTestVisible="{TemplateBinding Boolean}"
                             BorderThickness="1">
-                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="10" HorizontalAlignment="Center" Text="{TemplateBinding Text1}" />
+                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text1}" />
                         </Button>
                         <Button 
                             Grid.Column="1"
@@ -31,7 +31,7 @@
                             IsHitTestVisible="{TemplateBinding NotBoolean}"
                             Margin="-1 0 0 0"
                             BorderThickness="1">
-                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="10" HorizontalAlignment="Center" Text="{TemplateBinding Text2}" />
+                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text2}" />
                         </Button>
                     </Grid>
                 </Border>

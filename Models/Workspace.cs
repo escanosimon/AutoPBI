@@ -1,23 +1,33 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using AutoPBI.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.Models
 {
-    public class Workspace : ObservableObject
+    public partial class Workspace : ObservableObject
     {
         private string? _id;
         private string? _name;
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private ObservableCollection<Report> _reports = [];
+        private MainViewModel? _mainViewModel;
         
-        public Workspace(string? id, string? name)
+        public Workspace(string? id, string? name, MainViewModel mainViewModel)
         {
             Id = id;
             Name = name;
             IsSelected = false;
             IsAllReportsSelected = false;
+            MainViewModel = mainViewModel;
+        }
+        
+        [RelayCommand]
+        public void Select()
+        {
+            MainViewModel!.SelectWorkspaceCommand.Execute(this);
         }
 
         public void CheckSelectedReports()
@@ -29,6 +39,12 @@ namespace AutoPBI.Models
             }
 
             IsAllReportsSelected = true;
+        }
+        
+        public MainViewModel? MainViewModel
+        {
+            get => _mainViewModel;
+            set => SetProperty(ref _mainViewModel, value);
         }
         
         public string? Id

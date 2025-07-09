@@ -25,6 +25,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _scriptPopup;
     [ObservableProperty] private PopupViewModel _clonePopup;
     [ObservableProperty] private PopupViewModel _scanPopup;
+    [ObservableProperty] private PopupViewModel _publishPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PsRunner _ps = new();
@@ -35,6 +36,7 @@ public partial class MainViewModel : ViewModelBase
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
         ScanPopup = AddPopup(new ScanPopupViewModel(this));
+        PublishPopup = AddPopup(new PublishPopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -88,7 +90,7 @@ public partial class MainViewModel : ViewModelBase
         }
 
         foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
-                     obj.Properties["Name"].Value.ToString())))
+                     obj.Properties["Name"].Value.ToString(), this)))
         {
             Workspaces.Add(workspace);
         }
