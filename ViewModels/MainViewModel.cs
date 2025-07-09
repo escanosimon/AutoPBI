@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AutoPBI.Models;
@@ -11,6 +12,9 @@ namespace AutoPBI.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    [ObservableProperty] private User _user = null!;
+    [ObservableProperty] private bool _isLoggedIn;
+    
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
@@ -41,24 +45,31 @@ public partial class MainViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private void Login()
+    private async void Login()
     {
-        var result = Ps.Execute(
+        var result = await Ps.Execute(
             "Connect-PowerBIServiceAccount"
         );
         if (result.Error.Count > 0)
         {
-            Console.Error.WriteLine(result.Error.ToString());
+            await Console.Error.WriteLineAsync(result.Error.ToString());
         }
         else
         {
+            foreach (var obj in result.Objects)
+            {
+                User = new User(obj.Properties["Environment"].Value.ToString(),
+                    obj.Properties["TenantId"].Value.ToString(), obj.Properties["UserName"].Value.ToString());
+            }
+
+            IsLoggedIn = true;
             FetchWorkspaces();
         }
     }
     
-    private void FetchWorkspaces()
+    private async void FetchWorkspaces()
     {
-        var result = Ps.Execute("Get-PowerBIWorkspace -All");
+        var result = await Ps.Execute("Get-PowerBIWorkspace -All");
 
         foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
                      obj.Properties["Name"].Value.ToString())))
@@ -88,12 +99,12 @@ public partial class MainViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private void FetchReports()
+    private async void FetchReports()
     {
         if (SelectedWorkspaces.Count == 0) return;
         foreach (var workspace in SelectedWorkspaces)
         {
-            var result = Ps.Execute($"Get-PowerBIReport -WorkspaceId '{workspace.Id}'");
+            var result = await Ps.Execute($"Get-PowerBIReport -WorkspaceId '{workspace.Id}'");
 
             foreach (var obj in result.Objects)
             {

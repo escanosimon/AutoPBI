@@ -7,7 +7,9 @@
         <entry key="Controls/CheckBox.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/IconButton.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/SampleReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/StatusIcon.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/UserImage.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="MainView.axaml" value="AutoPBI.csproj" />
         <entry key="MainWindow.axaml" value="AutoPBI.csproj" />

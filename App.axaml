@@ -11,6 +11,7 @@
         <StyleInclude Source="Controls/WorkspaceItem.axaml"></StyleInclude>
         <StyleInclude Source="Controls/IconButton.axaml"></StyleInclude>
         <StyleInclude Source="Controls/StatusIcon.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/UserImage.axaml"></StyleInclude>
     </Application.Styles>
              
     <Application.Resources>

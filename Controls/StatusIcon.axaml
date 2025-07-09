@@ -3,10 +3,31 @@
         xmlns:li="using:LoadingIndicators.Avalonia"
         xmlns:controls="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <controls:StatusIcon Classes="Loading" />
+        <controls:StatusIcon Status="Selectable" IsChecked="False" />
     </Design.PreviewWith>
+    
+    <Style Selector="controls|StatusIcon[Status=Selectable][IsChecked=True]">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Primary}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Primary}">
+                    <Svg Path="/Assets/Images/check-white.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|StatusIcon[Status=Selectable][IsChecked=False]">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Neutral}">
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
 
-    <Style Selector="controls|StatusIcon.Success">
+    <Style Selector="controls|StatusIcon[Status=Success]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -17,7 +38,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon.Loading">
+    <Style Selector="controls|StatusIcon[Status=Loading]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -28,7 +49,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon.Warning">
+    <Style Selector="controls|StatusIcon[Status=Warning]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -39,7 +60,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon.Error">
+    <Style Selector="controls|StatusIcon[Status=Error]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>

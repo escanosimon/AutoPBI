@@ -5,7 +5,16 @@ namespace AutoPBI.Models;
 
 public class Report : ObservableObject
 {
-    private string _status = string.Empty;
+    public enum StatusType
+    {
+        Selectable,
+        Success,
+        Loading,
+        Warning,
+        Error
+    }
+    
+    private StatusType _status;
     private string? _id;
     private string? _name;
     private string? _webUrl;
@@ -15,7 +24,7 @@ public class Report : ObservableObject
 
     public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
     {
-        Status = "TestClass";
+        Status = StatusType.Selectable;
         Id = id;
         Name = name;
         WebUrl = webUrl;
@@ -23,8 +32,8 @@ public class Report : ObservableObject
         Workspace = workspace;
         IsSelected = false;
     }
-    
-    public string Status
+
+    public StatusType Status
     {
         get => _status;
         set => SetProperty(ref _status, value);

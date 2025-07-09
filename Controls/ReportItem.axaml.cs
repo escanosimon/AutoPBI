@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -7,6 +8,15 @@ namespace AutoPBI.Controls;
 
 public class ReportItem : TemplatedControl
 {
+    public static readonly StyledProperty<string> StatusProperty = AvaloniaProperty.Register<ReportItem, string>(
+        nameof(Status));
+
+    public string Status
+    {
+        get => GetValue(StatusProperty);
+        set => SetValue(StatusProperty, value);
+    }
+    
     public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<ReportItem, ICommand>(
         nameof(Command));
 

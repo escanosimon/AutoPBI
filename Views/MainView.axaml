@@ -14,7 +14,11 @@
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
-    <Grid Name="MainGrid" Background="{DynamicResource Background}" ColumnDefinitions="300, *" RowDefinitions="56, *">
+    <Grid Name="MainGrid" Background="{DynamicResource Background}" RowDefinitions="56, *">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="250" Width="2*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
         <Border Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1" >
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
         </Border>
@@ -24,19 +28,20 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/Power_BI_Logo.svg}" Height="24" Margin="0 0 8 0"/>
-                        <TextBlock VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}">AutoPBI</TextBlock>
+                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}">AutoPBI</TextBlock>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Upload" Classes="Primary"></c:IconButton>
-                    <c:IconButton Name="LoginButton" Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}"></c:IconButton>
+                    <c:IconButton Name="LoginButton" Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}" IsVisible="{Binding !IsLoggedIn}" />
+                    <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
                 </StackPanel>
             </Grid>
         </Border>
         <Border Grid.Row="1" Grid.Column="0" Padding="16 16 4 16">
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
                 <Grid RowDefinitions="Auto, Auto, *, 36">
-                    <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
                     <TextBox Grid.Row="1" Margin="0 0 0 12">Search</TextBox>
                     <ScrollViewer Grid.Row="2" Margin="0 0 0 12">
                         <ItemsControl ItemsSource="{Binding Workspaces}">
@@ -54,7 +59,7 @@
         <Border Grid.Row="1" Grid.Column="1" Padding="4 16 16 16">
             <Border Padding="16">
                 <Grid RowDefinitions="Auto, Auto, *">
-                    <TextBlock FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Reports</TextBlock>
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Reports</TextBlock>
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
                         <TextBox>Search</TextBox>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -64,23 +69,20 @@
                             <c:IconButton Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
                         </StackPanel>
                     </Grid>
-                    <ScrollViewer Grid.Row="2">
+                    <ScrollViewer Grid.Row="2" Margin="0 16 0 0">
                         <ItemsControl ItemsSource="{Binding SelectedWorkspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical" Margin="0 0 0 24">
                                         <Button
-                                            Padding="0" Margin="0"
+                                            Padding="0" Margin="0 0 0 12"
                                             Command="{Binding DataContext.SelectAllReportsCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"
                                             >
                                             <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
-                                                <CheckBox Name="{Binding Id}" VerticalAlignment="Center"
-                                                          IsChecked="{Binding IsAllReportsSelected}"
-                                                          IsHitTestVisible="False"
-                                                ></CheckBox>
+                                                <c:StatusIcon Status="Selectable" IsChecked="{Binding IsAllReportsSelected}" Margin="0 0 10 0" IsVisible="{Binding Reports.Count}"></c:StatusIcon>
                                                 <Svg Grid.Column="1" Path="/Assets/Images/users.svg" Height="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
-                                                <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center">
+                                                <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding Reports.Count}">
                                                     <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
                                                 </Border>
                                             </Grid>
@@ -89,6 +91,7 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <c:ReportItem Id="{Binding Id}" Text="{Binding Name}" IsChecked="{Binding IsSelected}"
+                                                                  Status="{Binding Status}"
                                                                   Command="{Binding DataContext.SelectReportCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding }"
                                                                   ></c:ReportItem>
                                                 </DataTemplate>

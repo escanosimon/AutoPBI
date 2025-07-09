@@ -16,9 +16,4 @@ public abstract partial class PopupViewModel: ViewModelBase
         MainViewModel = mainViewModel;
     }
     
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-    }
 }

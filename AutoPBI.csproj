@@ -36,6 +36,7 @@
       <None Remove="Assets\Images\brackets-curly.svg" />
       <AvaloniaResource Include="Assets\Images\brackets-curly.svg" />
       <None Remove="Assets\Images\copy.svg" />
+      <AvaloniaResource Include="Assets\Images\check-white.svg" />
       <AvaloniaResource Include="Assets\Images\copy.svg" />
       <None Remove="Assets\Images\file-chart-column.svg" />
       <AvaloniaResource Include="Assets\Images\file-chart-column.svg" />
