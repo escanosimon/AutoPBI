@@ -10,32 +10,32 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
-public partial class ScriptPopupViewModel : PopupViewModel
+public partial class ClonePopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isScripting;
-    [ObservableProperty] private bool _isScriptShown;
+    [ObservableProperty] private bool _isCloning;
+    [ObservableProperty] private bool _isCloneShown;
     
-    public ScriptPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public ClonePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
     }
 
-    public ScriptPopupViewModel() : base(new MainViewModel()) {}
+    public ClonePopupViewModel() : base(new MainViewModel()) {}
 
     [RelayCommand]
-    private void ShowScript()
+    private void ShowWorkspaces()
     {
-        IsScriptShown = true;
+        IsCloneShown = true;
     }
 
     [RelayCommand]
     private void ShowReports()
     {
-        IsScriptShown = false;
+        IsCloneShown = false;
     }
 
     [RelayCommand]
-    private async void Script()
+    private async void Clone()
     {
         var options = new FolderPickerOpenOptions
         {
@@ -46,11 +46,11 @@ public partial class ScriptPopupViewModel : PopupViewModel
         var destinationFolder = await MainViewModel.DialogService.OpenFolderDialogAsync(options);
         if (destinationFolder == null) return;
         
-        IsScripting = true;
+        IsCloning = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsScripting) return;
+            if (!IsCloning) return;
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
             var result = await MainViewModel.Ps.Execute(
@@ -71,9 +71,9 @@ public partial class ScriptPopupViewModel : PopupViewModel
     {
         IsVisible = false;
         
-        if (!IsScripting) return;
-        Console.Error.WriteLine("Script stopped...");
-        IsScripting =  false;
+        if (!IsCloning) return;
+        Console.Error.WriteLine("Clone stopped...");
+        IsCloning =  false;
         foreach (var report in MainViewModel.SelectedReports)
         {
             report.Status = Report.StatusType.Selectable;

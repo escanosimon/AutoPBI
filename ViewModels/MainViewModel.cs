@@ -22,6 +22,8 @@ public partial class MainViewModel : ViewModelBase
     
     [ObservableProperty] private PopupViewModel _downloadPopup;
     [ObservableProperty] private PopupViewModel _scriptPopup;
+    [ObservableProperty] private PopupViewModel _clonePopup;
+    [ObservableProperty] private PopupViewModel _scanPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PsRunner _ps = new();
@@ -30,6 +32,8 @@ public partial class MainViewModel : ViewModelBase
     {
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
+        ClonePopup = AddPopup(new ClonePopupViewModel(this));
+        ScanPopup = AddPopup(new ScanPopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)

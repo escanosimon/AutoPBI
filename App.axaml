@@ -12,6 +12,7 @@
         <StyleInclude Source="Controls/IconButton.axaml"></StyleInclude>
         <StyleInclude Source="Controls/StatusIcon.axaml"></StyleInclude>
         <StyleInclude Source="Controls/UserImage.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/ToggleButtonGroup.axaml"></StyleInclude>
     </Application.Styles>
              
     <Application.Resources>

@@ -9,6 +9,7 @@
         <entry key="Controls/ReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/SampleReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/StatusIcon.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/ToggleButtonGroup.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/UserImage.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="MainView.axaml" value="AutoPBI.csproj" />
@@ -16,8 +17,11 @@
         <entry key="Popups/DownloadPopup.axaml" value="AutoPBI.csproj" />
         <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
         <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/ClonePopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupViewModel.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/ScanPopupVIew.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/ScanPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScriptPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/TestPopup.axaml" value="AutoPBI.csproj" />
       </map>

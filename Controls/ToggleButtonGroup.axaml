@@ -1,0 +1,41 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <controls:ToggleButtonGroup />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|ToggleButtonGroup">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Margin="0 0 0 16" BorderBrush="{DynamicResource Neutral}" BorderThickness="1" CornerRadius="8" Padding="-1">
+                    <Grid ColumnDefinitions="*, *">
+                        <Button 
+                            Classes.Switch="{TemplateBinding NotBoolean}"
+                            Command="{TemplateBinding Command1}"
+                            HorizontalAlignment="Stretch" 
+                            CornerRadius="8 0 0 8"
+                            Padding="6" BorderBrush="{DynamicResource Neutral}" 
+                            IsHitTestVisible="{TemplateBinding Boolean}"
+                            BorderThickness="1">
+                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="10" HorizontalAlignment="Center" Text="{TemplateBinding Text1}" />
+                        </Button>
+                        <Button 
+                            Grid.Column="1"
+                            Command="{TemplateBinding Command2}"
+                            Classes.Switch="{TemplateBinding Boolean}" 
+                            HorizontalAlignment="Stretch" 
+                            CornerRadius="0 8 8 0" 
+                            Padding="6" BorderBrush="{DynamicResource Neutral}"
+                            IsHitTestVisible="{TemplateBinding NotBoolean}"
+                            Margin="-1 0 0 0"
+                            BorderThickness="1">
+                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="10" HorizontalAlignment="Center" Text="{TemplateBinding Text2}" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

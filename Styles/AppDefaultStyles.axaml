@@ -56,4 +56,8 @@
     <Style Selector="Button.Ghost:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource NeutralMuted}"></Setter>
     </Style>
+    
+    <Style Selector="Button.Switch">
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}"></Setter>
+    </Style>
 </Styles>

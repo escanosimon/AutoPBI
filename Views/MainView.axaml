@@ -23,6 +23,8 @@
         <Grid Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
+            <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
+            <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
         </Grid>
         
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
@@ -67,8 +69,8 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
                             <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
+                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
+                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScanPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="2" Margin="0 16 0 0">
