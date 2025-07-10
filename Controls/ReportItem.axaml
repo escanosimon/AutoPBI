@@ -16,7 +16,11 @@
                     
         <Button.ContextMenu>
             <ContextMenu>
-                <MenuItem  Header="Copy Report ID" Click="CopyId"></MenuItem>
+                <MenuItem Header="Show message" IsVisible="{Binding #Root.Report.Message}">
+                    <TextBlock Text="{Binding #Root.Report.Message}" MaxWidth="200" TextWrapping="Wrap"></TextBlock>
+                </MenuItem>
+                <MenuItem  Header="Copy Report ID" Click="CopyReportId"></MenuItem>
+                <MenuItem  Header="Copy Dataset ID" Click="CopyDatasetId"></MenuItem>
                 <MenuItem Header="Open in Power BI Service" Click="OpenInPowerBiService"></MenuItem>
             </ContextMenu>
         </Button.ContextMenu>

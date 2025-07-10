@@ -4,12 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:AutoPBI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:li="using:LoadingIndicators.Avalonia"
              x:Name="Root"
              x:Class="AutoPBI.Controls.WorkspaceItem">
     <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6" CornerRadius="6">
         <Grid ColumnDefinitions="Auto, *, Auto">
             <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
-            <TextBlock Foreground="{DynamicResource Foreground}" ToolTip.Tip="{Binding #Root.Workspace.Name}" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{Binding #Root.Workspace.Name}"/>
+            <TextBlock 
+                Grid.Column="1"
+                IsVisible="{Binding #Root.Workspace.Name}"
+                Foreground="{DynamicResource Foreground}" 
+                ToolTip.Tip="{Binding #Root.Workspace.Name}" 
+                VerticalAlignment="Center" 
+                Margin="0 0 8 0" 
+                Text="{Binding #Root.Workspace.Name}"/>
+            
+            <li:LoadingIndicator Grid.Column="1" 
+                                 IsVisible="{Binding !#Root.Workspace.Name}"
+                                 IsActive="True" 
+                                 Mode="Arc" 
+                                 SpeedRatio="1.2" 
+                                 Height="28" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Center" 
+                                 Foreground="{DynamicResource ForegroundMuted}" />
             <controls:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{Binding #Root.IsChecked}"></controls:StatusIcon>
         </Grid>
         

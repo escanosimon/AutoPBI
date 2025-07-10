@@ -89,8 +89,6 @@ public partial class ClonePopupViewModel : PopupViewModel
                 report.Status = Report.StatusType.Success;
             }
         }
-        
-        Close();
     }
     
     [RelayCommand]

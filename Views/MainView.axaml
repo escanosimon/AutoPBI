@@ -24,7 +24,7 @@
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
             <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
-            <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
+            <popups:RefreshPopupView DataContext="{Binding RefreshPopup}" />
             <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
             <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
         </Grid>
@@ -71,7 +71,7 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline" Margin="8 0 0  0"></c:IconButton>
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScanPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding RefreshPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Refresh" Classes="Outline"></c:IconButton>
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="IconOnly" Background="{DynamicResource NeutralMuted}" BorderBrush="{DynamicResource Neutral}" CornerRadius="8 0 0 8" Margin="8 0 0  0"></c:IconButton>
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DeletePopup}" Path="/Assets/Images/trash.svg" Text="Delete" Classes="IconOnly" Background="{DynamicResource Error}" BorderBrush="{DynamicResource ErrorDark}" CornerRadius="0 8 8 0"></c:IconButton>
                         </StackPanel>

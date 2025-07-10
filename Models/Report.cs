@@ -21,6 +21,7 @@ public class Report : ObservableObject
     private string? _datasetId;
     private bool? _isSelected;
     private Workspace? _workspace;
+    private string? _message;
 
     public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
     {
@@ -31,6 +32,7 @@ public class Report : ObservableObject
         DatasetId = datasetId;
         Workspace = workspace;
         IsSelected = false;
+        Message = null;
     }
 
     public StatusType Status
@@ -73,5 +75,11 @@ public class Report : ObservableObject
     {
         get => _workspace;
         set => SetProperty(ref _workspace, value);
+    }
+    
+    public string? Message
+    {
+        get => _message;
+        set => SetProperty(ref _message, value);
     }
 }

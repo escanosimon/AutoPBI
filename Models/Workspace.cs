@@ -15,6 +15,16 @@ namespace AutoPBI.Models
         private bool? _isAllReportsSelected;
         private ObservableCollection<Report> _reports = [];
         private MainViewModel? _mainViewModel;
+
+        public Workspace(string? id, MainViewModel? mainViewModel)
+        {
+            Id = id;
+            Name = null;
+            MainViewModel = mainViewModel;
+            IsShown = false;
+            IsSelected = false;
+            IsAllReportsSelected = false;
+        }
         
         public Workspace(string? id, string? name, MainViewModel mainViewModel)
         {

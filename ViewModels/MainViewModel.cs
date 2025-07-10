@@ -31,7 +31,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _downloadPopup;
     [ObservableProperty] private PopupViewModel _scriptPopup;
     [ObservableProperty] private PopupViewModel _clonePopup;
-    [ObservableProperty] private PopupViewModel _scanPopup;
+    [ObservableProperty] private PopupViewModel _refreshPopup;
     [ObservableProperty] private PopupViewModel _publishPopup;
     [ObservableProperty] private PopupViewModel _deletePopup;
     
@@ -43,7 +43,7 @@ public partial class MainViewModel : ViewModelBase
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
-        ScanPopup = AddPopup(new ScanPopupViewModel(this));
+        RefreshPopup = AddPopup(new RefreshPopupViewModel(this));
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
     }
@@ -82,10 +82,10 @@ public partial class MainViewModel : ViewModelBase
         }
 
         IsLoggedIn = true;
-        FetchWorkspaces();
+        await FetchWorkspaces();
     }
     
-    private async void FetchWorkspaces()
+    private async Task FetchWorkspaces()
     {
         var result = await PowerShellService
             .BuildCommand()
@@ -95,11 +95,14 @@ public partial class MainViewModel : ViewModelBase
             )
             .WithStandardErrorPipe(Console.Error.WriteLine)
             .ExecuteAsync();
-        
-        foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
-                     obj.Properties["Name"].Value.ToString(), this)))
+
+        foreach (var obj in result.Objects)
         {
+            var workspace = new Workspace(obj.Properties["Id"].Value.ToString(), this);
             Workspaces.Add(workspace);
+            await FetchReports(workspace);
+            await FetchDatasets(workspace);
+            workspace.Name = obj.Properties["Name"].Value.ToString();
         }
     }
 
@@ -141,17 +144,18 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async void FetchReportsAndDatasets()
     {
-        foreach (var workspace in ShownWorkspaces)
-        { 
-            await FetchReports(workspace);
-            await FetchDatasets(workspace);
-        }
+        // foreach (var workspace in ShownWorkspaces)
+        // { 
+        //     await FetchReports(workspace);
+        //     await FetchDatasets(workspace);
+        // }
     }
     
     
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {
+        
         var result = await PowerShellService
             .BuildCommand()
             .WithCommand("Get-PowerBIReport")
@@ -163,6 +167,7 @@ public partial class MainViewModel : ViewModelBase
             .ExecuteAsync();
 
         workspace.Reports.Clear();
+        SelectedWorkspaces.Clear();
         foreach (var obj in result.Objects)
         {
             try
@@ -205,16 +210,14 @@ public partial class MainViewModel : ViewModelBase
                 Datasets[obj.Properties["Id"].Value.ToString()!] = new Dataset(
                     obj.Properties["Id"].Value.ToString()!,
                     obj.Properties["Name"].Value.ToString()!,
-                    obj.Properties["ConfiguredBy"].Value.ToString()!,
                     obj.Properties["webUrl"].Value.ToString()!,
                     (bool)obj.Properties["IsRefreshable"].Value,
                     obj.Properties["CreatedDate"].Value.ToString()!,
-                    workspace
-                );
+                    workspace, (string )obj.Properties["ConfiguredBy"].Value);
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"{obj.Properties["id"].Value}: {e.Message}");
+                Console.Error.WriteLine($"{obj.Properties["Name"].Value}: {e.Message}");
             }
         }
     }
@@ -224,9 +227,7 @@ public partial class MainViewModel : ViewModelBase
     {
         report.IsSelected = !report.IsSelected;
         report.Workspace?.CheckSelectedReports();
-        var dataset = report.DatasetId;
         
-        Console.WriteLine(report.DatasetId);
         if (report.IsSelected)
         {
             SelectedReports.Add(report);

@@ -86,7 +86,7 @@ public partial class PublishPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Publish()
     {
-        if (ImportedReports.Count == 0 || MainViewModel.ShownWorkspaces.Count == 0) return;
+        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0) return;
         
         IsPublishing = true;
         ShowImportedReports();
@@ -147,7 +147,6 @@ public partial class PublishPopupViewModel : PopupViewModel
                 report.Status =  Report.StatusType.Success;
             }
         }
-        Close();
     }
     
     [RelayCommand]
@@ -158,7 +157,10 @@ public partial class PublishPopupViewModel : PopupViewModel
         if (!IsPublishing) return;
         Console.Error.WriteLine("Publish stopped...");
         IsPublishing =  false;
-        MainViewModel.FetchReportsCommand.Execute(null);
+        foreach (var workspace in MainViewModel.SelectedWorkspaces)
+        {
+            MainViewModel.FetchReportsCommand.Execute(workspace);
+        }
         foreach (var report in MainViewModel.SelectedReports)
         {
             report.Status = Report.StatusType.Selectable;

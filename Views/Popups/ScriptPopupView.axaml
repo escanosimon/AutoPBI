@@ -35,7 +35,7 @@
                                         <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Report="{Binding}" IsHitTestVisible="False"></c:ReportItem>
+                                                    <c:ReportItem Report="{Binding}"></c:ReportItem>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
@@ -67,7 +67,7 @@
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Script" Classes="Primary" Command="{Binding ScriptCommand}" />
-                        <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                        <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>
             </Grid>

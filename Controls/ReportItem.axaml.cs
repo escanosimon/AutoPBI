@@ -45,9 +45,14 @@ public partial class ReportItem : UserControl
         InitializeComponent();
     }
 
-    private void CopyId(object? sender, RoutedEventArgs e)
+    private void CopyReportId(object? sender, RoutedEventArgs e)
     {
         ClipboardService.SetTextAsync(Report.Id!);
+    }
+    
+    private void CopyDatasetId(object? sender, RoutedEventArgs e)
+    {
+        ClipboardService.SetTextAsync(Report.DatasetId!);
     }
 
     private void OpenInPowerBiService(object? sender, RoutedEventArgs e)

@@ -36,11 +36,7 @@ public partial class DownloadPopupViewModel : PopupViewModel
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsDownloading)
-            {
-                Close();
-                return;
-            }
+            if (!IsDownloading) return;
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
@@ -62,8 +58,6 @@ public partial class DownloadPopupViewModel : PopupViewModel
             
             report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
         }
-        
-        Close();
     }
     
     [RelayCommand]

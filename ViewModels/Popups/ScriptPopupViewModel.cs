@@ -72,11 +72,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Script()
     {
-        if (SelectedScriptPath == null)
-        {
-            Close();
-            return;
-        };
+        if (SelectedScriptPath == null) return;
         await File.WriteAllTextAsync(SelectedScriptPath, ScriptContents.Text);
         
         IsScripting = true;
@@ -113,8 +109,6 @@ public partial class ScriptPopupViewModel : PopupViewModel
             }
             report.Status = Report.StatusType.Success;
         }
-        
-        Close();
     }
     
     [RelayCommand]
