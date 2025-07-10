@@ -10,14 +10,17 @@ public class User : ObservableObject
     private string? _environment;
     private string? _tenantId;
     private string? _userName;
+    private string? _password;
+    private string? _accessToken;
     private string[] _initials = [];
     private IBrush? _color;
     
-    public User(string? environment, string? tenantId, string? userName)
+    public User(string? environment, string? tenantId, string? userName, string? password)
     {
         Environment = environment;
         TenantId = tenantId;
         UserName = userName;
+        Password = password;
         Initials = ExtractInitials(userName!);
         Color = ColorGenerator.GenerateColor(userName!);
     }
@@ -38,6 +41,18 @@ public class User : ObservableObject
     {
         get => _userName;
         set => SetProperty(ref _userName, value);
+    }
+    
+    public string? Password
+    {
+        get => _password;
+        set => SetProperty(ref _password, value);
+    }
+    
+    public string? AccessToken
+    {
+        get => _accessToken;
+        set => SetProperty(ref _accessToken, value);
     }
     
     public string[] Initials

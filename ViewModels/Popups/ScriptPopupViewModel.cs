@@ -84,8 +84,6 @@ public partial class ScriptPopupViewModel : PopupViewModel
             
             report.Status = Report.StatusType.Loading;
             
-            var username = "simon.escano@amcsgroup.com";
-            var password = "Onacsenomis8_";
             var tabularEditorPath = "C:/Users/simon.escano/Downloads/TabularEditor.2.26.0/TabularEditor.exe";
 
             try
@@ -93,7 +91,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
                 await Cli.Wrap(tabularEditorPath)
                     .WithArguments(args => args
                         .Add(
-                            $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={username};Password={password}")
+                            $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")
                         .Add($"{report.DatasetId}")
                         .Add("-S")
                         .Add($"{SelectedScriptPath}")
@@ -105,6 +103,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
             catch (Exception e)
             {
                 report.Status = Report.StatusType.Error;
+                report.Message = e.Message;
                 continue;
             }
             report.Status = Report.StatusType.Success;

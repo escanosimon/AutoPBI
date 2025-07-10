@@ -13,6 +13,7 @@ namespace AutoPBI.Models
         private bool? _isShown;
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
+        private bool? _isLoading;
         private ObservableCollection<Report> _reports = [];
         private MainViewModel? _mainViewModel;
 
@@ -23,6 +24,7 @@ namespace AutoPBI.Models
             MainViewModel = mainViewModel;
             IsShown = false;
             IsSelected = false;
+            IsLoading = true;
             IsAllReportsSelected = false;
         }
         
@@ -33,6 +35,7 @@ namespace AutoPBI.Models
             IsShown = false;
             IsSelected = false;
             IsAllReportsSelected = false;
+            IsLoading = true;
             MainViewModel = mainViewModel;
         }
         
@@ -93,6 +96,12 @@ namespace AutoPBI.Models
         {
             get => (bool)_isAllReportsSelected!;
             set => SetProperty(ref _isAllReportsSelected, value);
+        }
+        
+        public bool IsLoading
+        {
+            get => (bool)_isLoading!;
+            set => SetProperty(ref _isLoading, value);
         }
 
         public ObservableCollection<Report> Reports

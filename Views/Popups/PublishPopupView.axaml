@@ -46,7 +46,7 @@
                                         Command="{Binding ImportReportsCommand}"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
-                                        Path="/Assets/Images/copy.svg"
+                                        Path="/Assets/Images/file-chart-column-white.svg"
                                         Text="Import Power BI Files"
                                         Classes="Outline" />
                                     <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">

@@ -27,6 +27,7 @@
             <popups:RefreshPopupView DataContext="{Binding RefreshPopup}" />
             <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
             <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
+            <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
         </Grid>
         
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
@@ -39,7 +40,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <c:IconButton Classes.Disabled="{Binding !IsLoggedIn}" Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}" />
-                    <c:IconButton Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}" IsVisible="{Binding !IsLoggedIn}" />
+                    <c:IconButton Text="Log in" Margin="8 0 0 0" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding LoginPopup}" IsVisible="{Binding !IsLoggedIn}" />
                     <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
                 </StackPanel>
             </Grid>
@@ -58,7 +59,6 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <c:IconButton Command="{Binding FetchReportsAndDatasetsCommand}" Background="Blue" Grid.Row="3" Path="/Assets/Images/arrows-rotate.svg" Text="Load Reports" Classes="Primary" Classes.Disabled="{Binding !Workspaces.Count}" HorizontalAlignment="Stretch" />
                 </Grid>
             </Border>
         </Border>

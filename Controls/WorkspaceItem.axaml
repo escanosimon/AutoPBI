@@ -3,32 +3,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:AutoPBI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="50"
              xmlns:li="using:LoadingIndicators.Avalonia"
              x:Name="Root"
              x:Class="AutoPBI.Controls.WorkspaceItem">
     <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6" CornerRadius="6">
-        <Grid ColumnDefinitions="Auto, *, Auto">
-            <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
+        <Grid ColumnDefinitions="Auto, *, Auto" Height="20">
+            <Svg Path="/Assets/Images/users.svg" Height="12" VerticalAlignment="Center"/>
             <TextBlock 
                 Grid.Column="1"
                 IsVisible="{Binding #Root.Workspace.Name}"
                 Foreground="{DynamicResource Foreground}" 
                 ToolTip.Tip="{Binding #Root.Workspace.Name}" 
                 VerticalAlignment="Center" 
-                Margin="0 0 8 0" 
+                Margin="8 0 0 0" 
                 Text="{Binding #Root.Workspace.Name}"/>
             
             <li:LoadingIndicator Grid.Column="1" 
-                                 IsVisible="{Binding !#Root.Workspace.Name}"
+                                 IsVisible="{Binding #Root.Workspace.IsLoading}"
                                  IsActive="True" 
-                                 Mode="Arc" 
+                                 Mode="ThreeDots" 
                                  SpeedRatio="1.2" 
-                                 Height="28" 
+                                 Height="12"
                                  VerticalAlignment="Center" 
-                                 HorizontalAlignment="Center" 
-                                 Foreground="{DynamicResource ForegroundMuted}" />
-            <controls:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{Binding #Root.IsChecked}"></controls:StatusIcon>
+                                 HorizontalAlignment="Left" 
+                                 Foreground="{DynamicResource Primary}" />
+            <controls:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{Binding #Root.IsChecked}" Margin="8 0 0 0"></controls:StatusIcon>
         </Grid>
         
         <Button.ContextMenu>

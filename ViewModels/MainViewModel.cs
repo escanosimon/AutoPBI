@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
-using CliWrap;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -34,6 +28,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _refreshPopup;
     [ObservableProperty] private PopupViewModel _publishPopup;
     [ObservableProperty] private PopupViewModel _deletePopup;
+    [ObservableProperty] private PopupViewModel _loginPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PowerShellService _powerShellService = new();
@@ -46,6 +41,7 @@ public partial class MainViewModel : ViewModelBase
         RefreshPopup = AddPopup(new RefreshPopupViewModel(this));
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
+        LoginPopup = AddPopup(new LoginPopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -64,27 +60,6 @@ public partial class MainViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private async void Login()
-    {
-        var result = await PowerShellService
-            .BuildCommand()
-            .WithCommand("Login-PowerBI")
-            .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
-
-        if (result.Error.Count != 0) return;
-        foreach (var obj in result.Objects)
-        {
-            User = new User(
-                obj.Properties["Environment"].Value.ToString(),
-                obj.Properties["TenantId"].Value.ToString(),
-                obj.Properties["UserName"].Value.ToString());
-        }
-
-        IsLoggedIn = true;
-        await FetchWorkspaces();
-    }
-    
     private async Task FetchWorkspaces()
     {
         var result = await PowerShellService
@@ -103,6 +78,7 @@ public partial class MainViewModel : ViewModelBase
             await FetchReports(workspace);
             await FetchDatasets(workspace);
             workspace.Name = obj.Properties["Name"].Value.ToString();
+            workspace.IsLoading = false;
         }
     }
 
@@ -141,17 +117,6 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
-    private async void FetchReportsAndDatasets()
-    {
-        // foreach (var workspace in ShownWorkspaces)
-        // { 
-        //     await FetchReports(workspace);
-        //     await FetchDatasets(workspace);
-        // }
-    }
-    
-    
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {

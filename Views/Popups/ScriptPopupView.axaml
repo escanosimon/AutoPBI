@@ -45,7 +45,7 @@
                                         Command="{Binding ImportScriptCommand}"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
-                                        Path="/Assets/Images/copy.svg"
+                                        Path="/Assets/Images/file-code.svg"
                                         Text="Import C# Script"
                                         Classes="Outline" />
                                     <avaloniaEdit:TextEditor
@@ -66,7 +66,7 @@
                     </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Script" Classes="Primary" Command="{Binding ScriptCommand}" />
+                        <c:IconButton Path="/Assets/Images/brackets-curly-white.svg" Text="Script" Classes="Primary" Command="{Binding ScriptCommand}" />
                         <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>

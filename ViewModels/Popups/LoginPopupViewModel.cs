@@ -1,0 +1,82 @@
+﻿using System;
+using System.Management.Automation;
+using System.Threading.Tasks;
+using AutoPBI.Models;
+using AutoPBI.Services;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace AutoPBI.ViewModels.Popups;
+
+public partial class LoginPopupViewModel : PopupViewModel
+{
+    [ObservableProperty] private bool _isLoggingIn = false;
+    [ObservableProperty] private string? _usernameText = "";
+    [ObservableProperty] private string? _passwordText = "";
+    
+    public LoginPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    {
+        MainViewModel = mainViewModel;
+    }
+
+    public LoginPopupViewModel() : base(new MainViewModel()) {}
+
+    [RelayCommand]
+    private async void Login()
+    {
+        if (string.IsNullOrWhiteSpace(UsernameText) || string.IsNullOrWhiteSpace(PasswordText)) return;
+        
+        IsLoggingIn = true;
+        PSObject loginResult;
+        try
+        {
+            loginResult = (await MainViewModel.PowerShellService
+                .BuildCommand()
+                .WithCommand($@"
+                $password = '{PasswordText}' | ConvertTo-SecureString -asPlainText -Force;
+                $username = '{UsernameText}';
+                $credential = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $username, $password;
+                Connect-PowerBIServiceAccount -Credential $credential
+            ")
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync()).Objects[0];
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            IsLoggingIn = false;
+            return;
+        }
+        var accessTokenResult = (await MainViewModel.PowerShellService
+            .BuildCommand()
+            .WithCommand("(Get-PowerBIAccessToken).Values[0]")
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync()).Objects[0];
+
+        MainViewModel.User = new User(
+            loginResult.Properties["Environment"].Value.ToString(),
+            loginResult.Properties["TenantId"].Value.ToString(),
+            UsernameText,
+            PasswordText
+        );
+
+        MainViewModel.User.AccessToken = (string)accessTokenResult.BaseObject;
+
+        MainViewModel.IsLoggedIn = true;
+        Close();
+        await MainViewModel.FetchWorkspacesCommand.ExecuteAsync(null);
+    }
+    
+    [RelayCommand]
+    private void Close()
+    {
+        IsVisible = false;
+        if (!IsLoggingIn) return;
+        
+        Console.Error.WriteLine("Login stopped...");
+        
+        IsLoggingIn = false;
+    }
+}

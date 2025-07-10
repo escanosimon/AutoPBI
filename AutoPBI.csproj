@@ -37,17 +37,22 @@
       <AvaloniaResource Include="Assets\Images\arrow-down-to-line-bg.svg" />
       <AvaloniaResource Include="Assets\Images\arrow-up-from-bracket.svg" />
       <None Remove="Assets\Images\brackets-curly.svg" />
+      <AvaloniaResource Include="Assets\Images\arrows-rotate-white.svg" />
+      <AvaloniaResource Include="Assets\Images\brackets-curly-white.svg" />
       <AvaloniaResource Include="Assets\Images\brackets-curly.svg" />
       <None Remove="Assets\Images\copy.svg" />
       <AvaloniaResource Include="Assets\Images\check-white.svg" />
+      <AvaloniaResource Include="Assets\Images\copy-white.svg" />
       <AvaloniaResource Include="Assets\Images\copy.svg" />
       <None Remove="Assets\Images\file-chart-column.svg" />
+      <AvaloniaResource Include="Assets\Images\file-chart-column-white.svg" />
       <AvaloniaResource Include="Assets\Images\file-chart-column.svg" />
       <None Remove="Assets\Images\Power_BI_Logo.svg" />
       <AvaloniaResource Include="Assets\Images\Power_BI_Logo.svg" />
       <None Remove="Assets\Images\rotate-exclamation.svg" />
       <AvaloniaResource Include="Assets\Images\rotate-exclamation.svg" />
       <None Remove="Assets\Images\users.svg" />
+      <AvaloniaResource Include="Assets\Images\trash-white.svg" />
       <AvaloniaResource Include="Assets\Images\users.svg" />
       <None Remove="Assets\Fonts\Inter-Medium.otf" />
       <AvaloniaResource Include="Assets\Fonts\Inter-Medium.otf" />
@@ -67,6 +72,8 @@
       <AvaloniaResource Include="Assets\Images\file-code.svg" />
       <None Remove="Assets\Images\trash.svg" />
       <AvaloniaResource Include="Assets\Images\trash.svg" />
+      <None Remove="Assets\Images\arrow-right-to-bracket.svg" />
+      <AvaloniaResource Include="Assets\Images\arrow-right-to-bracket.svg" />
     </ItemGroup>
 
     <ItemGroup>
