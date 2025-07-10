@@ -159,6 +159,7 @@ public partial class MainViewModel : ViewModelBase
             }
             workspace.CheckSelectedReports();
         }
+        SelectedReports.Clear();
     }
     
     [RelayCommand]

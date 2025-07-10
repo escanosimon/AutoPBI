@@ -37,7 +37,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                    <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}" />
+                    <c:IconButton Classes.Disabled="{Binding !IsLoggedIn}" Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}" />
                     <c:IconButton Text="Log in" Margin="8 0 0 0" Command="{Binding LoginCommand}" IsVisible="{Binding !IsLoggedIn}" />
                     <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
                 </StackPanel>
@@ -57,7 +57,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <c:IconButton Command="{Binding FetchReportsCommand}" Background="Blue" Grid.Row="3" Path="/Assets/Images/arrows-rotate.svg" Text="Load Reports" Classes="Primary" HorizontalAlignment="Stretch" />
+                    <c:IconButton Command="{Binding FetchReportsCommand}" Background="Blue" Grid.Row="3" Path="/Assets/Images/arrows-rotate.svg" Text="Load Reports" Classes="Primary" Classes.Disabled="{Binding !IsLoggedIn}" HorizontalAlignment="Stretch" />
                 </Grid>
             </Border>
         </Border>
@@ -68,10 +68,10 @@
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
                         <TextBox Watermark="Search reports" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
-                            <c:IconButton IsEnabled="{Binding SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScanPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="Outline" Margin="8 0 0 0"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScanPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Scan" Classes="Outline"></c:IconButton>
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="2" Margin="0 16 0 0">

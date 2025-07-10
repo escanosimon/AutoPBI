@@ -14,7 +14,7 @@ namespace AutoPBI.ViewModels.Popups;
 public partial class ClonePopupViewModel : PopupViewModel
 {
     [ObservableProperty] private bool _isCloning;
-    [ObservableProperty] private bool _isCloneShown;
+    [ObservableProperty] private bool _isWorkspacesShown;
     
     public ClonePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
@@ -26,13 +26,13 @@ public partial class ClonePopupViewModel : PopupViewModel
     [RelayCommand]
     private void ShowWorkspaces()
     {
-        IsCloneShown = true;
+        IsWorkspacesShown = true;
     }
 
     [RelayCommand]
     private void ShowReports()
     {
-        IsCloneShown = false;
+        IsWorkspacesShown = false;
     }
 
     [RelayCommand]

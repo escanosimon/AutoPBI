@@ -21,8 +21,8 @@
                     <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                         <Grid RowDefinitions="Auto, *">
                             <c:ToggleButtonGroup
-                                Boolean="{Binding IsCloneShown}"
-                                NotBoolean="{Binding !IsCloneShown}"
+                                Boolean="{Binding IsWorkspacesShown}"
+                                NotBoolean="{Binding !IsWorkspacesShown}"
                                 Command1="{Binding ShowReportsCommand}"
                                 Command2="{Binding ShowWorkspacesCommand}"
                                 Text1="Selected Reports"
@@ -30,7 +30,7 @@
                                 />
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>
-                                    <ScrollViewer IsVisible="{Binding !IsCloneShown}">
+                                    <ScrollViewer IsVisible="{Binding !IsWorkspacesShown}">
                                         <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
@@ -39,11 +39,14 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <ScrollViewer IsVisible="{Binding IsCloneShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedWorkspaces}" Padding="8">
+                                    <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
+                                        <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:WorkspaceItem Text="{Binding Name}" IsChecked="{Binding IsSelected}" />
+                                                    <c:WorkspaceItem
+                                                        Command="{Binding SelectCommand}"
+                                                        Text="{Binding Name}" 
+                                                        IsChecked="{Binding IsSelected}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
