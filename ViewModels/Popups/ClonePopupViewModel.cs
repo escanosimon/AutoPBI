@@ -38,21 +38,55 @@ public partial class ClonePopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Clone()
     {
-        var options = new FolderPickerOpenOptions
-        {
-            Title = "Select destination folder",
-            AllowMultiple = false
-        };
-
-        var destinationFolder = await MainViewModel.DialogService.OpenFolderDialogAsync(options);
-        if (destinationFolder == null) return;
+        if (MainViewModel.SelectedReports.Count == 0) return;
         
         IsCloning = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsCloning) return;
-            report.Status = Report.StatusType.Loading;
+            var errors = 0;
+            var successes = 0;
+            foreach (var workspace in MainViewModel.SelectedWorkspaces)
+            {
+                if (!IsCloning) return;
+                report.Status = Report.StatusType.Loading;
+
+                try
+                {
+                    var result = await MainViewModel.PowerShellService.BuildCommand()
+                        .WithCommand("Copy-PowerBIReport")
+                        .WithArguments(args => args
+                            .Add("-Name")
+                            .Add($"{report.Name} - Copy")
+                            .Add("-Id")
+                            .Add($"{report.Id}")
+                            .Add("-TargetWorkspaceId")
+                            .Add($"{workspace.Id}")
+                            .Add("-TargetDatasetId")
+                            .Add($"{report.DatasetId}")
+                        )
+                        .WithStandardErrorPipe(Console.Error.WriteLine)
+                        .ExecuteAsync();
+                }
+                catch (Exception e)
+                {
+                    report.Status = Report.StatusType.Error;
+                    errors++;
+                    continue;
+                }
+
+                report.Status = Report.StatusType.Success;
+                successes++;
+            }
+
+            if (errors > 0)
+            {
+                report.Status = successes > 0 ? Report.StatusType.Warning : Report.StatusType.Error;
+            }
+            else
+            {
+                report.Status = Report.StatusType.Success;
+            }
         }
         
         Close();

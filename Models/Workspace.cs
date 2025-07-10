@@ -10,6 +10,7 @@ namespace AutoPBI.Models
     {
         private string? _id;
         private string? _name;
+        private bool? _isShown;
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private ObservableCollection<Report> _reports = [];
@@ -19,11 +20,18 @@ namespace AutoPBI.Models
         {
             Id = id;
             Name = name;
+            IsShown = false;
             IsSelected = false;
             IsAllReportsSelected = false;
             MainViewModel = mainViewModel;
         }
         
+        [RelayCommand]
+        public void Show()
+        {
+            MainViewModel!.ShowWorkspaceCommand.Execute(this);
+        }
+
         [RelayCommand]
         public void Select()
         {
@@ -57,6 +65,12 @@ namespace AutoPBI.Models
         {
             get => _name;
             set => SetProperty(ref _name, value);
+        }
+        
+        public bool IsShown
+        {
+            get => (bool)_isShown!;
+            set => SetProperty(ref _isShown, value);
         }
         
         public bool IsSelected
