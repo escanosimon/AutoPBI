@@ -18,8 +18,10 @@
         <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
         <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ClonePopupView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/DeletePopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupViewModel.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/PublishPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScanPopupVIew.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScanPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScriptPopupView.axaml" value="AutoPBI.csproj" />

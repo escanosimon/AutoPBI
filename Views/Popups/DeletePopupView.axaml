@@ -5,9 +5,9 @@
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
-             x:Class="AutoPBI.Views.Popups.ScanPopupView"
-             x:DataType="vm:ScanPopupViewModel">
-    <Design.DataContext><vm:ScanPopupViewModel></vm:ScanPopupViewModel></Design.DataContext>
+             x:Class="AutoPBI.Views.Popups.DeletePopupView"
+             x:DataType="vm:DeletePopupViewModel">
+    <Design.DataContext><vm:DeletePopupViewModel></vm:DeletePopupViewModel></Design.DataContext>
     <Grid>
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
@@ -16,15 +16,15 @@
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="300">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Scan Reports</TextBlock>
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Delete Reports</TextBlock>
                 </Border>
                 <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                         <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding MainViewModel.ShownWorkspaces}" Padding="8">
+                            <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <c:WorkspaceItem Text="{Binding Name}" IsChecked="{Binding IsShown}" />
+                                        <c:ReportItem Status="{Binding Status}" Text="{Binding Name}" IsChecked="{Binding IsSelected}" IsHitTestVisible="False"></c:ReportItem>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -33,7 +33,7 @@
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Scan" Classes="Primary" Command="{Binding ScanCommand}" />
+                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Delete" Classes="Primary" Command="{Binding DeleteCommand}" />
                         <c:IconButton Text="Cancel" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>

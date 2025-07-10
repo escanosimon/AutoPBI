@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text.Json;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
@@ -20,6 +21,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private bool _isLoggedIn;
     
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
+    [ObservableProperty] private ObservableCollection<Workspace> _shownWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
@@ -29,6 +31,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _clonePopup;
     [ObservableProperty] private PopupViewModel _scanPopup;
     [ObservableProperty] private PopupViewModel _publishPopup;
+    [ObservableProperty] private PopupViewModel _deletePopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
     [ObservableProperty] private PowerShellService _powerShellService = new();
@@ -40,6 +43,7 @@ public partial class MainViewModel : ViewModelBase
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
         ScanPopup = AddPopup(new ScanPopupViewModel(this));
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
+        DeletePopup = AddPopup(new DeletePopupViewModel(this));
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -98,18 +102,18 @@ public partial class MainViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void SelectWorkspace(Workspace workspace)
+    private void ShowWorkspace(Workspace workspace)
     {
-        workspace.IsSelected = !workspace.IsSelected;
+        workspace.IsShown = !workspace.IsShown;
 
-        if (workspace.IsSelected)
+        if (workspace.IsShown)
         {
-            SelectedWorkspaces.Add(workspace);
+            ShownWorkspaces.Add(workspace);
             Console.Error.WriteLine($"Workspace: " + workspace.Id);
         }
         else
         {
-            SelectedWorkspaces.Remove(workspace);
+            ShownWorkspaces.Remove(workspace);
             foreach (var report in workspace.Reports)
             {
                 report.IsSelected = false;
@@ -119,10 +123,25 @@ public partial class MainViewModel : ViewModelBase
     }
     
     [RelayCommand]
+    private void SelectWorkspace(Workspace workspace)
+    {
+        workspace.IsSelected = !workspace.IsSelected;
+
+        if (workspace.IsSelected)
+        {
+            SelectedWorkspaces.Add(workspace);
+        }
+        else
+        {
+            SelectedWorkspaces.Remove(workspace);
+        }
+    }
+    
+    [RelayCommand]
     private async void FetchReports()
     {
-        if (SelectedWorkspaces.Count == 0) return;
-        foreach (var workspace in SelectedWorkspaces)
+        if (ShownWorkspaces.Count == 0) return;
+        foreach (var workspace in ShownWorkspaces)
         {
             var result = await PowerShellService
                 .BuildCommand()
@@ -158,6 +177,7 @@ public partial class MainViewModel : ViewModelBase
             }
             workspace.CheckSelectedReports();
         }
+        SelectedReports.Clear();
     }
     
     [RelayCommand]
@@ -169,7 +189,7 @@ public partial class MainViewModel : ViewModelBase
         if (report.IsSelected)
         {
             SelectedReports.Add(report);
-            Console.Error.WriteLine($"Report: " + report.DatasetId);
+            Console.Error.WriteLine($"Report: " + report.Id);
         }
         else
         {
