@@ -44,10 +44,12 @@ public partial class DownloadPopupViewModel : PopupViewModel
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
-            await MainViewModel.Service.BuildCommand()
+            await MainViewModel.PowerShellService
+                .BuildCommand()
                 .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
                 .ExecuteAsync();
-            var result = await MainViewModel.Service.BuildCommand()
+            var result = await MainViewModel.PowerShellService
+                .BuildCommand()
                 .WithCommand("Export-PowerBIReport")
                 .WithArguments(args => args
                     .Add("-Id")

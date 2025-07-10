@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AutoPBI.Services;
 
 public class PowerShellService : IDisposable
 {
@@ -17,51 +19,48 @@ public class PowerShellService : IDisposable
         _runspace.Open();
     }
 
-    public CommandBuilder BuildCommand(string executablePath = null)
+    public CommandBuilder BuildCommand(string executablePath = null!)
     {
         return new CommandBuilder(this, executablePath);
     }
 
-    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, Action<string> outputHandler = null, Action<string> errorHandler = null)
+    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, Action<string> outputHandler = null!, Action<string> errorHandler = null!)
     {
         var result = new CommandResult();
-        using (var pipeline = _runspace.CreatePipeline())
+        using var pipeline = _runspace.CreatePipeline();
+        pipeline.Commands.AddScript(command);
+
+        // Capture errors
+        pipeline.Error.DataReady += (_, _) =>
         {
-            pipeline.Commands.AddScript(command);
-
-            // Capture errors
-            pipeline.Error.DataReady += (sender, e) =>
+            while (pipeline.Error.Count > 0)
             {
-                while (pipeline.Error.Count > 0)
+                if (pipeline.Error.Read() is ErrorRecord error)
                 {
-                    var error = pipeline.Error.Read() as ErrorRecord;
-                    if (error != null)
-                    {
-                        var errorMessage = error.ToString();
-                        result.Error.Add(errorMessage);
-                        errorHandler?.Invoke(errorMessage);
-                    }
-                }
-            };
-
-            var results = await Task.Run(() => pipeline.Invoke());
-
-            // Capture PSObjects
-            result.Objects.AddRange(results);
-
-            // Capture output as strings
-            foreach (var obj in results)
-            {
-                var output = obj?.ToString() ?? "";
-                if (!string.IsNullOrEmpty(output))
-                {
-                    result.Output.Add(output);
-                    outputHandler?.Invoke(output);
+                    var errorMessage = error.ToString();
+                    result.Error.Add(errorMessage);
+                    errorHandler?.Invoke(errorMessage);
                 }
             }
+        };
 
-            return result;
+        var results = await Task.Run(() => pipeline.Invoke());
+
+        // Capture PSObjects
+        result.Objects.AddRange(results);
+
+        // Capture output as strings
+        foreach (var obj in results)
+        {
+            var output = obj?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(output))
+            {
+                result.Output.Add(output);
+                outputHandler?.Invoke(output);
+            }
         }
+
+        return result;
     }
 
     internal async Task<CommandResult> ExecuteExternalCommandAsync(string executablePath, string arguments, Action<string> outputHandler = null, Action<string> errorHandler = null)
@@ -82,11 +81,9 @@ public class PowerShellService : IDisposable
 
         process.OutputDataReceived += (sender, e) =>
         {
-            if (e.Data != null)
-            {
-                result.Output.Add(e.Data);
-                outputHandler?.Invoke(e.Data);
-            }
+            if (e.Data == null) return;
+            result.Output.Add(e.Data);
+            outputHandler?.Invoke(e.Data);
         };
 
         process.ErrorDataReceived += (sender, e) =>
@@ -236,7 +233,7 @@ public class CommandBuilder
 
 public class ArgumentBuilder
 {
-    public List<string> Arguments { get; } = new List<string>();
+    public List<string> Arguments { get; } = new();
 
     public ArgumentBuilder Add(params string[] args)
     {

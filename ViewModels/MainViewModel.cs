@@ -31,7 +31,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _publishPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
-    [ObservableProperty] private PowerShellService _service = new();
+    [ObservableProperty] private PowerShellService _powerShellService = new();
 
     public MainViewModel()
     {
@@ -60,7 +60,8 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async void Login()
     {
-        var result = await Service.BuildCommand()
+        var result = await PowerShellService
+            .BuildCommand()
             .WithCommand("Login-PowerBI")
             .WithStandardErrorPipe(Console.Error.WriteLine)
             .ExecuteAsync();
@@ -80,7 +81,8 @@ public partial class MainViewModel : ViewModelBase
     
     private async void FetchWorkspaces()
     {
-        var result = await Service.BuildCommand()
+        var result = await PowerShellService
+            .BuildCommand()
             .WithCommand("Get-PowerBIWorkspace")
             .WithArguments(args => args
                 .Add("-All")
@@ -122,7 +124,8 @@ public partial class MainViewModel : ViewModelBase
         if (SelectedWorkspaces.Count == 0) return;
         foreach (var workspace in SelectedWorkspaces)
         {
-            var result = await Service.BuildCommand()
+            var result = await PowerShellService
+                .BuildCommand()
                 .WithCommand("Get-PowerBIReport")
                 .WithArguments(args => args
                     .Add("-WorkspaceId")

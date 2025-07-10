@@ -16,6 +16,7 @@ using CliWrap.Buffered;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using CommunityToolkit.Mvvm.Input;
+using CommandResult = AutoPBI.Services.CommandResult;
 
 namespace AutoPBI.ViewModels.Popups;
 
@@ -105,7 +106,8 @@ public partial class PublishPopupViewModel : PopupViewModel
                 Console.Error.WriteLine(workspace.Name);
                 try
                 {
-                    result = await MainViewModel.Service.BuildCommand()
+                    result = await MainViewModel.PowerShellService
+                        .BuildCommand()
                         .WithCommand("New-PowerBIReport")
                         .WithArguments(args => args
                             .Add("-Path")
