@@ -1,22 +1,27 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Input;
+using AutoPBI.Models;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
+using TextCopy;
 
 namespace AutoPBI.Controls;
 
-public class ReportItem : TemplatedControl
+public partial class ReportItem : UserControl
 {
-    public static readonly StyledProperty<string> StatusProperty = AvaloniaProperty.Register<ReportItem, string>(
-        nameof(Status));
+    public static readonly StyledProperty<Report> ReportProperty = AvaloniaProperty.Register<ReportItem, Report>(
+        nameof(Report));
 
-    public string Status
+    public Report Report
     {
-        get => GetValue(StatusProperty);
-        set => SetValue(StatusProperty, value);
+        get => GetValue(ReportProperty);
+        set => SetValue(ReportProperty, value);
     }
-    
+
     public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<ReportItem, ICommand>(
         nameof(Command));
 
@@ -35,21 +40,39 @@ public class ReportItem : TemplatedControl
         set => SetValue(CommandParameterProperty, value);
     }
     
-    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<ReportItem, string>(
-        nameof(Text), "Unnamed");
-
-    public string Text
+    public ReportItem()
     {
-        get => GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        InitializeComponent();
     }
 
-    public static readonly StyledProperty<bool> IsCheckedProperty = AvaloniaProperty.Register<ReportItem, bool>(
-        nameof(IsChecked));
-
-    public bool IsChecked
+    private void CopyId(object? sender, RoutedEventArgs e)
     {
-        get => GetValue(IsCheckedProperty);
-        set => SetValue(IsCheckedProperty, value);
+        ClipboardService.SetTextAsync(Report.Id!);
+    }
+
+    private void OpenInPowerBiService(object? sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(Report.WebUrl))
+            return;
+
+        try
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {Report.WebUrl}") { CreateNoWindow = true });
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                Process.Start(new ProcessStartInfo("xdg-open", Report.WebUrl) { RedirectStandardOutput = true, UseShellExecute = true });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Process.Start(new ProcessStartInfo("open", Report.WebUrl) { RedirectStandardOutput = true, UseShellExecute = true });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred when trying to open the URL: {ex.Message}");
+        }
     }
 }

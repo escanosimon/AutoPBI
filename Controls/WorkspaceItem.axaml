@@ -1,22 +1,22 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:c="using:AutoPBI.Controls">
-    <Design.PreviewWith>
-        <c:WorkspaceItem />
-    </Design.PreviewWith>
-
-    <Style Selector="c|WorkspaceItem">
-        <!-- Set Defaults -->
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6" CornerRadius="6">
-                    <Grid ColumnDefinitions="Auto, *, Auto">
-                        <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
-                        <TextBlock Foreground="{DynamicResource Foreground}" ToolTip.Tip="{TemplateBinding Text}" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{TemplateBinding Text}"/>
-                        <c:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{TemplateBinding IsChecked}"></c:StatusIcon>
-                    </Grid>
-                </Button>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-</Styles>
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:AutoPBI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="Root"
+             x:Class="AutoPBI.Controls.WorkspaceItem">
+    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6" CornerRadius="6">
+        <Grid ColumnDefinitions="Auto, *, Auto">
+            <Svg Path="/Assets/Images/users.svg" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
+            <TextBlock Foreground="{DynamicResource Foreground}" ToolTip.Tip="{Binding #Root.Workspace.Name}" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 8 0" Text="{Binding #Root.Workspace.Name}"/>
+            <controls:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{Binding #Root.IsChecked}"></controls:StatusIcon>
+        </Grid>
+        
+        <Button.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Copy Workspace ID" Click="CopyWorkspaceId"></MenuItem>
+            </ContextMenu>
+        </Button.ContextMenu>
+    </Button>
+</UserControl>

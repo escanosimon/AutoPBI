@@ -24,7 +24,7 @@
                             <ItemsControl ItemsSource="{Binding MainViewModel.ShownWorkspaces}" Padding="8">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <c:WorkspaceItem Text="{Binding Name}" IsChecked="{Binding IsShown}" />
+                                        <c:WorkspaceItem Workspace="{Binding}" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

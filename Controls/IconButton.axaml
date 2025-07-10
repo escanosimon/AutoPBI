@@ -35,12 +35,31 @@
             <ControlTemplate>
                 <Button HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 8 0" VerticalAlignment="Center"/>
+                        <Svg Path="{TemplateBinding Path}" Height="12" VerticalAlignment="Center" Margin="0 0 8 0"/>
                         <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Primary}"/>
                     </StackPanel>
                 </Button>
             </ControlTemplate>
         </Setter>
+    </Style>
+    
+    <Style Selector="controls|IconButton.IconOnly">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button Classes="IconOnly" HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Background="{TemplateBinding Background}" VerticalAlignment="Stretch" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="12 0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Svg Path="{TemplateBinding Path}" Height="12" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.IconOnly:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{TemplateBinding Background}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
+        <Setter Property="Opacity" Value="0.75"></Setter>
     </Style>
     
     <Style Selector="controls|IconButton.Disabled">

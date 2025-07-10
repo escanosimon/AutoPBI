@@ -44,6 +44,7 @@ public partial class DeletePopupViewModel : PopupViewModel
                 .ExecuteAsync();
             
             report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
+            MainViewModel.SelectedReports.Remove(report);
         }
         
         MainViewModel.FetchReportsCommand.Execute(null);

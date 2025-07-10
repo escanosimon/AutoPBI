@@ -7,8 +7,6 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
-        <StyleInclude Source="Controls/ReportItem.axaml"></StyleInclude>
-        <StyleInclude Source="Controls/WorkspaceItem.axaml"></StyleInclude>
         <StyleInclude Source="Controls/IconButton.axaml"></StyleInclude>
         <StyleInclude Source="Controls/StatusIcon.axaml"></StyleInclude>
         <StyleInclude Source="Controls/UserImage.axaml"></StyleInclude>

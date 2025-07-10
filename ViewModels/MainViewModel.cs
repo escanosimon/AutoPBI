@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text.Json;
+using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
@@ -21,6 +22,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private bool _isLoggedIn;
     
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
+    [ObservableProperty] private ObservableHashMap<string, Dataset> _datasets = [];
     [ObservableProperty] private ObservableCollection<Workspace> _shownWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
@@ -109,7 +111,6 @@ public partial class MainViewModel : ViewModelBase
         if (workspace.IsShown)
         {
             ShownWorkspaces.Add(workspace);
-            Console.Error.WriteLine($"Workspace: " + workspace.Id);
         }
         else
         {
@@ -136,48 +137,86 @@ public partial class MainViewModel : ViewModelBase
             SelectedWorkspaces.Remove(workspace);
         }
     }
+
+    [RelayCommand]
+    private async void FetchReportsAndDatasets()
+    {
+        foreach (var workspace in ShownWorkspaces)
+        { 
+            await FetchReports(workspace);
+            await FetchDatasets(workspace);
+        }
+    }
+    
     
     [RelayCommand]
-    private async void FetchReports()
+    private async Task FetchReports(Workspace workspace)
     {
-        if (ShownWorkspaces.Count == 0) return;
-        foreach (var workspace in ShownWorkspaces)
-        {
-            var result = await PowerShellService
-                .BuildCommand()
-                .WithCommand("Get-PowerBIReport")
-                .WithArguments(args => args
-                    .Add("-WorkspaceId")
-                    .Add($"{workspace.Id}")
-                )
-                .WithStandardErrorPipe(Console.Error.WriteLine)
-                .ExecuteAsync();
+        var result = await PowerShellService
+            .BuildCommand()
+            .WithCommand("Get-PowerBIReport")
+            .WithArguments(args => args
+                .Add("-WorkspaceId")
+                .Add($"{workspace.Id}")
+            )
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync();
 
-            workspace.Reports.Clear();
-            foreach (var obj in result.Objects)
+        workspace.Reports.Clear();
+        foreach (var obj in result.Objects)
+        {
+            try
             {
-                try
+                var report = new Report(obj.Properties["Id"].Value.ToString(),
+                    obj.Properties["Name"].Value.ToString(),
+                    obj.Properties["WebUrl"].Value.ToString(),
+                    obj.Properties["DatasetId"].Value.ToString(),
+                    workspace
+                );
+                workspace.Reports.Add(report);
+            }
+            catch (Exception)
+            {
+                Console.Error.WriteLine("--------ERROR--------");
+                foreach (var prop in obj.Properties)
                 {
-                    var report = new Report(obj.Properties["Id"].Value.ToString(),
-                        obj.Properties["Name"].Value.ToString(),
-                        obj.Properties["WebUrl"].Value.ToString(),
-                        obj.Properties["DatasetId"].Value.ToString(),
-                        workspace
-                        );
-                    workspace.Reports.Add(report);
-                }
-                catch (Exception)
-                {
-                    Console.Error.WriteLine("--------ERROR--------");
-                    foreach (var prop in obj.Properties)
-                    {
-                        Console.Error.WriteLine($"{prop.Name}: {prop.Value}");
-                    }
+                    Console.Error.WriteLine($"{prop.Name}: {prop.Value}");
                 }
             }
-            workspace.CheckSelectedReports();
         }
-        SelectedReports.Clear();
+        workspace.CheckSelectedReports();
+    }
+
+    [RelayCommand]
+    private async Task FetchDatasets(Workspace workspace)
+    {
+        var result = await PowerShellService.BuildCommand()
+            .WithCommand("Get-PowerBIDataset")
+            .WithArguments(args => args
+                .Add("-WorkspaceId")
+                .Add($"{workspace.Id}")
+            )
+            .WithStandardErrorPipe(Console.WriteLine)
+            .ExecuteAsync();
+        foreach (var obj in result.Objects)
+        {
+            try
+            {
+                Datasets[obj.Properties["Id"].Value.ToString()!] = new Dataset(
+                    obj.Properties["Id"].Value.ToString()!,
+                    obj.Properties["Name"].Value.ToString()!,
+                    obj.Properties["ConfiguredBy"].Value.ToString()!,
+                    obj.Properties["webUrl"].Value.ToString()!,
+                    (bool)obj.Properties["IsRefreshable"].Value,
+                    obj.Properties["CreatedDate"].Value.ToString()!,
+                    workspace
+                );
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"{obj.Properties["id"].Value}: {e.Message}");
+            }
+        }
     }
     
     [RelayCommand]
@@ -185,11 +224,12 @@ public partial class MainViewModel : ViewModelBase
     {
         report.IsSelected = !report.IsSelected;
         report.Workspace?.CheckSelectedReports();
+        var dataset = report.DatasetId;
         
+        Console.WriteLine(report.DatasetId);
         if (report.IsSelected)
         {
             SelectedReports.Add(report);
-            Console.Error.WriteLine($"Report: " + report.Id);
         }
         else
         {

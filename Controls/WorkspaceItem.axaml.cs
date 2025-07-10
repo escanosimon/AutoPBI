@@ -1,13 +1,34 @@
 ﻿using System.Windows.Input;
+using AutoPBI.Models;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using TextCopy;
 
 namespace AutoPBI.Controls;
 
-public class WorkspaceItem : TemplatedControl
+public partial class WorkspaceItem : UserControl
 {
-    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<IconButton, ICommand>(
+    public static readonly StyledProperty<bool> IsCheckedProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
+        nameof(IsChecked));
+
+    public bool IsChecked
+    {
+        get => GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
+    }
+    
+    public static readonly StyledProperty<Workspace> WorkspaceProperty = AvaloniaProperty.Register<WorkspaceItem, Workspace>(
+        nameof(Workspace));
+
+    public Workspace Workspace
+    {
+        get => GetValue(WorkspaceProperty);
+        set => SetValue(WorkspaceProperty, value);
+    }
+
+    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<WorkspaceItem, ICommand>(
         nameof(Command));
 
     public ICommand Command
@@ -25,21 +46,13 @@ public class WorkspaceItem : TemplatedControl
         set => SetValue(CommandParameterProperty, value);
     }
     
-    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<WorkspaceItem, string>(
-        nameof(Text), "Unnamed");
-
-    public string Text
+    public WorkspaceItem()
     {
-        get => GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        InitializeComponent();
     }
 
-    public static readonly StyledProperty<bool> IsCheckedProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
-        nameof(IsChecked));
-
-    public bool IsChecked
+    private void CopyWorkspaceId(object? sender, RoutedEventArgs e)
     {
-        get => GetValue(IsCheckedProperty);
-        set => SetValue(IsCheckedProperty, value);
+        ClipboardService.SetText(Workspace.Id!);
     }
 }
