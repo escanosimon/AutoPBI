@@ -41,6 +41,7 @@ public partial class ClonePopupViewModel : PopupViewModel
         if (MainViewModel.SelectedReports.Count == 0) return;
         
         IsCloning = true;
+        ShowReports();
         
         foreach (var report in MainViewModel.SelectedReports)
         {
