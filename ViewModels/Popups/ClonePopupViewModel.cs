@@ -53,15 +53,6 @@ public partial class ClonePopupViewModel : PopupViewModel
         {
             if (!IsCloning) return;
             report.Status = Report.StatusType.Loading;
-            var outputFile = $"{destinationFolder}/{report.Name}.pbix";
-            var result = await MainViewModel.Ps.Execute(
-                @$"if (Test-Path '{outputFile}') {{
-                    Remove-Item '{outputFile}' -Force
-                }}",
-                $"Export-PowerBIReport -Id '{report.Id}' -OutFile  '{outputFile}'"
-            );
-            
-            report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
         }
         
         Close();

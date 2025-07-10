@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
+using CliWrap;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -28,7 +31,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _publishPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
-    [ObservableProperty] private PsRunner _ps = new();
+    [ObservableProperty] private PowerShellService _service = new();
 
     public MainViewModel()
     {
@@ -57,38 +60,34 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async void Login()
     {
-        var result = await Ps.Execute(
-            "Connect-PowerBIServiceAccount"
-        );
-        if (result.Error.Count > 0)
-        {
-            await Console.Error.WriteLineAsync(result.Error.ToString());
-        }
-        else
-        {
-            foreach (var obj in result.Objects)
-            {
-                User = new User(obj.Properties["Environment"].Value.ToString(),
-                    obj.Properties["TenantId"].Value.ToString(), obj.Properties["UserName"].Value.ToString());
-            }
+        var result = await Service.BuildCommand()
+            .WithCommand("Login-PowerBI")
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync();
 
-            IsLoggedIn = true;
-            FetchWorkspaces();
+        if (result.Error.Count != 0) return;
+        foreach (var obj in result.Objects)
+        {
+            User = new User(
+                obj.Properties["Environment"].Value.ToString(),
+                obj.Properties["TenantId"].Value.ToString(),
+                obj.Properties["UserName"].Value.ToString());
         }
+
+        IsLoggedIn = true;
+        FetchWorkspaces();
     }
     
     private async void FetchWorkspaces()
     {
-        var result = await Ps.Execute("Get-PowerBIWorkspace -All");
-
-        foreach (var obj in result.Objects)
-        {
-            foreach (var prop in obj.Properties)
-            {
-                Console.WriteLine($"{prop.Name}: {prop.Value}");
-            }
-        }
-
+        var result = await Service.BuildCommand()
+            .WithCommand("Get-PowerBIWorkspace")
+            .WithArguments(args => args
+                .Add("-All")
+            )
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync();
+        
         foreach (var workspace in result.Objects.Select(obj => new Workspace(obj.Properties["Id"].Value.ToString(),
                      obj.Properties["Name"].Value.ToString(), this)))
         {
@@ -123,8 +122,16 @@ public partial class MainViewModel : ViewModelBase
         if (SelectedWorkspaces.Count == 0) return;
         foreach (var workspace in SelectedWorkspaces)
         {
-            var result = await Ps.Execute($"Get-PowerBIReport -WorkspaceId '{workspace.Id}'");
+            var result = await Service.BuildCommand()
+                .WithCommand("Get-PowerBIReport")
+                .WithArguments(args => args
+                    .Add("-WorkspaceId")
+                    .Add($"{workspace.Id}")
+                )
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync();
 
+            workspace.Reports.Clear();
             foreach (var obj in result.Objects)
             {
                 try
@@ -146,6 +153,7 @@ public partial class MainViewModel : ViewModelBase
                     }
                 }
             }
+            workspace.CheckSelectedReports();
         }
     }
     

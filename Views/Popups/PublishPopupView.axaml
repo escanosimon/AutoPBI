@@ -25,7 +25,7 @@
                             <c:ToggleButtonGroup
                                 Boolean="{Binding IsWorkspacesShown}"
                                 NotBoolean="{Binding !IsWorkspacesShown}"
-                                Command1="{Binding ShowPbixFilesCommand}"
+                                Command1="{Binding ShowImportedReportsCommand}"
                                 Command2="{Binding ShowWorkspacesCommand}"
                                 Text1="Selected Reports"
                                 Text2="Select Workspaces"
@@ -33,17 +33,17 @@
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>
                                     <ScrollViewer IsVisible="{Binding !IsWorkspacesShown}">
-                                        <ItemsControl ItemsSource="{Binding SelectedPbixFilePaths}" Padding="8">
+                                        <ItemsControl ItemsSource="{Binding ImportedReports}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Text="{Binding}" IsHitTestVisible="False"></c:ReportItem>
+                                                    <c:ReportItem Status="{Binding Status}" IsChecked="{Binding IsSelected}" Text="{Binding Name}" IsHitTestVisible="False"></c:ReportItem>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
                                     <c:IconButton
                                         IsVisible="{Binding ImportButtonVisibility}"
-                                        Command="{Binding ImportPbixFilesCommand}"
+                                        Command="{Binding ImportReportsCommand}"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         Path="/Assets/Images/copy.svg"

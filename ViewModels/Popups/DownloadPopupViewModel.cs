@@ -43,12 +43,20 @@ public partial class DownloadPopupViewModel : PopupViewModel
             }
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
-            var result = await MainViewModel.Ps.Execute(
-                @$"if (Test-Path '{outputFile}') {{
-                    Remove-Item '{outputFile}' -Force
-                }}",
-                $"Export-PowerBIReport -Id '{report.Id}' -OutFile  '{outputFile}'"
-            );
+
+            await MainViewModel.Service.BuildCommand()
+                .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
+                .ExecuteAsync();
+            var result = await MainViewModel.Service.BuildCommand()
+                .WithCommand("Export-PowerBIReport")
+                .WithArguments(args => args
+                    .Add("-Id")
+                    .Add($"{report.Id}")
+                    .Add("-OutFile")
+                    .Add($"{outputFile}")
+                )
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync();
             
             report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
         }

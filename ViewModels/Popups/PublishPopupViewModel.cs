@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -23,8 +24,8 @@ public partial class PublishPopupViewModel : PopupViewModel
     [ObservableProperty] private bool _isPublishing;
     [ObservableProperty] private bool _isWorkspacesShown;
     [ObservableProperty] private bool _importButtonVisibility;
-    [ObservableProperty] private bool _selectedPbixFilesVisibility;
-    [ObservableProperty] private ObservableCollection<string> _selectedPbixFilePaths = [];
+    [ObservableProperty] private bool _importedReportsVisibility;
+    [ObservableProperty] private ObservableCollection<Report> _importedReports = [];
     
     public PublishPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
@@ -42,14 +43,14 @@ public partial class PublishPopupViewModel : PopupViewModel
     }
 
     [RelayCommand]
-    private void ShowPbixFiles()
+    private void ShowImportedReports()
     {
         IsWorkspacesShown = false;
         UpdateVisibilities();
     }
 
     [RelayCommand]
-    private async void ImportPbixFiles()
+    private async void ImportReports()
     {
         var options = new FilePickerOpenOptions
         {
@@ -65,17 +66,13 @@ public partial class PublishPopupViewModel : PopupViewModel
         };
 
         var selectedFiles = await MainViewModel.DialogService.OpenFileDialogAsync(options);
-        var enumerable = selectedFiles as string[] ?? selectedFiles.ToArray();
-        if (!enumerable!.Any())
+        foreach (var selectedFile in selectedFiles)
         {
-            SelectedPbixFilePaths.Clear();
-            UpdateVisibilities();
-            return;
+            var report = new Report(null, selectedFile, null, null, null);
+            ImportedReports.Add(report);
+            report.Status = Report.StatusType.Selectable;
+            report.IsSelected = true;
         }
-
-        // Ensure that selectedFiles consists of strings, or access the appropriate property
-        SelectedPbixFilePaths = new ObservableCollection<string>(
-            enumerable!.Where(file => file.EndsWith(".pbix", StringComparison.OrdinalIgnoreCase)));
         UpdateVisibilities();
     }
 
@@ -88,47 +85,67 @@ public partial class PublishPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Publish()
     {
-        if (SelectedPbixFilePaths.Count == 0)
-        {
-            Close();
-            return;
-        };
+        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0) return;
         
         IsPublishing = true;
-        ShowPbixFiles();
+        ShowImportedReports();
         
-        foreach (var report in MainViewModel.SelectedReports)
+        foreach (var report in ImportedReports)
         {
-            if (!IsPublishing) return;
-            
             report.Status = Report.StatusType.Loading;
-            
-            var username = "simon.escano@amcsgroup.com";
-            var password = "Onacsenomis8_";
-            var tabularEditorPath = "C:/Users/simon.escano/Downloads/TabularEditor.2.26.0/TabularEditor.exe";
+            var path = report.Name!;
+            var name = Path.GetFileNameWithoutExtension(path);
+            List<string> reportErrors = [];
+            var reportSuccesses = 0;
+            foreach (var workspace in MainViewModel.SelectedWorkspaces)
+            {
+                if (!IsPublishing) return;
+                
+                CommandResult result;
+                Console.Error.WriteLine(workspace.Name);
+                try
+                {
+                    result = await MainViewModel.Service.BuildCommand()
+                        .WithCommand("New-PowerBIReport")
+                        .WithArguments(args => args
+                            .Add("-Path")
+                            .Add($"{path}")
+                            .Add("-Name")
+                            .Add($"{name}")
+                            .Add("-WorkspaceId")
+                            .Add($"{workspace.Id}")
+                            .Add("-ConflictAction")
+                            .Add("CreateOrOverwrite")
+                        )
+                        .WithStandardOutputPipe(Console.WriteLine)
+                        .WithStandardErrorPipe(Console.Error.WriteLine)
+                        .ExecuteAsync();
+                }
+                catch (Exception e)
+                {
+                    reportErrors.Add(e.Message);
+                    Console.Error.WriteLine(e.Message);
+                    continue;
+                }
+                if (result.Error.Count > 0)
+                {
+                    reportErrors = result.Error.ToList();
+                }
+                else
+                {
+                    reportSuccesses++;
+                }
+            }
 
-            try
+            if (reportErrors.Count > 0)
             {
-                await Cli.Wrap(tabularEditorPath)
-                    .WithArguments(args => args
-                        .Add(
-                            $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={username};Password={password}")
-                        .Add($"{report.DatasetId}")
-                        .Add("-S")
-                        .Add($"{SelectedPbixFilePaths}")
-                        .Add("-D")
-                    )
-                    .WithStandardOutputPipe(PipeTarget.ToDelegate(Console.WriteLine))
-                    .ExecuteAsync();
+                report.Status = reportSuccesses > 0 ? Report.StatusType.Warning : Report.StatusType.Error;
             }
-            catch (Exception e)
+            else
             {
-                report.Status = Report.StatusType.Error;
-                continue;
+                report.Status =  Report.StatusType.Success;
             }
-            report.Status = Report.StatusType.Success;
         }
-        
         Close();
     }
     
@@ -140,6 +157,7 @@ public partial class PublishPopupViewModel : PopupViewModel
         if (!IsPublishing) return;
         Console.Error.WriteLine("Publish stopped...");
         IsPublishing =  false;
+        MainViewModel.FetchReportsCommand.Execute(null);
         foreach (var report in MainViewModel.SelectedReports)
         {
             report.Status = Report.StatusType.Selectable;
@@ -148,7 +166,7 @@ public partial class PublishPopupViewModel : PopupViewModel
 
     private void UpdateVisibilities()
     {
-        ImportButtonVisibility = !IsWorkspacesShown && (SelectedPbixFilePaths.Count == 0);
-        SelectedPbixFilesVisibility = IsWorkspacesShown && (SelectedPbixFilePaths.Count != 0);
+        ImportButtonVisibility = !IsWorkspacesShown && (ImportedReports.Count == 0);
+        ImportedReportsVisibility = IsWorkspacesShown && (ImportedReports.Count != 0);
     }
 }

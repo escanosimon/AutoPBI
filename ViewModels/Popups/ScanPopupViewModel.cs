@@ -30,9 +30,6 @@ public partial class ScanPopupViewModel : PopupViewModel
             if (!IsScanning) return;
             report.Status = Report.StatusType.Loading;
             
-            var result = await MainViewModel.Ps.Execute();
-            
-            report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
         }
         
         Close();
