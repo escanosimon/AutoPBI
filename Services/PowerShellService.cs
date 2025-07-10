@@ -15,52 +15,77 @@ public class PowerShellService : IDisposable
 
     public PowerShellService()
     {
-        _runspace = RunspaceFactory.CreateRunspace();
+        var initialSessionState = InitialSessionState.CreateDefault();
+        initialSessionState.ExecutionPolicy = Microsoft.PowerShell.ExecutionPolicy.Bypass;
+
+        // Get both Windows PowerShell and PowerShell Core module paths
+        var windowsPsModulePath = Environment.ExpandEnvironmentVariables(@"%UserProfile%\Documents\WindowsPowerShell\Modules");
+        var psCoreModulePath = Environment.ExpandEnvironmentVariables(@"%UserProfile%\Documents\PowerShell\Modules");
+        const string systemModulePath = @"C:\Program Files\WindowsPowerShell\Modules";
+        const string psCoreProgramFilesPath = @"C:\Program Files\PowerShell\Modules";
+
+        var modulePaths = new[] 
+        { 
+            windowsPsModulePath,
+            psCoreModulePath,
+            systemModulePath,
+            psCoreProgramFilesPath
+        };
+
+        var currentModulePath = Environment.GetEnvironmentVariable("PSModulePath", EnvironmentVariableTarget.Process) ?? "";
+        var newModulePath = string.Join(";", modulePaths.Concat(currentModulePath.Split(';')));
+        
+        initialSessionState.EnvironmentVariables.Add(new SessionStateVariableEntry("PSModulePath", newModulePath, ""));
+
+        _runspace = RunspaceFactory.CreateRunspace(initialSessionState);
         _runspace.Open();
     }
 
-    public CommandBuilder BuildCommand(string executablePath = null!)
+    public CommandBuilder BuildCommand(string executablePath = null)
     {
         return new CommandBuilder(this, executablePath);
     }
 
-    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, Action<string> outputHandler = null!, Action<string> errorHandler = null!)
+    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, Action<string> outputHandler = null, Action<string> errorHandler = null)
     {
         var result = new CommandResult();
-        using var pipeline = _runspace.CreatePipeline();
-        pipeline.Commands.AddScript(command);
-
-        // Capture errors
-        pipeline.Error.DataReady += (_, _) =>
+        using (var pipeline = _runspace.CreatePipeline())
         {
-            while (pipeline.Error.Count > 0)
+            pipeline.Commands.AddScript(command);
+
+            // Capture errors
+            pipeline.Error.DataReady += (sender, e) =>
             {
-                if (pipeline.Error.Read() is ErrorRecord error)
+                while (pipeline.Error.Count > 0)
                 {
-                    var errorMessage = error.ToString();
-                    result.Error.Add(errorMessage);
-                    errorHandler?.Invoke(errorMessage);
+                    var error = pipeline.Error.Read() as ErrorRecord;
+                    if (error != null)
+                    {
+                        var errorMessage = error.ToString();
+                        result.Error.Add(errorMessage);
+                        errorHandler?.Invoke(errorMessage);
+                    }
+                }
+            };
+
+            var results = await Task.Run(() => pipeline.Invoke());
+
+            // Capture PSObjects
+            result.Objects.AddRange(results);
+
+            // Capture output as strings
+            foreach (var obj in results)
+            {
+                var output = obj?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(output))
+                {
+                    result.Output.Add(output);
+                    outputHandler?.Invoke(output);
                 }
             }
-        };
 
-        var results = await Task.Run(() => pipeline.Invoke());
-
-        // Capture PSObjects
-        result.Objects.AddRange(results);
-
-        // Capture output as strings
-        foreach (var obj in results)
-        {
-            var output = obj?.ToString() ?? "";
-            if (!string.IsNullOrEmpty(output))
-            {
-                result.Output.Add(output);
-                outputHandler?.Invoke(output);
-            }
+            return result;
         }
-
-        return result;
     }
 
     internal async Task<CommandResult> ExecuteExternalCommandAsync(string executablePath, string arguments, Action<string> outputHandler = null, Action<string> errorHandler = null)
@@ -81,9 +106,11 @@ public class PowerShellService : IDisposable
 
         process.OutputDataReceived += (sender, e) =>
         {
-            if (e.Data == null) return;
-            result.Output.Add(e.Data);
-            outputHandler?.Invoke(e.Data);
+            if (e.Data != null)
+            {
+                result.Output.Add(e.Data);
+                outputHandler?.Invoke(e.Data);
+            }
         };
 
         process.ErrorDataReceived += (sender, e) =>
@@ -233,7 +260,7 @@ public class CommandBuilder
 
 public class ArgumentBuilder
 {
-    public List<string> Arguments { get; } = new();
+    public List<string> Arguments { get; } = new List<string>();
 
     public ArgumentBuilder Add(params string[] args)
     {
