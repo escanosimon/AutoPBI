@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
@@ -21,6 +22,9 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
+
+    [ObservableProperty] private bool _isAllWorkspacesShown = false;
+    [ObservableProperty] private bool _isAllWorkspacesSelected = false;
     
     [ObservableProperty] private PopupViewModel _downloadPopup;
     [ObservableProperty] private PopupViewModel _scriptPopup;
@@ -86,6 +90,7 @@ public partial class MainViewModel : ViewModelBase
     private void ShowWorkspace(Workspace workspace)
     {
         workspace.IsShown = !workspace.IsShown;
+        CheckShownWorkspaces();
 
         if (workspace.IsShown)
         {
@@ -101,11 +106,36 @@ public partial class MainViewModel : ViewModelBase
             }
         }
     }
+
+    [RelayCommand]
+    private void CheckShownWorkspaces()
+    {
+        if (Workspaces.Any(workspace => !workspace.IsShown))
+        {
+            IsAllWorkspacesShown = false;
+            return;
+        }
+
+        IsAllWorkspacesShown = true;
+    }
+    
+    [RelayCommand]
+    private void CheckSelectedWorkspaces()
+    {
+        if (Workspaces.Any(workspace => !workspace.IsSelected))
+        {
+            IsAllWorkspacesSelected = false;
+            return;
+        }
+
+        IsAllWorkspacesSelected = true;
+    }
     
     [RelayCommand]
     private void SelectWorkspace(Workspace workspace)
     {
         workspace.IsSelected = !workspace.IsSelected;
+        CheckSelectedWorkspaces();
 
         if (workspace.IsSelected)
         {
@@ -224,6 +254,56 @@ public partial class MainViewModel : ViewModelBase
                 if (!report.IsSelected) continue;
                 report.IsSelected = false;
                 SelectedReports.Remove(report);
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void ShowAllWorkspaces()
+    {
+        IsAllWorkspacesShown = !IsAllWorkspacesShown;
+
+        if (IsAllWorkspacesShown)
+        {
+            foreach (var workspace in Workspaces)
+            {
+                if (workspace.IsShown) continue;
+                workspace.IsShown = true;
+                ShownWorkspaces.Add(workspace);
+            }
+        }
+        else
+        {
+            foreach (var workspace in Workspaces)
+            {
+                if (!workspace.IsShown) continue;
+                workspace.IsShown = false;
+                ShownWorkspaces.Remove(workspace);
+            }
+        }
+    }
+    
+    [RelayCommand]
+    private void SelectAllWorkspaces()
+    {
+        IsAllWorkspacesSelected = !IsAllWorkspacesSelected;
+
+        if (IsAllWorkspacesSelected)
+        {
+            foreach (var workspace in Workspaces)
+            {
+                if (workspace.IsSelected) continue;
+                workspace.IsSelected = true;
+                SelectedWorkspaces.Add(workspace);
+            }
+        }
+        else
+        {
+            foreach (var workspace in Workspaces)
+            {
+                if (!workspace.IsSelected) continue;
+                workspace.IsSelected = false;
+                SelectedWorkspaces.Remove(workspace);
             }
         }
     }

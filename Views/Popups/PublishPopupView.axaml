@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
-             xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="450"
              x:Name="PublishPopupControl"
              x:Class="AutoPBI.Views.Popups.PublishPopupView"
@@ -46,7 +45,7 @@
                                         Command="{Binding ImportReportsCommand}"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
-                                        Path="/Assets/Images/file-chart-column-white.svg"
+                                        Path="/Assets/Images/file-chart-column.svg"
                                         Text="Import Power BI Files"
                                         Classes="Outline" />
                                     <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
@@ -67,7 +66,7 @@
                     </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrow-down-to-line-bg.svg" Text="Publish" Classes="Primary" Command="{Binding PublishCommand}" />
+                        <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding PublishCommand}" />
                         <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>

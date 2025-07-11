@@ -74,4 +74,9 @@
     <Style Selector="Button.Switch">
         <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
+    
+    <Style Selector="Button.Disabled">
+        <Setter Property="Opacity" Value="0.5"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
 </Styles>

@@ -38,7 +38,7 @@ public partial class ClonePopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Clone()
     {
-        if (MainViewModel.SelectedReports.Count == 0) return;
+        if (MainViewModel.SelectedWorkspaces.Count == 0) return;
         
         IsCloning = true;
         ShowReports();

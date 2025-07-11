@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
              x:Class="AutoPBI.Views.Popups.RefreshPopupView"
              x:DataType="vm:RefreshPopupViewModel">
     <Design.DataContext><vm:RefreshPopupViewModel></vm:RefreshPopupViewModel></Design.DataContext>
@@ -33,7 +33,35 @@
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrows-rotate-white.svg" Text="Refresh" Classes="Primary" Command="{Binding RefreshCommand}" />
+                        <Button
+                            Classes="Custom"
+                            Command="{Binding ReAuthCommand}"
+                            Background="{DynamicResource PrimaryLight}"
+                            BorderBrush="{DynamicResource Primary}"
+                            BorderThickness="1"
+                            VerticalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
+                            CornerRadius="12 0 0 12"
+                            Foreground="{DynamicResource Primary}"
+                            Content="Re-Auth"
+                            Padding="16 0"
+                            ></Button>
+                        <c:IconButton 
+                            Background="{DynamicResource PrimaryLight}"
+                            BorderBrush="{DynamicResource Primary}"
+                            Path="/Assets/Images/arrows-rotate.svg"
+                            Classes="IconOnly" 
+                            Command="{Binding RefreshCommand}"
+                            Margin="-1 0 0 0"/>
+                        <c:IconButton 
+                            Background="{DynamicResource PrimaryLight}"
+                            BorderBrush="{DynamicResource Primary}"
+                            CornerRadius="0 12  12 0"
+                            Path="/Assets/Images/magnifying-glass.svg" 
+                            Classes="IconOnly" 
+                            Command="{Binding ScanCommand}"
+                            Margin="-1 0 0 0"
+                            />
                         <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
                     </StackPanel>
                 </Border>

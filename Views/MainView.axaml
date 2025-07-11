@@ -11,10 +11,14 @@
         x:Class="AutoPBI.MainView"
         x:DataType="vm:MainViewModel"
         WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        CornerRadius="8"
+        SystemDecorations="None"
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
-    <Grid Background="{DynamicResource Background}" RowDefinitions="56, *">
+    <Border CornerRadius="8" Background="{DynamicResource Background}" ClipToBounds="True" BorderBrush="{DynamicResource ForegroundMuted}" BorderThickness="1">
+        <Grid RowDefinitions="56, *">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" Width="2*" />
             <ColumnDefinition Width="5*" />
@@ -30,7 +34,7 @@
             <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
         </Grid>
         
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}">
+        <Border PointerPressed="DragWindow" Background="{DynamicResource Background}" Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Padding="16 8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="8 8 0 0">
             <Grid ColumnDefinitions="*, *">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -59,6 +63,12 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
+                    <Button Classes.Disabled="{Binding !IsLoggedIn}" Command="{Binding ShowAllWorkspacesCommand}" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Classes="Outline" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource Primary}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource Primary}">Show all workspaces</TextBlock>
+                            <c:StatusIcon Grid.Column="1" IsChecked="{Binding IsAllWorkspacesShown}" VerticalAlignment="Center" BorderBrush="{DynamicResource Primary}" Classes="Custom"/>
+                        </Grid>
+                    </Button>
                 </Grid>
             </Border>
         </Border>
@@ -95,7 +105,7 @@
                                                 </Border>
                                             </Grid>
                                         </Button>
-                                        <ItemsControl ItemsSource="{Binding Reports}">
+                                        <ItemsControl ItemsSource="{Binding Reports}" IsVisible="{Binding IsDroppedDown}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <c:ReportItem Report="{Binding}" Command="{Binding DataContext.SelectReportCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"></c:ReportItem>
@@ -111,4 +121,5 @@
             </Border>
         </Border>
     </Grid>
+    </Border>
 </Window>

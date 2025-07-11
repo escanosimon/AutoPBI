@@ -26,6 +26,16 @@
             </ControlTemplate>
         </Setter>
     </Style>
+    
+    <Style Selector="controls|StatusIcon.Custom[Status=Selectable][IsChecked=False]">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
 
     <Style Selector="controls|StatusIcon[Status=Success]">
         <!-- Set Defaults -->

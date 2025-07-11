@@ -14,6 +14,7 @@ namespace AutoPBI.Models
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private bool? _isLoading;
+        private bool? _isDroppedDown;
         private ObservableCollection<Report> _reports = [];
         private MainViewModel? _mainViewModel;
 
@@ -102,6 +103,12 @@ namespace AutoPBI.Models
         {
             get => (bool)_isLoading!;
             set => SetProperty(ref _isLoading, value);
+        }
+        
+        public bool IsDroppedDown
+        {
+            get => (bool)_isDroppedDown!;
+            set => SetProperty(ref _isDroppedDown, value);
         }
 
         public ObservableCollection<Report> Reports

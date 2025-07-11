@@ -62,6 +62,14 @@
         <Setter Property="Opacity" Value="0.75"></Setter>
     </Style>
     
+    <Style Selector="Button.Custom:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{TemplateBinding Background}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource Primary}"></Setter>
+        <Setter Property="Opacity" Value="0.75"></Setter>
+    </Style>
+    
     <Style Selector="controls|IconButton.Disabled">
         <Setter Property="Opacity" Value="0.5"/>
         <Setter Property="IsHitTestVisible" Value="False"/>

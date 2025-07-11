@@ -74,6 +74,8 @@
       <AvaloniaResource Include="Assets\Images\trash.svg" />
       <None Remove="Assets\Images\arrow-right-to-bracket.svg" />
       <AvaloniaResource Include="Assets\Images\arrow-right-to-bracket.svg" />
+      <None Remove="Assets\Images\magnifying-glass.svg" />
+      <AvaloniaResource Include="Assets\Images\magnifying-glass.svg" />
     </ItemGroup>
 
     <ItemGroup>
