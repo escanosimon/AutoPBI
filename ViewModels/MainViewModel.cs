@@ -150,7 +150,8 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {
-        
+        workspace.Reports.Clear();
+        SelectedWorkspaces.Clear();
         var result = await PowerShellService
             .BuildCommand()
             .WithCommand("Get-PowerBIReport")
@@ -160,9 +161,6 @@ public partial class MainViewModel : ViewModelBase
             )
             .WithStandardErrorPipe(Console.Error.WriteLine)
             .ExecuteAsync();
-
-        workspace.Reports.Clear();
-        SelectedWorkspaces.Clear();
         foreach (var obj in result.Objects)
         {
             try

@@ -71,6 +71,14 @@
         <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
     
+    <Style Selector="Button.NoHover:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    
+    <Style Selector="Button.NoHover:pointerpressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    
     <Style Selector="Button.Switch">
         <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
