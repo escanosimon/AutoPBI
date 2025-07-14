@@ -2,76 +2,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <controls:IconButton />
+        <controls:IconButton
+            Background="{DynamicResource PrimaryLight}"
+            BorderBrush="{DynamicResource Primary}"
+            Foreground="{DynamicResource Primary}"
+            Padding="12 0"
+            BorderThickness="1"
+            CornerRadius="0 12  12 0"
+            IconUnicode="&#xf002;"
+        ></controls:IconButton>
     </Design.PreviewWith>
 
     <Style Selector="controls|IconButton">
+        <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Ghost" VerticalAlignment="Stretch" CornerRadius="12" Padding="12 0" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}"/>
+                <Button Background="{TemplateBinding Background}" 
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Padding="{TemplateBinding Padding}" 
+                        Command="{TemplateBinding Command}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CommandParameter="{TemplateBinding CommandParameter}">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <Label FontSize="13"
+                               IsVisible="{TemplateBinding IconUnicode}"
+                               FontFamily="{DynamicResource Icon}" 
+                               Content="{TemplateBinding IconUnicode}"
+                               Foreground="{TemplateBinding Foreground}"
+                               Margin="{TemplateBinding IconMargin}"/>
+                        <Label FontSize="{TemplateBinding FontSize}" 
+                               IsVisible="{TemplateBinding Text}"
+                               FontFamily="{DynamicResource InterRegular}" 
+                               Foreground="{TemplateBinding Foreground}"
+                               Content="{TemplateBinding Text}" />
                     </StackPanel>
+                    
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover > ContentPresenter">
+                            <Setter Property="Background" Value="{Binding $parent[controls:IconButton].HoverBackground}"/>
+                            <Setter Property="BorderBrush" Value="{Binding $parent[controls:IconButton].HoverBorderBrush}"/>
+                            <Setter Property="Opacity" Value="0.75" />
+                        </Style>
+                    </Button.Styles>
                 </Button>
             </ControlTemplate>
         </Setter>
-    </Style>
-    
-    <Style Selector="controls|IconButton.Primary">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Button Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Primary" Background="{DynamicResource Primary}" Padding="12 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="12">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Svg Path="{TemplateBinding Path}" Height="12" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                        <Label Foreground="{DynamicResource White}" Content="{TemplateBinding Text}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    
-    <Style Selector="controls|IconButton.Outline">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Button HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Classes="Outline" Background="Transparent" VerticalAlignment="Stretch" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent" Padding="8 0">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Svg Path="{TemplateBinding Path}" Height="12" VerticalAlignment="Center" Margin="0 0 8 0"/>
-                        <Label Content="{TemplateBinding Text}" VerticalAlignment="Center" Foreground="{DynamicResource Primary}"/>
-                    </StackPanel>
-                </Button>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    
-    <Style Selector="controls|IconButton.IconOnly">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Button Classes="IconOnly" HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Background="{TemplateBinding Background}" VerticalAlignment="Stretch" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="12 0">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Svg Path="{TemplateBinding Path}" Height="12" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    
-    <Style Selector="Button.IconOnly:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{TemplateBinding Background}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
-        <Setter Property="Opacity" Value="0.75"></Setter>
-    </Style>
-    
-    <Style Selector="Button.Custom:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{TemplateBinding Background}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource Primary}"></Setter>
-        <Setter Property="Opacity" Value="0.75"></Setter>
+        
+        <Setter Property="Padding" Value="8 2" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Background" Value="{DynamicResource Background}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
     
     <Style Selector="controls|IconButton.Disabled">
-        <Setter Property="Opacity" Value="0.5"/>
-        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Opacity" Value="0.5" />
+        <Setter Property="IsHitTestVisible" Value="False"></Setter>
     </Style>
 </Styles>

@@ -40,14 +40,15 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <c:IconButton
-                                        IsVisible="{Binding ImportButtonVisibility}"
-                                        Command="{Binding ImportReportsCommand}"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Path="/Assets/Images/file-chart-column.svg"
-                                        Text="Import Power BI Files"
-                                        Classes="Outline" />
+                                    <c:IconButton Command="{Binding ImportReportsCommand}"
+                                                  IsVisible="{Binding ImportButtonVisibility}"
+                                                  Classes.Disabled="{Binding IsPublishing}" 
+                                                  Padding="12 0"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  IconUnicode="&#xf090;" 
+                                                  Text="Import Power BI Files"
+                                                  Foreground="{DynamicResource Primary}" />
                                     <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
                                         <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
                                             <ItemsControl.ItemTemplate>
@@ -66,8 +67,16 @@
                     </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding PublishCommand}" />
-                        <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                        <c:IconButton Command="{Binding PublishCommand}"
+                                      Classes.Disabled="{Binding IsPublishing}" Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
+                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
                     </StackPanel>
                 </Border>
             </Grid>

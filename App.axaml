@@ -35,6 +35,7 @@
         
             <FontFamily x:Key="InterRegular">/Assets/Fonts/Inter-Regular.otf#Inter</FontFamily>
             <FontFamily x:Key="InterMedium">/Assets/Fonts/Inter-Medium.otf#Inter Medium</FontFamily>
+            <FontFamily x:Key="Icon">/Assets/Fonts/FontAwesome.ttf#Font Awesome 6 Pro Regular</FontFamily>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://LoadingIndicators.Avalonia/LoadingIndicators.axaml" />

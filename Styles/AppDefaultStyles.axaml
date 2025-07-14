@@ -17,20 +17,6 @@
         <Setter Property="Background" Value="Transparent" />
     </Style>
     
-    <!-- <Style Selector="TextBox:focus /template/ Border"> -->
-    <!--     <Setter Property="Background" Value="{DynamicResource Background}" /> -->
-    <!--     <Setter Property="CornerRadius" Value="8" /> -->
-    <!--     <Setter Property="BorderThickness" Value="1" /> -->
-    <!--     <Setter Property="BorderBrush" Value="{DynamicResource Primary}" /> -->
-    <!-- </Style> -->
-    <!-- -->
-    <!-- <Style Selector="TextBox:pointerover /template/ Border"> -->
-    <!--     <Setter Property="Background" Value="{DynamicResource Background}" /> -->
-    <!--     <Setter Property="CornerRadius" Value="8" /> -->
-    <!--     <Setter Property="BorderThickness" Value="1" /> -->
-    <!--     <Setter Property="BorderBrush" Value="{DynamicResource Primary}" /> -->
-    <!-- </Style> -->
-    
     <Style Selector="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource InterRegular}"/>
         <Setter Property="FontSize" Value="14" />
@@ -55,20 +41,6 @@
     
     <Style Selector="Button.PopupBackground:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ForegroundSemiTransparent}"/>
-    </Style>
-    
-    <Style Selector="Button.Primary:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource PrimaryDark}" />
-    </Style>
-    
-    <Style Selector="Button.Outline:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource PrimaryLight}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Primary}" />
-    </Style>
-    
-    <Style Selector="Button.Ghost:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
     
     <Style Selector="Button.NoHover:pointerover /template/ ContentPresenter">

@@ -40,14 +40,15 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <c:IconButton
-                                        IsVisible="{Binding ImportButtonVisibility}"
-                                        Command="{Binding ImportScriptCommand}"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Path="/Assets/Images/file-code.svg"
-                                        Text="Import C# Script"
-                                        Classes="Outline" />
+                                    <c:IconButton Command="{Binding ImportScriptCommand}"
+                                                  IsVisible="{Binding ImportButtonVisibility}"
+                                                  Classes.Disabled="{Binding IsScripting}" 
+                                                  Padding="12 0"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  IconUnicode="&#xf1c9;" 
+                                                  Text="Import C# File"
+                                                  Foreground="{DynamicResource Primary}" />
                                     <avaloniaEdit:TextEditor
                                         x:Name="ScriptEditor"
                                         IsVisible="{Binding EditScriptVisibility}"
@@ -66,8 +67,16 @@
                     </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Classes.Disabled="{Binding !SelectedScriptPath}" Path="/Assets/Images/brackets-curly-white.svg" Text="Script" Classes="Primary" Command="{Binding ScriptCommand}" />
-                        <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                        <c:IconButton Command="{Binding ScriptCommand}"
+                                      Classes.Disabled="{Binding IsScripting}" Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" IconUnicode="&#xf7ea;" Text="Script"
+                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
                     </StackPanel>
                 </Border>
             </Grid>

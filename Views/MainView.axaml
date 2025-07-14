@@ -44,8 +44,17 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                    <c:IconButton Classes.Disabled="{Binding !IsLoggedIn}" Path="/Assets/Images/arrow-up-from-bracket.svg" Text="Publish" Classes="Primary" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}" />
-                    <c:IconButton Text="Log in" Margin="8 0 0 0" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding LoginPopup}" IsVisible="{Binding !IsLoggedIn}" />
+                    <c:IconButton Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}"
+                                  Classes.Disabled="{Binding !IsLoggedIn}" Padding="12 0" CornerRadius="12"
+                                  VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
+                                  Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                    <c:IconButton IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Log in"
+                                  Margin="8 0 0 0"
+                                  HoverBackground="{DynamicResource NeutralMuted}"
+                                  Foreground="{DynamicResource Foreground}" 
+                                  BorderBrush="{DynamicResource NeutralMuted}" 
+                                  Command="{Binding OpenPopupCommand}" CommandParameter="{Binding LoginPopup}"
+                                  BorderThickness="1" />
                     <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
                 </StackPanel>
             </Grid>
@@ -80,11 +89,50 @@
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
                         <TextBox Watermark="Search reports" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}" Path="/Assets/Images/brackets-curly.svg" Text="Script" Classes="Outline" Margin="8 0 0  0"></c:IconButton>
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}" Path="/Assets/Images/copy.svg" Text="Clone" Classes="Outline"></c:IconButton>
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding RefreshPopup}" Path="/Assets/Images/rotate-exclamation.svg" Text="Refresh" Classes="Outline"></c:IconButton>
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DownloadPopup}" Path="/Assets/Images/arrow-down-to-line.svg" Text="Save" Classes="IconOnly" Background="{DynamicResource NeutralMuted}" BorderBrush="{DynamicResource Neutral}" CornerRadius="8 0 0 8" Margin="8 0 0  0"></c:IconButton>
-                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}" Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DeletePopup}" Path="/Assets/Images/trash.svg" Text="Delete" Classes="IconOnly" Background="{DynamicResource Error}" BorderBrush="{DynamicResource ErrorDark}" CornerRadius="0 8 8 0"></c:IconButton>
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
+                                          Classes="Ghost"
+                                          IconUnicode="&#xf7ea;"
+                                          HoverBorderBrush="{DynamicResource Primary}"
+                                          HoverBackground="{DynamicResource PrimaryLight}"
+                                          Foreground="{DynamicResource Primary}"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}"
+                                          Text="Script" Margin="8 0 0  0" />
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
+                                          Classes="Ghost"
+                                          IconUnicode="&#xf0c5;"
+                                          HoverBorderBrush="{DynamicResource Primary}"
+                                          HoverBackground="{DynamicResource PrimaryLight}"
+                                          Foreground="{DynamicResource Primary}"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}"
+                                          Text="Clone" />
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
+                                          Classes="Ghost"
+                                          IconUnicode="&#xf002;"
+                                          HoverBorderBrush="{DynamicResource Primary}"
+                                          HoverBackground="{DynamicResource PrimaryLight}"
+                                          Foreground="{DynamicResource Primary}"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}"
+                                          CommandParameter="{Binding RefreshPopup}"
+                                          Text="Scan" />
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
+                                          IconUnicode="&#xf33d;"
+                                          IconMargin="0"
+                                          Padding="12 0"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}"
+                                          CommandParameter="{Binding DownloadPopup}"
+                                          Background="{DynamicResource NeutralMuted}" BorderBrush="{DynamicResource Neutral}" CornerRadius="8 0 0 8" Margin="8 0 0  0" />
+                            <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
+                                          IconUnicode="&#xf1f8;"
+                                          IconMargin="0"
+                                          Padding="12 0"
+                                          BorderThickness="1"
+                                          Foreground="{DynamicResource ErrorDark}"
+                                          Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DeletePopup}"
+                                          Background="{DynamicResource Error}" BorderBrush="{DynamicResource ErrorDark}" CornerRadius="0 8 8 0" />
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="2" Margin="0 16 0 0">

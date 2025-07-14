@@ -45,8 +45,16 @@
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Name="LoginButton" Path="/Assets/Images/arrow-right-to-bracket.svg" Text="Login" Classes="Primary" Command="{Binding LoginCommand}" />
-                        <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                        <c:IconButton x:Name="LoginButton" Command="{Binding LoginCommand}"
+                                      Classes.Disabled="{Binding IsLoggingIn}" Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" IconUnicode="&#xf090;" Text="Log in"
+                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
                     </StackPanel>
                 </Border>
             </Grid>

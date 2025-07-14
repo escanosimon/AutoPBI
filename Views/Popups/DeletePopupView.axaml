@@ -33,8 +33,16 @@
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Path="/Assets/Images/trash-white.svg" Text="Delete" Classes="Primary" Command="{Binding DeleteCommand}" />
-                        <c:IconButton Text="Close" Margin="8 0 0 0" Command="{Binding CloseCommand}"></c:IconButton>
+                        <c:IconButton Command="{Binding DeleteCommand}"
+                                      Classes.Disabled="{Binding IsDeleting}" Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" IconUnicode="&#xf1f8;" Text="Delete"
+                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
                     </StackPanel>
                 </Border>
             </Grid>
