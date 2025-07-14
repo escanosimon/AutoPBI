@@ -42,7 +42,7 @@
                                     </ScrollViewer>
                                     <c:IconButton Command="{Binding ImportReportsCommand}"
                                                   IsVisible="{Binding ImportButtonVisibility}"
-                                                  Classes.Disabled="{Binding IsPublishing}" 
+                                                  Classes.Disabled="{Binding IsProcessing}" 
                                                   Padding="12 0"
                                                   VerticalAlignment="Stretch"
                                                   HorizontalAlignment="Stretch"
@@ -68,7 +68,7 @@
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <c:IconButton Command="{Binding PublishCommand}"
-                                      Classes.Disabled="{Binding IsPublishing}" Padding="12 0" CornerRadius="12"
+                                      Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
                                       VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
                                       Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
                         <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"

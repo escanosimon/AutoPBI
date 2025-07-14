@@ -39,7 +39,7 @@
             <Grid ColumnDefinitions="*, *">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/Power_BI_Logo.svg}" Height="24" Margin="0 0 8 0"/>
+                        <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/PowerBILogo.svg}" Height="24" Margin="0 0 8 0"/>
                         <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}">AutoPBI</TextBlock>
                     </StackPanel>
                 </StackPanel>
@@ -61,10 +61,16 @@
         </Border>
         <Border Grid.Row="1" Grid.Column="0" Padding="16 16 4 16">
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
-                <Grid RowDefinitions="Auto, Auto, *, 36">
+                <Grid RowDefinitions="Auto, Auto, Auto, *, 36">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
                     <TextBox Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" />
-                    <ScrollViewer Grid.Row="2" Margin="0 0 0 12">
+                    <Button Grid.Row="2" Classes.Disabled="{Binding !IsLoggedIn}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}">All workspaces</TextBlock>
+                            <c:StatusIcon Grid.Column="1" IsChecked="{Binding IsAllWorkspacesShown}" VerticalAlignment="Center" BorderBrush="{DynamicResource Neutral}" Classes="Custom"/>
+                        </Grid>
+                    </Button>
+                    <ScrollViewer Grid.Row="3" Margin="0 0 0 12">
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -73,12 +79,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Button Classes.Disabled="{Binding !IsLoggedIn}" Command="{Binding ShowAllWorkspacesCommand}" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Classes="Outline" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource Primary}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource Primary}">Show all workspaces</TextBlock>
-                            <c:StatusIcon Grid.Column="1" IsChecked="{Binding IsAllWorkspacesShown}" VerticalAlignment="Center" BorderBrush="{DynamicResource Primary}" Classes="Custom"/>
-                        </Grid>
-                    </Button>
+                    <c:IconButton Text="Reload Reports" Grid.Row="4" IconUnicode="&#xf021;" Foreground="{DynamicResource White}" Background="{DynamicResource Primary}" />
                 </Grid>
             </Border>
         </Border>
@@ -149,7 +150,7 @@
                                             >
                                             <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
                                                 <c:StatusIcon Status="Selectable" IsChecked="{Binding IsAllReportsSelected}" Margin="0 0 10 0" IsVisible="{Binding Reports.Count}"></c:StatusIcon>
-                                                <Svg Grid.Column="1" Path="/Assets/Images/users.svg" Height="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                                <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
                                                 <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
                                                 <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding Reports.Count}">
                                                     <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>

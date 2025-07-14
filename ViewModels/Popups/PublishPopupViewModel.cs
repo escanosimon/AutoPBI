@@ -22,7 +22,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class PublishPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isPublishing;
     [ObservableProperty] private bool _isWorkspacesShown;
     [ObservableProperty] private bool _importButtonVisibility;
     [ObservableProperty] private bool _importedReportsVisibility;
@@ -88,7 +87,7 @@ public partial class PublishPopupViewModel : PopupViewModel
     {
         if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0) return;
         
-        IsPublishing = true;
+        IsProcessing = true;
         ShowImportedReports();
         
         foreach (var report in ImportedReports)
@@ -100,7 +99,7 @@ public partial class PublishPopupViewModel : PopupViewModel
             var reportSuccesses = 0;
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
-                if (!IsPublishing) return;
+                if (!IsProcessing) return;
                 
                 CommandResult result;
                 try
@@ -149,24 +148,6 @@ public partial class PublishPopupViewModel : PopupViewModel
         }
     }
     
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsPublishing) return;
-        Console.Error.WriteLine("Publish stopped...");
-        IsPublishing =  false;
-        foreach (var workspace in MainViewModel.SelectedWorkspaces)
-        {
-            MainViewModel.FetchReportsCommand.Execute(workspace);
-        }
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            report.Status = Report.StatusType.Selectable;
-        }
-    }
-
     private void UpdateVisibilities()
     {
         ImportButtonVisibility = !IsWorkspacesShown && (ImportedReports.Count == 0);

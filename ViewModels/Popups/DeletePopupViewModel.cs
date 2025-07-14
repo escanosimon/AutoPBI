@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AutoPBI.Models;
-using AutoPBI.Services;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
 public partial class DeletePopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isDeleting;
-    
     public DeletePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
@@ -23,11 +16,11 @@ public partial class DeletePopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Delete()
     {
-        IsDeleting = true;
+        IsProcessing = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsDeleting) return;
+            if (!IsProcessing) return;
             
             report.Status = Report.StatusType.Loading;
 
@@ -44,22 +37,15 @@ public partial class DeletePopupViewModel : PopupViewModel
                 .ExecuteAsync();
             
             report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
+            report.IsSelected = false;
         }
 
-        MainViewModel.FetchReportsCommand.Execute(null);
-    }
-    
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsDeleting) return;
-        Console.Error.WriteLine("Delete stopped...");
-        IsDeleting =  false;
-        foreach (var report in MainViewModel.SelectedReports)
+        MainViewModel.SelectedReports.Clear();
+        foreach (var workspace in MainViewModel.ShownWorkspaces)
         {
-            report.Status = Report.StatusType.Selectable;
+            workspace.Reports.Clear();
+            MainViewModel.FetchReportsCommand.Execute(workspace);
         }
+        
     }
 }

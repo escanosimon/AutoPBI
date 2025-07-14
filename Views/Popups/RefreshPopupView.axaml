@@ -34,7 +34,7 @@
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <c:IconButton
-                            Classes.Disabled="{Binding IsRefreshing}"
+                            Classes.Disabled="{Binding IsProcessing}"
                             Command="{Binding ScanCommand}"
                             Background="{DynamicResource PrimaryLight}"
                             BorderBrush="{DynamicResource Primary}"
@@ -48,7 +48,7 @@
                             Text="Scan"
                         ></c:IconButton>
                         <c:IconButton
-                            Classes.Disabled="{Binding IsRefreshing}"
+                            Classes.Disabled="{Binding IsProcessing}"
                             Command="{Binding RefreshCommand}"
                             Background="{DynamicResource PrimaryLight}"
                             BorderBrush="{DynamicResource Primary}"

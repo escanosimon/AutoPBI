@@ -12,7 +12,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class LoginPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isLoggingIn = false;
     [ObservableProperty] private string? _usernameText = "";
     [ObservableProperty] private string? _passwordText = "";
     
@@ -28,7 +27,7 @@ public partial class LoginPopupViewModel : PopupViewModel
     {
         if (string.IsNullOrWhiteSpace(UsernameText) || string.IsNullOrWhiteSpace(PasswordText)) return;
         
-        IsLoggingIn = true;
+        IsProcessing = true;
         PSObject loginResult;
         try
         {
@@ -46,7 +45,7 @@ public partial class LoginPopupViewModel : PopupViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            IsLoggingIn = false;
+            IsProcessing = false;
             return;
         }
         var accessTokenResult = (await MainViewModel.PowerShellService
@@ -67,16 +66,5 @@ public partial class LoginPopupViewModel : PopupViewModel
         MainViewModel.IsLoggedIn = true;
         Close();
         await MainViewModel.FetchWorkspacesCommand.ExecuteAsync(null);
-    }
-    
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        if (!IsLoggingIn) return;
-        
-        Console.Error.WriteLine("Login stopped...");
-        
-        IsLoggingIn = false;
     }
 }

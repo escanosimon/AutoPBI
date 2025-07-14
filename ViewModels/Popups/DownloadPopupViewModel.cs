@@ -11,8 +11,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class DownloadPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isDownloading;
-    
     public DownloadPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
@@ -32,11 +30,11 @@ public partial class DownloadPopupViewModel : PopupViewModel
         var destinationFolder = await MainViewModel.DialogService.OpenFolderDialogAsync(options);
         if (destinationFolder == null) return;
         
-        IsDownloading = true;
+        IsProcessing = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsDownloading) return;
+            if (!IsProcessing) return;
             report.Status = Report.StatusType.Loading;
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
@@ -57,20 +55,6 @@ public partial class DownloadPopupViewModel : PopupViewModel
                 .ExecuteAsync();
             
             report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
-        }
-    }
-    
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsDownloading) return;
-        Console.Error.WriteLine("Download stopped...");
-        IsDownloading =  false;
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            report.Status = Report.StatusType.Selectable;
         }
     }
 }

@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{DynamicResource Primary}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Primary}">
-                    <Svg Path="/Assets/Images/check-white.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                    <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf00c;" Foreground="{DynamicResource White}"/>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -42,7 +42,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{DynamicResource Success}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
-                    <Svg Path="/Assets/Images/check.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                    <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf00c;" Foreground="{DynamicResource SuccessDark}"/>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -64,7 +64,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{DynamicResource Warning}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
-                    <Svg Path="/Assets/Images/triangle-exclamation.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                    <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf071;" Foreground="{DynamicResource WarningDark}"/>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -75,7 +75,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{DynamicResource Error}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ErrorDark}">
-                    <Svg Path="/Assets/Images/xmark.svg" Height="12" VerticalAlignment="Center" HorizontalAlignment="Center"></Svg>
+                    <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf00d;" Foreground="{DynamicResource ErrorDark}"/>
                 </Border>
             </ControlTemplate>
         </Setter>

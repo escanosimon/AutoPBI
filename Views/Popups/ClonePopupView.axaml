@@ -58,7 +58,7 @@
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <c:IconButton Command="{Binding CloneCommand}"
-                                      Classes.Disabled="{Binding IsCloning}" Padding="12 0" CornerRadius="12"
+                                      Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
                                       VerticalAlignment="Stretch" IconUnicode="&#xf0c5;" Text="Clone"
                                       Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
                         <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"

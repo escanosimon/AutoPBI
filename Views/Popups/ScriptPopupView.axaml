@@ -42,7 +42,7 @@
                                     </ScrollViewer>
                                     <c:IconButton Command="{Binding ImportScriptCommand}"
                                                   IsVisible="{Binding ImportButtonVisibility}"
-                                                  Classes.Disabled="{Binding IsScripting}" 
+                                                  Classes.Disabled="{Binding IsProcessing}" 
                                                   Padding="12 0"
                                                   VerticalAlignment="Stretch"
                                                   HorizontalAlignment="Stretch"
@@ -68,7 +68,7 @@
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <c:IconButton Command="{Binding ScriptCommand}"
-                                      Classes.Disabled="{Binding IsScripting}" Padding="12 0" CornerRadius="12"
+                                      Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
                                       VerticalAlignment="Stretch" IconUnicode="&#xf7ea;" Text="Script"
                                       Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
                         <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"

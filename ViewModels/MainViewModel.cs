@@ -150,8 +150,6 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {
-        workspace.Reports.Clear();
-        SelectedWorkspaces.Clear();
         var result = await PowerShellService
             .BuildCommand()
             .WithCommand("Get-PowerBIReport")
@@ -165,21 +163,17 @@ public partial class MainViewModel : ViewModelBase
         {
             try
             {
-                var report = new Report(obj.Properties["Id"].Value.ToString(),
-                    obj.Properties["Name"].Value.ToString(),
-                    obj.Properties["WebUrl"].Value.ToString(),
-                    obj.Properties["DatasetId"].Value.ToString(),
+                var report = new Report(obj.Properties["Id"].Value?.ToString(),
+                    obj.Properties["Name"].Value?.ToString(),
+                    obj.Properties["WebUrl"].Value?.ToString(),
+                    obj.Properties["DatasetId"].Value?.ToString(),
                     workspace
                 );
                 workspace.Reports.Add(report);
             }
             catch (Exception)
             {
-                Console.Error.WriteLine("--------ERROR--------");
-                foreach (var prop in obj.Properties)
-                {
-                    Console.Error.WriteLine($"{prop.Name}: {prop.Value}");
-                }
+                Console.Error.WriteLine("Error report: " + obj.Properties["Name"].Value);
             }
         }
         workspace.CheckSelectedReports();

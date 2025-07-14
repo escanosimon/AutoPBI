@@ -30,32 +30,19 @@
 
     <ItemGroup>
       <Folder Include="Assets\Fonts\" />
+      <Folder Include="Assets\Images\" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Assets\Images\arrow-up-from-bracket.svg" />
-      <None Remove="Assets\Images\brackets-curly.svg" />
-      <None Remove="Assets\Images\copy.svg" />
-      <None Remove="Assets\Images\file-chart-column.svg" />
-      <None Remove="Assets\Images\Power_BI_Logo.svg" />
-      <AvaloniaResource Include="Assets\Images\Power_BI_Logo.svg" />
-      <None Remove="Assets\Images\rotate-exclamation.svg" />
-      <None Remove="Assets\Images\users.svg" />
+      <None Remove="Assets\Images\PowerBILogo.svg" />
       <None Remove="Assets\Fonts\Inter-Medium.otf" />
       <AvaloniaResource Include="Assets\Fonts\Inter-Medium.otf" />
       <None Remove="Assets\Fonts\Inter-Regular.otf" />
       <AvaloniaResource Include="Assets\Fonts\Inter-Regular.otf" />
-      <None Remove="Assets\Images\arrow-down-to-line.svg" />
-      <None Remove="Assets\Images\arrows-rotate.svg" />
-      <None Remove="Assets\Images\check.svg" />
-      <None Remove="Assets\Images\xmark.svg" />
-      <None Remove="Assets\Images\triangle-exclamation.svg" />
-      <None Remove="Assets\Images\file-code.svg" />
-      <None Remove="Assets\Images\trash.svg" />
-      <None Remove="Assets\Images\arrow-right-to-bracket.svg" />
-      <None Remove="Assets\Images\magnifying-glass.svg" />
       <None Remove="Assets\Fonts\FontAwesome.ttf" />
       <AvaloniaResource Include="Assets\Fonts\FontAwesome.ttf" />
+      <None Remove="Assets\Images\PowerBILogo.svg" />
+      <AvaloniaResource Include="Assets\Images\PowerBILogo.svg" />
     </ItemGroup>
 
     <ItemGroup>

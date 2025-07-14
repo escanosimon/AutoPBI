@@ -19,7 +19,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class ScriptPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isScripting;
     [ObservableProperty] private bool _isScriptShown;
     [ObservableProperty] private bool _importButtonVisibility;
     [ObservableProperty] private bool _editScriptVisibility;
@@ -75,12 +74,12 @@ public partial class ScriptPopupViewModel : PopupViewModel
         if (SelectedScriptPath == null) return;
         await File.WriteAllTextAsync(SelectedScriptPath, ScriptContents.Text);
         
-        IsScripting = true;
+        IsProcessing = true;
         ShowReports();
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsScripting) return;
+            if (!IsProcessing) return;
             
             report.Status = Report.StatusType.Loading;
             
@@ -110,20 +109,6 @@ public partial class ScriptPopupViewModel : PopupViewModel
         }
     }
     
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsScripting) return;
-        Console.Error.WriteLine("Script stopped...");
-        IsScripting =  false;
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            report.Status = Report.StatusType.Selectable;
-        }
-    }
-
     private void UpdateVisibilities()
     {
         ImportButtonVisibility = IsScriptShown && (SelectedScriptPath == null);

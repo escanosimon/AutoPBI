@@ -13,7 +13,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class ClonePopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isCloning;
     [ObservableProperty] private bool _isWorkspacesShown;
     
     public ClonePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
@@ -40,7 +39,7 @@ public partial class ClonePopupViewModel : PopupViewModel
     {
         if (MainViewModel.SelectedWorkspaces.Count == 0) return;
         
-        IsCloning = true;
+        IsProcessing = true;
         ShowReports();
         
         foreach (var report in MainViewModel.SelectedReports)
@@ -49,7 +48,7 @@ public partial class ClonePopupViewModel : PopupViewModel
             var successes = 0;
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
-                if (!IsCloning) return;
+                if (!IsProcessing) return;
                 report.Status = Report.StatusType.Loading;
 
                 try
@@ -88,20 +87,6 @@ public partial class ClonePopupViewModel : PopupViewModel
             {
                 report.Status = Report.StatusType.Success;
             }
-        }
-    }
-    
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsCloning) return;
-        Console.Error.WriteLine("Clone stopped...");
-        IsCloning =  false;
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            report.Status = Report.StatusType.Selectable;
         }
     }
 }

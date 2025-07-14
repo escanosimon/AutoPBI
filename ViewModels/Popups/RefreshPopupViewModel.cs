@@ -15,9 +15,6 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class RefreshPopupViewModel : PopupViewModel
 {
-    [ObservableProperty] private bool _isRefreshing;
-    [ObservableProperty] private bool _isScanning;
-    
     public RefreshPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
@@ -28,11 +25,11 @@ public partial class RefreshPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Scan()
     {
-        IsScanning = true;
+        IsProcessing = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsScanning) return;
+            if (!IsProcessing) return;
             report.Status = Report.StatusType.Loading;
             Dataset dataset;
             try
@@ -102,7 +99,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                             break;
                         default:
                             report.Status = Report.StatusType.Success;
-                            report.Message = "Successfully refreshed";
+                            report.Message = "No issues found.";
                             break;
                     }
                 }
@@ -118,17 +115,17 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 report.Message = "Dataset is not refreshable";
             }
         }
-        IsScanning = false;
+        IsProcessing = false;
     }
 
     [RelayCommand]
     private async void Refresh()
     {
-        IsRefreshing = true;
+        IsProcessing = true;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
-            if (!IsRefreshing) return;
+            if (!IsProcessing) return;
             report.Status = Report.StatusType.Loading;
             Dataset dataset;
             try
@@ -176,7 +173,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
             report.Message = "Successfully refreshed";
         }
 
-        IsRefreshing = false;
+        IsProcessing = false;
     }
 
     [RelayCommand]
@@ -228,21 +225,6 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 //     Console.WriteLine($"{gatewayProperty.Name}: {gatewayProperty.Value}");
                 // }
             }
-        }
-    }
-    
-    [RelayCommand]
-    private void Close()
-    {
-        IsVisible = false;
-        
-        if (!IsRefreshing) return;
-        if (!IsScanning) return;
-        IsRefreshing =  false;
-        IsScanning =  false;
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            report.Status = Report.StatusType.Selectable;
         }
     }
 }

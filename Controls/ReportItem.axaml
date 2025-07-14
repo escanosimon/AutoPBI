@@ -7,10 +7,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="Root"
              x:Class="AutoPBI.Controls.ReportItem">
-    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" Classes="Ghost" Padding="6" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
+    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" Padding="6" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
         <Grid ColumnDefinitions="Auto, Auto, *">
             <controls:StatusIcon Margin="0 0 12 0" IsChecked="{Binding #Root.Report.IsSelected}" Status="{Binding #Root.Report.Status}" />
-            <Svg Grid.Column="1" Path="/Assets/Images/file-chart-column.svg" VerticalAlignment="Center" Height="12" Margin="0 0 8 0"/>
+            <Label Grid.Column="1" Margin="0 0 8 0" FontFamily="{DynamicResource Icon}" FontSize="13" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
             <TextBlock Foreground="{DynamicResource Foreground}" Grid.Column="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{Binding #Root.Report.Name}" ToolTip.Tip="{Binding #Root.Report.Name}" />
         </Grid>
                     

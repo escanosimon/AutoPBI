@@ -7,9 +7,9 @@
              xmlns:li="using:LoadingIndicators.Avalonia"
              x:Name="Root"
              x:Class="AutoPBI.Controls.WorkspaceItem">
-    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Classes="Ghost" Padding="6" CornerRadius="6">
+    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" HorizontalAlignment="Stretch" Background="Transparent" Padding="6" CornerRadius="6">
         <Grid ColumnDefinitions="Auto, *, Auto" Height="20">
-            <Svg Path="/Assets/Images/users.svg" Height="12" VerticalAlignment="Center"/>
+            <Label FontFamily="{DynamicResource Icon}" FontSize="13" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
             <TextBlock 
                 Grid.Column="1"
                 IsVisible="{Binding #Root.Workspace.Name}"
