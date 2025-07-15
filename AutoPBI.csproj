@@ -50,5 +50,8 @@
         <DependentUpon>MainView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Controls\ToggleButtonGroup.axaml.cs">
+        <DependentUpon>ToggleButtonGroup.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

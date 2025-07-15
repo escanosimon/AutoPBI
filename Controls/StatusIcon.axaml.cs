@@ -8,6 +8,15 @@ namespace AutoPBI.Controls;
 
 public class StatusIcon : TemplatedControl
 {
+    public static readonly StyledProperty<string> TooltipProperty = AvaloniaProperty.Register<StatusIcon, string>(
+        nameof(Tooltip));
+
+    public string Tooltip
+    {
+        get => GetValue(TooltipProperty);
+        set => SetValue(TooltipProperty, value);
+    }
+    
     public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<StatusIcon, ICommand>(
         nameof(Command));
 

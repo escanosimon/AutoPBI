@@ -70,7 +70,7 @@ public partial class PublishPopupViewModel : PopupViewModel
         {
             var report = new Report(null, selectedFile, null, null, null);
             ImportedReports.Add(report);
-            report.Status = Report.StatusType.Selectable;
+            report.Selectable();
             report.IsSelected = true;
         }
         UpdateVisibilities();
@@ -92,7 +92,7 @@ public partial class PublishPopupViewModel : PopupViewModel
         
         foreach (var report in ImportedReports)
         {
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
             var path = report.Name!;
             var name = Path.GetFileNameWithoutExtension(path);
             List<string> reportErrors = [];
@@ -139,18 +139,35 @@ public partial class PublishPopupViewModel : PopupViewModel
 
             if (reportErrors.Count > 0)
             {
-                report.Status = reportSuccesses > 0 ? Report.StatusType.Warning : Report.StatusType.Error;
+                if (reportSuccesses > 0)
+                {
+                    report.Warning("Report was not published in some selected workspaces.");
+                }
+                else
+                {
+                    report.Error("Report was not published to any selected workspaces.");
+                }
             }
             else
             {
-                report.Status =  Report.StatusType.Success;
+                report.Success("Successfully published to all selected workspaces.");
             }
         }
+        
+        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.ShownWorkspaces);
     }
     
     private void UpdateVisibilities()
     {
         ImportButtonVisibility = !IsWorkspacesShown && (ImportedReports.Count == 0);
         ImportedReportsVisibility = IsWorkspacesShown && (ImportedReports.Count != 0);
+    }
+
+    public override void Close(Action? whileProcessingAction = null)
+    {
+        base.Close(() =>
+        {
+            ImportedReports.Clear();
+        });
     }
 }

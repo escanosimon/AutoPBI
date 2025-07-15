@@ -20,16 +20,17 @@ public abstract partial class PopupViewModel: ViewModelBase
     }
     
     [RelayCommand]
-    public void Close()
+    public virtual void Close(Action? whileProcessingAction = null)
     {
         IsVisible = false;
-        
-        if (!IsProcessing) return;
-        Console.Error.WriteLine("Process stopped...");
-        IsProcessing =  false;
         foreach (var report in MainViewModel.SelectedReports)
         {
-            report.Status = Report.StatusType.Selectable;
+            report.Selectable();
         }
+        
+        if (!IsProcessing) return;
+        whileProcessingAction?.Invoke();
+        Console.Error.WriteLine("Process stopped...");
+        IsProcessing =  false;
     }
 }

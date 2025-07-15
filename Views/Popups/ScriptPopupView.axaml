@@ -13,7 +13,7 @@
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
+                IsVisible="{Binding !IsVisible}"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
@@ -29,38 +29,60 @@
                                 Text1="Selected Reports"
                                 Text2="Select C# Script"
                                 />
-                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8" Padding="12">
                                 <Grid>
                                     <ScrollViewer IsVisible="{Binding !IsScriptShown}">
                                         <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Report="{Binding}"></c:ReportItem>
+                                                    <c:ReportItem Report="{Binding}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <c:IconButton Command="{Binding ImportScriptCommand}"
-                                                  IsVisible="{Binding ImportButtonVisibility}"
-                                                  Classes.Disabled="{Binding IsProcessing}" 
-                                                  Padding="12 0"
-                                                  VerticalAlignment="Stretch"
-                                                  HorizontalAlignment="Stretch"
-                                                  IconUnicode="&#xf1c9;" 
-                                                  Text="Import C# File"
-                                                  Foreground="{DynamicResource Primary}" />
-                                    <avaloniaEdit:TextEditor
-                                        x:Name="ScriptEditor"
-                                        IsVisible="{Binding EditScriptVisibility}"
-                                        Document="{Binding ScriptContents, Mode=TwoWay}"
-                                        Padding="8"
-                                        FontFamily="Consolas,Menlo,Monaco,Courier New,monospace"
-                                        FontSize="11"
-                                        ShowLineNumbers="True"
-                                        SyntaxHighlighting="C#"
-                                        WordWrap="True"
-                                        Foreground="{DynamicResource Foreground}"
-                                        LineNumbersForeground="{DynamicResource PrimaryLight}"/>
+                                    <Grid IsVisible="{Binding IsScriptShown}" RowDefinitions="Auto, *">
+                                        <c:IconButton 
+                                            Command="{Binding OpenScriptRepositoryCommand}"
+                                            Margin="0 0 0 8"
+                                            Padding="0"
+                                            IconMargin="0"
+                                            CornerRadius="4"
+                                            Foreground="{DynamicResource WarningDark}"
+                                            HoverBackground="{DynamicResource Warning}"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource WarningDark}"
+                                            IconUnicode="&#xf05a;" 
+                                            FontSize="11"
+                                            Text="Check this repository for sample scripts." />
+                                        <c:IconButton 
+                                            Grid.Row="1"
+                                            CornerRadius="4"
+                                            Command="{Binding ImportScriptCommand}"
+                                            IsVisible="{Binding ImportButtonVisibility}"
+                                            Classes.Disabled="{Binding IsProcessing}" 
+                                            Padding="12 0"
+                                            VerticalAlignment="Stretch"
+                                            BorderThickness="1"
+                                            HoverBackground="{DynamicResource PrimaryLight}"
+                                            HoverBorderBrush="{DynamicResource Primary}"
+                                            HorizontalAlignment="Stretch"
+                                            IconUnicode="&#xf1c9;" 
+                                            Text="Import C# File"
+                                            Foreground="{DynamicResource Primary}" />
+                                        <avaloniaEdit:TextEditor
+                                            Grid.Row="1"
+                                            x:Name="ScriptEditor"
+                                            IsVisible="{Binding EditScriptVisibility}"
+                                            Document="{Binding ScriptContents, Mode=TwoWay}"
+                                            Padding="8"
+                                            FontFamily="Consolas,Menlo,Monaco,Courier New,monospace"
+                                            FontSize="11"
+                                            ShowLineNumbers="True"
+                                            SyntaxHighlighting="C#"
+                                            WordWrap="True"
+                                            Foreground="{DynamicResource Foreground}"
+                                            LineNumbersForeground="{DynamicResource PrimaryLight}"/>
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </Grid>

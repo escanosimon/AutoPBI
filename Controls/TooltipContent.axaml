@@ -1,0 +1,22 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <controls:TooltipContent />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TooltipContent">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Padding="8 4" CornerRadius="4" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                    <TextBlock MaxWidth="200" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Text}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Neutral}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}"></Setter>
+    </Style>
+</Styles>

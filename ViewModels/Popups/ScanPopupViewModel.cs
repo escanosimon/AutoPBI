@@ -1,26 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Management.Automation;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 using AutoPBI.Models;
 using AutoPBI.Services;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
-using Avalonia.Rendering;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
-public partial class RefreshPopupViewModel : PopupViewModel
+public partial class ScanPopupViewModel : PopupViewModel
 {
-    public RefreshPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public ScanPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
     }
 
-    public RefreshPopupViewModel() : base(new MainViewModel()) {}
+    public ScanPopupViewModel() : base(new MainViewModel()) {}
 
     [RelayCommand]
     private async void Scan()
@@ -30,16 +25,20 @@ public partial class RefreshPopupViewModel : PopupViewModel
         foreach (var report in MainViewModel.SelectedReports)
         {
             if (!IsProcessing) return;
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
             Dataset dataset;
             try
             {
-                dataset = MainViewModel.Datasets[report.DatasetId!];
+                if (report.DatasetId == null)
+                {
+                    report.Error("Report has no linked dataset.");
+                    continue;
+                }
+                dataset = MainViewModel.Datasets[report.DatasetId];
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                report.Status = Report.StatusType.Error;
-                report.Message = e.Message;
+                report.Error("You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.");
                 continue;
             }
 
@@ -68,8 +67,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 }
                 catch (Exception e)
                 {
-                    report.Status = Report.StatusType.Error;
-                    report.Message = e.Message;
+                    report.Error(e.Message);
                     continue;
                 }
                 
@@ -83,36 +81,33 @@ public partial class RefreshPopupViewModel : PopupViewModel
                     switch (obj.Properties["status"].Value.ToString()!)
                     {
                         case "Failed":
-                            report.Status = Report.StatusType.Error;
-                            report.Message = obj.Properties["serviceExceptionJson"].Value.ToString();
+                            var serviceExceptionJson = obj.Properties["serviceExceptionJson"].Value.ToString()!;
+                            var serviceException = JsonSerializer.Deserialize<Dictionary<string, string>>(serviceExceptionJson)!;
+                            try
+                            {
+                                report.Error(serviceException["errorDescription"]);
+                            }
+                            catch (Exception)
+                            {
+                                report.Error(MainViewModel.ErrorMessages[serviceException["errorCode"]]);
+                            }
                             break;
                         case "Unknown":
-                            report.Status = Report.StatusType.Warning;
-                            var messageBuilder = new StringBuilder();
-        
-                            foreach (var property in obj.Properties)
-                            {
-                                // Assuming each property has a Name and a Value
-                                messageBuilder.AppendLine($"{property.Name}: {property.Value}");
-                            }
-                            report.Message = obj.ToString();
+                            report.Warning("Last refresh is still loading.");
                             break;
                         default:
-                            report.Status = Report.StatusType.Success;
-                            report.Message = "No issues found.";
+                            report.Success("Last refresh was successful.");
                             break;
                     }
                 }
                 else
                 {
-                    report.Status = Report.StatusType.Warning;
-                    report.Message = "Dataset is refreshable, but no refresh history";
+                    report.Warning("Dataset is refreshable, but no refresh history (try refreshing the dataset).");
                 }
             }
             else
             {
-                report.Status = Report.StatusType.Warning;
-                report.Message = "Dataset is not refreshable";
+                report.Warning("Dataset is not refreshable (DirectQuery or Live Connection).");
             }
         }
         IsProcessing = false;
@@ -126,7 +121,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
         foreach (var report in MainViewModel.SelectedReports)
         {
             if (!IsProcessing) return;
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
             Dataset dataset;
             try
             {
@@ -134,8 +129,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
             }
             catch (Exception e)
             {
-                report.Status = Report.StatusType.Error;
-                report.Message = e.Message;
+                report.Error(e.Message);
                 continue;
             }
 
@@ -158,19 +152,16 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 }
                 catch (Exception e)
                 {
-                    report.Status = Report.StatusType.Error;
-                    report.Message = e.Message;
+                    report.Error(e.Message);
                     continue;
                 }
             }
             else
             {
-                report.Status = Report.StatusType.Warning;
-                report.Message = "Dataset is not refreshable";
+                report.Warning("Dataset is not refreshable (DirectQuery or Live Connection).");
                 continue;
             }
-            report.Status = Report.StatusType.Success;
-            report.Message = "Successfully refreshed";
+            report.Success("Refreshed dataset successfully");
         }
 
         IsProcessing = false;
@@ -188,8 +179,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
             }
             catch (Exception e)
             {
-                report.Status = Report.StatusType.Error;
-                report.Message = e.Message;
+                report.Error(e.Message);
                 continue;
             }
 
@@ -210,8 +200,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 }
                 catch (Exception e)
                 {
-                    report.Status = Report.StatusType.Error;
-                    report.Message = e.Message;
+                    report.Error(e.Message);
                     continue;
                 }
 

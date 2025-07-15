@@ -22,30 +22,32 @@ public partial class DeletePopupViewModel : PopupViewModel
         {
             if (!IsProcessing) return;
             
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
 
-            var result = await MainViewModel.PowerShellService
-                .BuildCommand()
-                .WithCommand("Remove-PowerBIReport")
-                .WithArguments(args => args
-                    .Add("-Id")
-                    .Add($"{report.Id}")
-                    .Add("-WorkspaceId")
-                    .Add($"{report.Workspace!.Id}")
-                )
-                .WithStandardErrorPipe(Console.Error.WriteLine)
-                .ExecuteAsync();
+            try
+            {
+                await MainViewModel.PowerShellService
+                    .BuildCommand()
+                    .WithCommand("Remove-PowerBIReport")
+                    .WithArguments(args => args
+                        .Add("-Id")
+                        .Add($"{report.Id}")
+                        .Add("-WorkspaceId")
+                        .Add($"{report.Workspace!.Id}")
+                    )
+                    .WithStandardErrorPipe(Console.Error.WriteLine)
+                    .ExecuteAsync();
+            }
+            catch (Exception e)
+            {
+                report.Error(e.Message);
+                continue;
+            }
             
-            report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
+            report.Success("Successfully deleted report");
             report.IsSelected = false;
         }
 
-        MainViewModel.SelectedReports.Clear();
-        foreach (var workspace in MainViewModel.ShownWorkspaces)
-        {
-            workspace.Reports.Clear();
-            MainViewModel.FetchReportsCommand.Execute(workspace);
-        }
-        
+        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.ShownWorkspaces);
     }
 }

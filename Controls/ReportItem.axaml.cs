@@ -80,4 +80,9 @@ public partial class ReportItem : UserControl
             Console.WriteLine($"An error occurred when trying to open the URL: {ex.Message}");
         }
     }
+
+    private void CopyMessage(object? sender, RoutedEventArgs e)
+    {
+        ClipboardService.SetTextAsync(Report.Message!);
+    }
 }

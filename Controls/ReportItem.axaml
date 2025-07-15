@@ -2,26 +2,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="clr-namespace:AutoPBI.Controls"
-             xmlns:models="clr-namespace:AutoPBI.Models"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="Root"
              x:Class="AutoPBI.Controls.ReportItem">
     <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" Padding="6" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
         <Grid ColumnDefinitions="Auto, Auto, *">
-            <controls:StatusIcon Margin="0 0 12 0" IsChecked="{Binding #Root.Report.IsSelected}" Status="{Binding #Root.Report.Status}" />
+            <c:StatusIcon 
+                Tooltip="{Binding #Root.Report.Message}"
+                Margin="0 0 12 0" 
+                IsChecked="{Binding #Root.Report.IsSelected}"
+                Status="{Binding #Root.Report.Status}" />
             <Label Grid.Column="1" Margin="0 0 8 0" FontFamily="{DynamicResource Icon}" FontSize="13" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
-            <TextBlock Foreground="{DynamicResource Foreground}" Grid.Column="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{Binding #Root.Report.Name}" ToolTip.Tip="{Binding #Root.Report.Name}" />
+            <TextBlock Foreground="{DynamicResource Foreground}" Grid.Column="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{Binding #Root.Report.Name}" />
+            
+            <ToolTip.Tip>
+                <c:TooltipContent Text="{Binding #Root.Report.Name}" />
+            </ToolTip.Tip>
         </Grid>
                     
         <Button.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Show message" IsVisible="{Binding #Root.Report.Message}">
-                    <TextBlock Text="{Binding #Root.Report.Message}" MaxWidth="200" TextWrapping="Wrap"></TextBlock>
-                </MenuItem>
-                <MenuItem  Header="Copy Report ID" Click="CopyReportId"></MenuItem>
-                <MenuItem  Header="Copy Dataset ID" Click="CopyDatasetId"></MenuItem>
-                <MenuItem Header="Open in Power BI Service" Click="OpenInPowerBiService"></MenuItem>
+                <MenuItem Header="Copy message" IsVisible="{Binding #Root.Report.Message}" Click="CopyMessage" />
+                <MenuItem Header="Copy Report ID" Click="CopyReportId" />
+                <MenuItem Header="Copy Dataset ID" Click="CopyDatasetId" />
+                <MenuItem Header="Open in Power BI Service" Click="OpenInPowerBiService" />
             </ContextMenu>
         </Button.ContextMenu>
     </Button>

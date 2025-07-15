@@ -1,6 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 
 namespace AutoPBI.Controls;
@@ -51,6 +53,15 @@ public class IconButton : TemplatedControl
     {
         get => GetValue(HoverBorderBrushProperty);
         set => SetValue(HoverBorderBrushProperty, value);
+    }
+
+    public static readonly StyledProperty<EventHandler<RoutedEventArgs>> ClickProperty = AvaloniaProperty.Register<IconButton, EventHandler<RoutedEventArgs>>(
+        nameof(Click));
+
+    public EventHandler<RoutedEventArgs> Click
+    {
+        get => GetValue(ClickProperty);
+        set => SetValue(ClickProperty, value);
     }
     
     public static readonly StyledProperty<object?> IconUnicodeProperty = AvaloniaProperty.Register<IconButton, object?>(

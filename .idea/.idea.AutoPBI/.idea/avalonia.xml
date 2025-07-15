@@ -12,6 +12,7 @@
         <entry key="Controls/SampleReportItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/StatusIcon.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/ToggleButtonGroup.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/TooltipContent.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/UserImage.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem1.axaml" value="AutoPBI.csproj" />

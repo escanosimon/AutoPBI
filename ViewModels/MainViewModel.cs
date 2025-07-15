@@ -15,6 +15,8 @@ public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] private User _user = null!;
     [ObservableProperty] private bool _isLoggedIn;
+
+    [ObservableProperty] private bool _isReloading = true;
     
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableHashMap<string, Dataset> _datasets = [];
@@ -23,13 +25,13 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
 
-    [ObservableProperty] private bool _isAllWorkspacesShown = false;
-    [ObservableProperty] private bool _isAllWorkspacesSelected = false;
+    [ObservableProperty] private bool _isAllWorkspacesShown;
+    [ObservableProperty] private bool _isAllWorkspacesSelected;
     
     [ObservableProperty] private PopupViewModel _downloadPopup;
     [ObservableProperty] private PopupViewModel _scriptPopup;
     [ObservableProperty] private PopupViewModel _clonePopup;
-    [ObservableProperty] private PopupViewModel _refreshPopup;
+    [ObservableProperty] private PopupViewModel _scanPopup;
     [ObservableProperty] private PopupViewModel _publishPopup;
     [ObservableProperty] private PopupViewModel _deletePopup;
     [ObservableProperty] private PopupViewModel _loginPopup;
@@ -42,7 +44,7 @@ public partial class MainViewModel : ViewModelBase
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
-        RefreshPopup = AddPopup(new RefreshPopupViewModel(this));
+        ScanPopup = AddPopup(new ScanPopupViewModel(this));
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
         LoginPopup = AddPopup(new LoginPopupViewModel(this));
@@ -145,6 +147,20 @@ public partial class MainViewModel : ViewModelBase
         {
             SelectedWorkspaces.Remove(workspace);
         }
+    }
+
+    [RelayCommand]
+    private async void ReloadWorkspaces(ObservableCollection<Workspace> workspaces)
+    {
+        IsReloading = true;
+        SelectedReports.Clear();
+        foreach (var workspace in workspaces)
+        {
+            workspace.Reports.Clear();
+            await FetchReports(workspace);
+            await FetchDatasets(workspace);
+        }
+        IsReloading = false;
     }
 
     [RelayCommand]

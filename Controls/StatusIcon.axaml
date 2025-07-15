@@ -1,12 +1,12 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:li="using:LoadingIndicators.Avalonia"
-        xmlns:controls="using:AutoPBI.Controls">
+        xmlns:c="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <controls:StatusIcon Status="Loading"/>
+        <c:StatusIcon Status="Success"/>
     </Design.PreviewWith>
     
-    <Style Selector="controls|StatusIcon[Status=Selectable][IsChecked=True]">
+    <Style Selector="c|StatusIcon[Status=Selectable][IsChecked=True]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -17,7 +17,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon[Status=Selectable][IsChecked=False]">
+    <Style Selector="c|StatusIcon[Status=Selectable][IsChecked=False]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -27,7 +27,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon.Custom[Status=Selectable][IsChecked=False]">
+    <Style Selector="c|StatusIcon.Custom[Status=Selectable][IsChecked=False]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -37,18 +37,24 @@
         </Setter>
     </Style>
 
-    <Style Selector="controls|StatusIcon[Status=Success]">
+    <Style Selector="c|StatusIcon[Status=Success]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Success}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
+                <Border ToolTip.ShowDelay="0" Background="{DynamicResource Success}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
                     <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf00c;" Foreground="{DynamicResource SuccessDark}"/>
+                    
+                    <ToolTip.Tip>
+                        <Border Padding="8 4" CornerRadius="4" Background="{DynamicResource Success}" BorderThickness="1" BorderBrush="{DynamicResource SuccessDark}">
+                            <TextBlock MaxWidth="200" Foreground="{DynamicResource SuccessDark}" Text="{TemplateBinding Tooltip}" />
+                        </Border>
+                    </ToolTip.Tip>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon[Status=Loading]">
+    <Style Selector="c|StatusIcon[Status=Loading]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -59,23 +65,41 @@
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon[Status=Warning]">
+    <Style Selector="c|StatusIcon[Status=Warning]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Warning}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
+                <Border ToolTip.ShowDelay="0" Background="{DynamicResource Warning}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
                     <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf071;" Foreground="{DynamicResource WarningDark}"/>
+                    
+                    <ToolTip.Tip>
+                        <Border Padding="8 4" CornerRadius="4" Background="{DynamicResource Warning}" BorderThickness="1" BorderBrush="{DynamicResource WarningDark}">
+                            <TextBlock MaxWidth="200" Foreground="{DynamicResource WarningDark}" Text="{TemplateBinding Tooltip}" />
+                        </Border>
+                    </ToolTip.Tip>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
     
-    <Style Selector="controls|StatusIcon[Status=Error]">
+    <Style Selector="c|StatusIcon[Status=Error]">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Error}" Height="20" Width="20" VerticalAlignment="Center" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ErrorDark}">
+                <Border 
+                    ToolTip.ShowDelay="0"
+                    Background="{DynamicResource Error}" 
+                    Height="20" Width="20" 
+                    VerticalAlignment="Center" 
+                    CornerRadius="4" 
+                    BorderThickness="1" 
+                    BorderBrush="{DynamicResource ErrorDark}">
                     <Label FontFamily="{DynamicResource Icon}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="&#xf00d;" Foreground="{DynamicResource ErrorDark}"/>
+                    
+                    <ToolTip.Tip>
+                        <c:TooltipContent Background="{DynamicResource Error}" Foreground="{DynamicResource ErrorDark}"
+                                          BorderBrush="{DynamicResource ErrorDark}" Text="{TemplateBinding Tooltip}" />
+                    </ToolTip.Tip>
                 </Border>
             </ControlTemplate>
         </Setter>

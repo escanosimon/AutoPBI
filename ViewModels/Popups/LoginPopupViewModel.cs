@@ -44,7 +44,7 @@ public partial class LoginPopupViewModel : PopupViewModel
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.Error.WriteLine("Login failed.");
             IsProcessing = false;
             return;
         }
@@ -64,6 +64,7 @@ public partial class LoginPopupViewModel : PopupViewModel
         MainViewModel.User.AccessToken = (string)accessTokenResult.BaseObject;
 
         MainViewModel.IsLoggedIn = true;
+        MainViewModel.IsReloading = false;
         Close();
         await MainViewModel.FetchWorkspacesCommand.ExecuteAsync(null);
     }

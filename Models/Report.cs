@@ -35,6 +35,37 @@ public class Report : ObservableObject
         Message = null;
     }
 
+    public void Selectable()
+    {
+        SetStatus(StatusType.Selectable, "");
+    }
+
+    public void Loading()
+    {
+        SetStatus(StatusType.Loading, "Processing...");
+    }
+    
+    public void Success(string? message)
+    {
+        SetStatus(StatusType.Success, message);
+    }
+
+    public void Warning(string? message)
+    {
+        SetStatus(StatusType.Warning, message);
+    }
+
+    public void Error(string? message)
+    {
+        SetStatus(StatusType.Error, message);
+    }
+
+    public void SetStatus(StatusType status, string? message = null)
+    {
+        Status = status;
+        Message = message;
+    }
+
     public StatusType Status
     {
         get => _status;

@@ -11,6 +11,7 @@
         <StyleInclude Source="Controls/StatusIcon.axaml"></StyleInclude>
         <StyleInclude Source="Controls/UserImage.axaml"></StyleInclude>
         <StyleInclude Source="Controls/ToggleButtonGroup.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/TooltipContent.axaml"></StyleInclude>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
              

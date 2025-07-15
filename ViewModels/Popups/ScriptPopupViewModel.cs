@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -81,7 +82,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
         {
             if (!IsProcessing) return;
             
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
             
             var tabularEditorPath = "C:/Users/simon.escano/Downloads/TabularEditor.2.26.0/TabularEditor.exe";
 
@@ -101,11 +102,35 @@ public partial class ScriptPopupViewModel : PopupViewModel
             }
             catch (Exception e)
             {
-                report.Status = Report.StatusType.Error;
-                report.Message = e.Message;
+                report.Error(e.Message);
                 continue;
             }
-            report.Status = Report.StatusType.Success;
+            report.Success("Successfully applied script to dataset");
+        }
+    }
+
+    [RelayCommand]
+    private void OpenScriptRepository()
+    {
+        const string scriptRepository = "https://github.com/PowerBI-tips/TabularEditor-Scripts/";
+        try
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {scriptRepository}") { CreateNoWindow = true });
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                Process.Start(new ProcessStartInfo("xdg-open", scriptRepository) { RedirectStandardOutput = true, UseShellExecute = true });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Process.Start(new ProcessStartInfo("open", scriptRepository) { RedirectStandardOutput = true, UseShellExecute = true });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred when trying to open the URL: {ex.Message}");
         }
     }
     
@@ -113,5 +138,14 @@ public partial class ScriptPopupViewModel : PopupViewModel
     {
         ImportButtonVisibility = IsScriptShown && (SelectedScriptPath == null);
         EditScriptVisibility = IsScriptShown && (SelectedScriptPath != null);
+    }
+
+    public override void Close(Action? whileProcessingAction = null)
+    {
+        base.Close(() =>
+        {
+            SelectedScriptPath = null;
+            ScriptContents = new TextDocument();
+        });
     }
 }

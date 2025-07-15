@@ -29,7 +29,7 @@
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
             <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
-            <popups:RefreshPopupView DataContext="{Binding RefreshPopup}" />
+            <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
             <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
             <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
             <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
@@ -50,6 +50,7 @@
                                   Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
                     <c:IconButton IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Log in"
                                   Margin="8 0 0 0"
+                                  IsVisible="{Binding !IsLoggedIn}"
                                   HoverBackground="{DynamicResource NeutralMuted}"
                                   Foreground="{DynamicResource Foreground}" 
                                   BorderBrush="{DynamicResource NeutralMuted}" 
@@ -79,7 +80,14 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <c:IconButton Text="Reload Reports" Grid.Row="4" IconUnicode="&#xf021;" Foreground="{DynamicResource White}" Background="{DynamicResource Primary}" />
+                    <c:IconButton Text="Reload selected" 
+                                  Classes.Disabled="{Binding IsReloading}"
+                                  Grid.Row="4" 
+                                  IconUnicode="&#xf021;"
+                                  Foreground="{DynamicResource White}" 
+                                  Background="{DynamicResource Primary}"
+                                  Command="{Binding ReloadWorkspacesCommand}"
+                                  CommandParameter="{Binding ShownWorkspaces}"/>
                 </Grid>
             </Border>
         </Border>
@@ -116,7 +124,7 @@
                                           Foreground="{DynamicResource Primary}"
                                           BorderThickness="1"
                                           Command="{Binding OpenPopupCommand}"
-                                          CommandParameter="{Binding RefreshPopup}"
+                                          CommandParameter="{Binding ScanPopup}"
                                           Text="Scan" />
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
                                           IconUnicode="&#xf33d;"

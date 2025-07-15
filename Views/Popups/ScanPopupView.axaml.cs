@@ -2,9 +2,9 @@
 
 namespace AutoPBI.Views.Popups;
 
-public partial class RefreshPopupView : UserControl
+public partial class ScanPopupView : UserControl
 {
-    public RefreshPopupView()
+    public ScanPopupView()
     {
         InitializeComponent();
     }

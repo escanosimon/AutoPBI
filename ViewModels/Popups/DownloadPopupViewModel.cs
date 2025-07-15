@@ -35,26 +35,34 @@ public partial class DownloadPopupViewModel : PopupViewModel
         foreach (var report in MainViewModel.SelectedReports)
         {
             if (!IsProcessing) return;
-            report.Status = Report.StatusType.Loading;
+            report.Loading();
             var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
-            await MainViewModel.PowerShellService
-                .BuildCommand()
-                .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
-                .ExecuteAsync();
-            var result = await MainViewModel.PowerShellService
-                .BuildCommand()
-                .WithCommand("Export-PowerBIReport")
-                .WithArguments(args => args
-                    .Add("-Id")
-                    .Add($"{report.Id}")
-                    .Add("-OutFile")
-                    .Add($"{outputFile}")
-                )
-                .WithStandardErrorPipe(Console.Error.WriteLine)
-                .ExecuteAsync();
-            
-            report.Status = result.Error.Count == 0 ? Report.StatusType.Success : Report.StatusType.Error;
+            try
+            {
+                await MainViewModel.PowerShellService
+                    .BuildCommand()
+                    .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
+                    .ExecuteAsync();
+                await MainViewModel.PowerShellService
+                    .BuildCommand()
+                    .WithCommand("Export-PowerBIReport")
+                    .WithArguments(args => args
+                        .Add("-Id")
+                        .Add($"{report.Id}")
+                        .Add("-OutFile")
+                        .Add($"{outputFile}")
+                    )
+                    .WithStandardErrorPipe(Console.Error.WriteLine)
+                    .ExecuteAsync();
+            }
+            catch (Exception e)
+            {
+                report.Error(e.Message);
+                continue;
+            }
+
+            report.Success("Successfully downloaded report");
         }
     }
 }

@@ -5,15 +5,15 @@
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
-             x:Class="AutoPBI.Views.Popups.RefreshPopupView"
-             x:DataType="vm:RefreshPopupViewModel">
-    <Design.DataContext><vm:RefreshPopupViewModel></vm:RefreshPopupViewModel></Design.DataContext>
+             x:Class="AutoPBI.Views.Popups.ScanPopupView"
+             x:DataType="vm:ScanPopupViewModel">
+    <Design.DataContext><vm:ScanPopupViewModel></vm:ScanPopupViewModel></Design.DataContext>
     <Grid>
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
                 IsVisible="{Binding IsVisible}"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="300">
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="350">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Refresh Reports</TextBlock>

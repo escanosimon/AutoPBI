@@ -49,7 +49,7 @@ public partial class ClonePopupViewModel : PopupViewModel
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
                 if (!IsProcessing) return;
-                report.Status = Report.StatusType.Loading;
+                report.Loading();
 
                 try
                 {
@@ -70,22 +70,29 @@ public partial class ClonePopupViewModel : PopupViewModel
                 }
                 catch (Exception e)
                 {
-                    report.Status = Report.StatusType.Error;
+                    report.Error(e.Message);
                     errors++;
                     continue;
                 }
 
-                report.Status = Report.StatusType.Success;
+                report.Success($"Successfully cloned report to {workspace.Name}");
                 successes++;
             }
 
             if (errors > 0)
             {
-                report.Status = successes > 0 ? Report.StatusType.Warning : Report.StatusType.Error;
+                if (successes > 0)
+                {
+                    report.Warning("Report failed to clone to some selected workspaces.");
+                }
+                else
+                {
+                    report.Error("Report failed to clone to any selected workspaces.");
+                }
             }
             else
             {
-                report.Status = Report.StatusType.Success;
+                report.Success("Successfully cloned report to selected workspaces.");
             }
         }
     }
