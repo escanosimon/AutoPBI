@@ -154,7 +154,7 @@ public partial class PublishPopupViewModel : PopupViewModel
             }
         }
         
-        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.ShownWorkspaces);
+        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
     }
     
     private void UpdateVisibilities()

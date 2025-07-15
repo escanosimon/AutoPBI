@@ -17,7 +17,7 @@
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Script Reports</TextBlock>
-                </Border>   
+                </Border>
                     <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                         <Grid RowDefinitions="Auto, *">
                             <c:ToggleButtonGroup

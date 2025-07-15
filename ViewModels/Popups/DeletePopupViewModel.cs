@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoPBI.Models;
 using CommunityToolkit.Mvvm.Input;
 
@@ -23,31 +24,83 @@ public partial class DeletePopupViewModel : PopupViewModel
             if (!IsProcessing) return;
             
             report.Loading();
-
+            
+            Dataset dataset;
             try
             {
-                await MainViewModel.PowerShellService
-                    .BuildCommand()
-                    .WithCommand("Remove-PowerBIReport")
-                    .WithArguments(args => args
-                        .Add("-Id")
-                        .Add($"{report.Id}")
-                        .Add("-WorkspaceId")
-                        .Add($"{report.Workspace!.Id}")
-                    )
-                    .WithStandardErrorPipe(Console.Error.WriteLine)
-                    .ExecuteAsync();
+                dataset = MainViewModel.Datasets[report.DatasetId!];
+                if (dataset.Name == report.Name && dataset.Workspace.Id == report.Workspace!.Id)
+                {
+                    await DeleteDataset(report);
+                    report.Success("Successfully deleted report and underlying dataset.");
+                }
+                else
+                {
+                    await DeleteReport(report);
+                    report.Warning("Report successfully deleted but failed to delete underlying dataset with a different name/workspace.");
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                report.Error(e.Message);
-                continue;
+                await DeleteReport(report);
+                report.Warning("Report successfully deleted but failed to delete underlying dataset (No dataset or permissions to dataset).");
             }
-            
-            report.Success("Successfully deleted report");
             report.IsSelected = false;
         }
+    }
+    
+    private async Task DeleteDataset(Report report)
+    {
+        try
+        {
+            var apiUrl = $"https://api.powerbi.com/v1.0/myorg/datasets/{report.DatasetId}";
+            await MainViewModel.PowerShellService.BuildCommand()
+                .WithCommand("Invoke-PowerBIRestMethod")
+                .WithArguments(args => args
+                    .Add("-Url")
+                    .Add(apiUrl)
+                    .Add("-Method")
+                    .Add("Delete")
+                    .Add("-ErrorAction")
+                    .Add("Stop"))
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync();
+        }
+        catch (Exception e)
+        {
+            report.Error(e.Message);
+            throw;
+        }
+    }
 
-        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.ShownWorkspaces);
+    private async Task DeleteReport(Report report)
+    {
+        try
+        {
+            await MainViewModel.PowerShellService
+                .BuildCommand()
+                .WithCommand("Remove-PowerBIReport")
+                .WithArguments(args => args
+                    .Add("-Id")
+                    .Add($"{report.Id}")
+                    .Add("-WorkspaceId")
+                    .Add($"{report.Workspace!.Id}")
+                )
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync();
+        }
+        catch (Exception e)
+        {
+            report.Error(e.Message);
+            throw;
+        }
+    }
+
+    public override void Close(Action? action = null)
+    {
+        base.Close(() =>
+        {
+            MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.ShownWorkspaces);
+        });
     }
 }

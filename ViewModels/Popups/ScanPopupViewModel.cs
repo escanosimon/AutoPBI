@@ -125,11 +125,16 @@ public partial class ScanPopupViewModel : PopupViewModel
             Dataset dataset;
             try
             {
-                dataset = MainViewModel.Datasets[report.DatasetId!];
+                if (report.DatasetId == null)
+                {
+                    report.Error("Report has no linked dataset.");
+                    continue;
+                }
+                dataset = MainViewModel.Datasets[report.DatasetId];
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                report.Error(e.Message);
+                report.Error("You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.");
                 continue;
             }
 

@@ -95,5 +95,7 @@ public partial class ClonePopupViewModel : PopupViewModel
                 report.Success("Successfully cloned report to selected workspaces.");
             }
         }
+        
+        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
     }
 }

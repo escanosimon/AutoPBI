@@ -24,8 +24,12 @@
             <ColumnDefinition MinWidth="250" Width="2*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
+            
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
+            
+        </Grid>
         
-        <Grid Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
             <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
