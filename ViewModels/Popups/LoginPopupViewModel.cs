@@ -25,7 +25,11 @@ public partial class LoginPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Login()
     {
-        if (string.IsNullOrWhiteSpace(UsernameText) || string.IsNullOrWhiteSpace(PasswordText)) return;
+        if (string.IsNullOrWhiteSpace(UsernameText) || string.IsNullOrWhiteSpace(PasswordText))
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot log in.", "Please fill out the fields."));
+            return;
+        }
         
         IsProcessing = true;
         PSObject loginResult;
@@ -42,9 +46,9 @@ public partial class LoginPopupViewModel : PopupViewModel
                 .WithStandardErrorPipe(Console.Error.WriteLine)
                 .ExecuteAsync()).Objects[0];
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.Error.WriteLine("Login failed.");
+            MainViewModel.ErrorCommand.Execute(("Login failed!", "Check your credentials."));
             IsProcessing = false;
             return;
         }
@@ -62,7 +66,8 @@ public partial class LoginPopupViewModel : PopupViewModel
         );
 
         MainViewModel.User.AccessToken = (string)accessTokenResult.BaseObject;
-
+        
+        MainViewModel.SuccessCommand.Execute(("Login successful!", "Fetching workspaces..."));
         MainViewModel.IsLoggedIn = true;
         MainViewModel.IsReloading = false;
         Close();

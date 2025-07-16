@@ -85,10 +85,18 @@ public partial class PublishPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Publish()
     {
-        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0) return;
+        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot publish!", "Select at least one workspace and one report to publish."));
+            return;
+        }
         
         IsProcessing = true;
         ShowImportedReports();
+        
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
         
         foreach (var report in ImportedReports)
         {
@@ -97,6 +105,7 @@ public partial class PublishPopupViewModel : PopupViewModel
             var name = Path.GetFileNameWithoutExtension(path);
             List<string> reportErrors = [];
             var reportSuccesses = 0;
+            
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
                 if (!IsProcessing) return;
@@ -142,18 +151,22 @@ public partial class PublishPopupViewModel : PopupViewModel
                 if (reportSuccesses > 0)
                 {
                     report.Warning("Report was not published in some selected workspaces.");
+                    warnings++;
                 }
                 else
                 {
                     report.Error("Report was not published to any selected workspaces.");
+                    errors++;
                 }
             }
             else
             {
                 report.Success("Successfully published to all selected workspaces.");
+                successes++;
             }
         }
         
+        ToastCommand(successes, warnings, errors).Execute(("Publishing finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
         MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
     }
     

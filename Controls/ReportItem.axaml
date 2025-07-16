@@ -13,7 +13,7 @@
                 Margin="0 0 12 0" 
                 IsChecked="{Binding #Root.Report.IsSelected}"
                 Status="{Binding #Root.Report.Status}" />
-            <Label Grid.Column="1" Margin="0 0 8 0" FontFamily="{DynamicResource Icon}" FontSize="13" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
+            <Label Grid.Column="1" Margin="0 0 8 0" FontFamily="{DynamicResource Icon}" FontSize="13" Content="&#xf659;" VerticalAlignment="Center" Foreground="{DynamicResource Secondary}" />
             <TextBlock Foreground="{DynamicResource Foreground}" Grid.Column="2" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{Binding #Root.Report.Name}" />
             
             <ToolTip.Tip>

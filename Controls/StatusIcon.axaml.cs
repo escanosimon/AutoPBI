@@ -52,4 +52,13 @@ public class StatusIcon : TemplatedControl
         get => GetValue(IsCheckedProperty);
         set => SetValue(IsCheckedProperty, value);
     }
+
+    public static readonly StyledProperty<object?> IconUnicodeProperty = AvaloniaProperty.Register<StatusIcon, object?>(
+        nameof(IconUnicode));
+
+    public object? IconUnicode
+    {
+        get => GetValue(IconUnicodeProperty);
+        set => SetValue(IconUnicodeProperty, value);
+    }
 }

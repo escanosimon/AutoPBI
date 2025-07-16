@@ -1,42 +1,102 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:c="clr-namespace:AutoPBI.Controls"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
-             x:Class="AutoPBI.Controls.Toast">
-    <Grid 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch">
-        <Border 
-            Padding="16">
-            <Border 
-                MaxWidth="300"
-                VerticalAlignment="Bottom" 
-                HorizontalAlignment="Right"
-                Padding="12"
-                CornerRadius="8"
-                BorderBrush="{DynamicResource Neutral}"
-                BorderThickness="1"
-                Background="{DynamicResource Background}">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0 0 0 8"
-                        TextWrapping="Wrap"
-                        Foreground="{DynamicResource Foreground}">
-                        Select a workspace to continue 
-                    </TextBlock>
-                    <c:IconButton 
-                        HorizontalAlignment="Right"
-                        FontSize="12"
-                        Padding="4 0"
-                        Background="{DynamicResource NeutralMuted}"
-                        BorderThickness="1"
-                        BorderBrush="{DynamicResource Neutral}"
-                        Text="Okay"
-                        />
-                </StackPanel>
-            </Border>
-        </Border>
-    </Grid>
-</UserControl>
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:AutoPBI.Controls">
+    <Design.PreviewWith>
+        <c:Toast Status="Error"/>
+    </Design.PreviewWith>
+
+    <Style Selector="c|Toast">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border 
+                    Opacity="0.85"
+                    MaxWidth="400"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="12">
+                    <Grid 
+                        ColumnDefinitions="Auto, *, Auto">
+                        <c:IconButton 
+                            CornerRadius="999"
+                            IsHitTestVisible="False"
+                            IconUnicode="{TemplateBinding IconUnicode}"
+                            Width="36"
+                            IconSize="15"
+                            IconMargin="0"
+                            Margin="0 0 12 0"
+                            Background="{TemplateBinding BorderBrush}"
+                            Foreground="{DynamicResource White}"/>
+                        <Grid Grid.Column="1" 
+                              RowDefinitions="Auto, Auto"
+                              Margin="0 0 12 0">
+                            <TextBlock 
+                                FontFamily="{DynamicResource InterMedium}" 
+                                Foreground="{DynamicResource Foreground}"
+                                Margin="0 0 0 2"
+                                Text="{TemplateBinding Title}" />
+                            <TextBlock 
+                                Grid.Row="1"
+                                Foreground="{DynamicResource ForegroundMuted}"
+                                Text="{TemplateBinding Description}">
+                                <ToolTip.Tip>
+                                    <c:TooltipContent 
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        Foreground="{DynamicResource ForegroundMuted}"
+                                        Text="{TemplateBinding Description}" />
+                                </ToolTip.Tip>
+                            </TextBlock>
+                        </Grid>
+                        <c:IconButton 
+                            Command="{TemplateBinding Command}"
+                            Grid.Column="2" 
+                            Background="Transparent"
+                            HoverBackground="{DynamicResource Background}"
+                            Foreground="{DynamicResource ForegroundMuted}"
+                            IconMargin="0"
+                            IconSize="18"
+                            Padding="0"
+                            MaxHeight="30"
+                            Width="30"
+                            CornerRadius="8"
+                            IconUnicode="&#xf00d;"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Setter Property="Status" Value="Normal" />
+        <Setter Property="Title" Value="Heads up!" />
+        <Setter Property="Description" Value="We're not quite sure what happened." />
+        <Setter Property="IconUnicode" Value="&#xf0eb;" />
+        <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ForegroundMuted}" />
+    </Style>
+    
+    <Style Selector="c|Toast[Status=Success]">
+        <Setter Property="Title" Value="Success!" />
+        <Setter Property="Description" Value="Action was completed successfully." />
+        <Setter Property="IconUnicode" Value="&#xf00c;" />
+        <Setter Property="Background" Value="{DynamicResource SuccessLight}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Success}" />
+    </Style>
+    
+    <Style Selector="c|Toast[Status=Error]">
+        <Setter Property="Title" Value="Error!" />
+        <Setter Property="Description" Value="Something went wrong." />
+        <Setter Property="IconUnicode" Value="&#xf00d;" />
+        <Setter Property="Background" Value="{DynamicResource ErrorLight}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Error}" />
+    </Style>
+    
+    <Style Selector="c|Toast[Status=Warning]">
+        <Setter Property="Title" Value="Warning!" />
+        <Setter Property="Description" Value="Proceed with caution." />
+        <Setter Property="IconUnicode" Value="&#xf071;" />
+        <Setter Property="Background" Value="{DynamicResource WarningLight}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Warning}" />
+    </Style>
+</Styles>

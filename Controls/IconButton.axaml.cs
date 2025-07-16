@@ -55,13 +55,13 @@ public class IconButton : TemplatedControl
         set => SetValue(HoverBorderBrushProperty, value);
     }
 
-    public static readonly StyledProperty<EventHandler<RoutedEventArgs>> ClickProperty = AvaloniaProperty.Register<IconButton, EventHandler<RoutedEventArgs>>(
-        nameof(Click));
+    public static readonly StyledProperty<int?> IconSizeProperty = AvaloniaProperty.Register<IconButton, int?>(
+        nameof(IconSize), 13);
 
-    public EventHandler<RoutedEventArgs> Click
+    public int? IconSize
     {
-        get => GetValue(ClickProperty);
-        set => SetValue(ClickProperty, value);
+        get => GetValue(IconSizeProperty);
+        set => SetValue(IconSizeProperty, value);
     }
     
     public static readonly StyledProperty<object?> IconUnicodeProperty = AvaloniaProperty.Register<IconButton, object?>(

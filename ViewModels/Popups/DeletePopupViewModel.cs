@@ -19,6 +19,10 @@ public partial class DeletePopupViewModel : PopupViewModel
     {
         IsProcessing = true;
         
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
+        
         foreach (var report in MainViewModel.SelectedReports)
         {
             if (!IsProcessing) return;
@@ -33,67 +37,56 @@ public partial class DeletePopupViewModel : PopupViewModel
                 {
                     await DeleteDataset(report);
                     report.Success("Successfully deleted report and underlying dataset.");
+                    successes++;
                 }
                 else
                 {
                     await DeleteReport(report);
                     report.Warning("Report successfully deleted but failed to delete underlying dataset with a different name/workspace.");
+                    warnings++;
                 }
             }
             catch (Exception)
             {
                 await DeleteReport(report);
                 report.Warning("Report successfully deleted but failed to delete underlying dataset (No dataset or permissions to dataset).");
+                warnings++;
             }
             report.IsSelected = false;
         }
+        
+        ToastCommand(successes, warnings, errors).Execute(("Deleting finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
     }
     
     private async Task DeleteDataset(Report report)
     {
-        try
-        {
-            var apiUrl = $"https://api.powerbi.com/v1.0/myorg/datasets/{report.DatasetId}";
-            await MainViewModel.PowerShellService.BuildCommand()
-                .WithCommand("Invoke-PowerBIRestMethod")
-                .WithArguments(args => args
-                    .Add("-Url")
-                    .Add(apiUrl)
-                    .Add("-Method")
-                    .Add("Delete")
-                    .Add("-ErrorAction")
-                    .Add("Stop"))
-                .WithStandardErrorPipe(Console.Error.WriteLine)
-                .ExecuteAsync();
-        }
-        catch (Exception e)
-        {
-            report.Error(e.Message);
-            throw;
-        }
+        var apiUrl = $"https://api.powerbi.com/v1.0/myorg/datasets/{report.DatasetId}";
+        await MainViewModel.PowerShellService.BuildCommand()
+            .WithCommand("Invoke-PowerBIRestMethod")
+            .WithArguments(args => args
+                .Add("-Url")
+                .Add(apiUrl)
+                .Add("-Method")
+                .Add("Delete")
+                .Add("-ErrorAction")
+                .Add("Stop"))
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync();
     }
 
     private async Task DeleteReport(Report report)
     {
-        try
-        {
-            await MainViewModel.PowerShellService
-                .BuildCommand()
-                .WithCommand("Remove-PowerBIReport")
-                .WithArguments(args => args
-                    .Add("-Id")
-                    .Add($"{report.Id}")
-                    .Add("-WorkspaceId")
-                    .Add($"{report.Workspace!.Id}")
-                )
-                .WithStandardErrorPipe(Console.Error.WriteLine)
-                .ExecuteAsync();
-        }
-        catch (Exception e)
-        {
-            report.Error(e.Message);
-            throw;
-        }
+        await MainViewModel.PowerShellService
+            .BuildCommand()
+            .WithCommand("Remove-PowerBIReport")
+            .WithArguments(args => args
+                .Add("-Id")
+                .Add($"{report.Id}")
+                .Add("-WorkspaceId")
+                .Add($"{report.Workspace!.Id}")
+            )
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync();
     }
 
     public override void Close(Action? action = null)

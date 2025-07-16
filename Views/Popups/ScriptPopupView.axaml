@@ -46,10 +46,10 @@
                                             Padding="0"
                                             IconMargin="0"
                                             CornerRadius="4"
-                                            Foreground="{DynamicResource WarningDark}"
-                                            HoverBackground="{DynamicResource Warning}"
+                                            Foreground="{DynamicResource Warning}"
+                                            HoverBackground="{DynamicResource WarningLight}"
                                             BorderThickness="1"
-                                            BorderBrush="{DynamicResource WarningDark}"
+                                            BorderBrush="{DynamicResource Warning}"
                                             IconUnicode="&#xf05a;" 
                                             FontSize="11"
                                             Text="Check this repository for sample scripts." />

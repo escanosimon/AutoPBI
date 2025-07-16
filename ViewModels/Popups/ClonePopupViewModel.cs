@@ -37,15 +37,21 @@ public partial class ClonePopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Clone()
     {
-        if (MainViewModel.SelectedWorkspaces.Count == 0) return;
+        if (MainViewModel.SelectedWorkspaces.Count == 0)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot proceed with cloning.", "Please select at least one workspace"));
+            return;
+        }
         
         IsProcessing = true;
         ShowReports();
         
+        var errors = 0;
+        var warnings = 0;
+        var successes = 0;
+        
         foreach (var report in MainViewModel.SelectedReports)
         {
-            var errors = 0;
-            var successes = 0;
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
                 if (!IsProcessing) return;
@@ -84,18 +90,22 @@ public partial class ClonePopupViewModel : PopupViewModel
                 if (successes > 0)
                 {
                     report.Warning("Report failed to clone to some selected workspaces.");
+                    warnings++;
                 }
                 else
                 {
                     report.Error("Report failed to clone to any selected workspaces.");
+                    errors++;
                 }
             }
             else
             {
                 report.Success("Successfully cloned report to selected workspaces.");
+                successes++;
             }
         }
-        
+
+        ToastCommand(successes, warnings, errors).Execute(("Cloning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
         MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
     }
 }

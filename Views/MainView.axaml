@@ -5,7 +5,7 @@
         xmlns:c="clr-namespace:AutoPBI.Controls"
         xmlns:vm="clr-namespace:AutoPBI.ViewModels"
         xmlns:popups="clr-namespace:AutoPBI.Views.Popups"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="300"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
         Width="1000" Height="600"
         x:Name="MainWindow"
         x:Class="AutoPBI.MainView"
@@ -26,7 +26,16 @@
         </Grid.ColumnDefinitions>
             
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
-            
+            <Border Padding="16">
+                <c:Toast 
+                    IsVisible="{Binding IsToasting}"
+                    Status="{Binding ToastStatus}"
+                    Title="{Binding ToastTitle}"
+                    Description="{Binding ToastDescription}"
+                    Command="{Binding CloseToastCommand}"
+                    VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Right" />
+            </Border>
         </Grid>
         
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
@@ -143,9 +152,9 @@
                                           IconMargin="0"
                                           Padding="12 0"
                                           BorderThickness="1"
-                                          Foreground="{DynamicResource ErrorDark}"
+                                          Foreground="{DynamicResource Error}"
                                           Command="{Binding OpenPopupCommand}" CommandParameter="{Binding DeletePopup}"
-                                          Background="{DynamicResource Error}" BorderBrush="{DynamicResource ErrorDark}" CornerRadius="0 8 8 0" />
+                                          Background="{DynamicResource ErrorLight}" BorderBrush="{DynamicResource Error}" CornerRadius="0 8 8 0" />
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="2" Margin="0 16 0 0">

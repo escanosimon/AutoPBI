@@ -28,9 +28,17 @@ public partial class DownloadPopupViewModel : PopupViewModel
         };
 
         var destinationFolder = await MainViewModel.DialogService.OpenFolderDialogAsync(options);
-        if (destinationFolder == null) return;
+        if (destinationFolder == null)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot proceed with download!", "Destination folder is null."));
+            return;
+        }
         
         IsProcessing = true;
+        
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
         
         foreach (var report in MainViewModel.SelectedReports)
         {
@@ -59,10 +67,14 @@ public partial class DownloadPopupViewModel : PopupViewModel
             catch (Exception e)
             {
                 report.Error(e.Message);
+                errors++;
                 continue;
             }
 
             report.Success("Successfully downloaded report");
+            successes++;
         }
+        
+        ToastCommand(successes, warnings, errors).Execute(("Downloading finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
     }
 }

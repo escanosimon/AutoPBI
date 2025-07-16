@@ -12,6 +12,7 @@
         <StyleInclude Source="Controls/UserImage.axaml"></StyleInclude>
         <StyleInclude Source="Controls/ToggleButtonGroup.axaml"></StyleInclude>
         <StyleInclude Source="Controls/TooltipContent.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/Toast.axaml"></StyleInclude>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
              
@@ -27,12 +28,14 @@
             <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
             <SolidColorBrush x:Key="PrimaryDark">#0F6152</SolidColorBrush>
             <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
-            <SolidColorBrush x:Key="Success">#a7f3d0</SolidColorBrush>
-            <SolidColorBrush x:Key="SuccessDark">#10b981</SolidColorBrush>
-            <SolidColorBrush x:Key="Warning">#fef08a</SolidColorBrush>
-            <SolidColorBrush x:Key="WarningDark">#eab308</SolidColorBrush>
-            <SolidColorBrush x:Key="Error">#fecdd3</SolidColorBrush>
-            <SolidColorBrush x:Key="ErrorDark">#f43f5e</SolidColorBrush>
+            <SolidColorBrush x:Key="Secondary">#ecc92a</SolidColorBrush>
+            
+            <SolidColorBrush x:Key="SuccessLight">#f1f9f4</SolidColorBrush>
+            <SolidColorBrush x:Key="Success">#51dc6b</SolidColorBrush>
+            <SolidColorBrush x:Key="WarningLight">#fef7ea</SolidColorBrush>
+            <SolidColorBrush x:Key="Warning">#febf21</SolidColorBrush>
+            <SolidColorBrush x:Key="ErrorLight">#fcefea</SolidColorBrush>
+            <SolidColorBrush x:Key="Error">#fc5859</SolidColorBrush>
         
             <FontFamily x:Key="InterRegular">/Assets/Fonts/Inter-Regular.otf#Inter</FontFamily>
             <FontFamily x:Key="InterMedium">/Assets/Fonts/Inter-Medium.otf#Inter Medium</FontFamily>

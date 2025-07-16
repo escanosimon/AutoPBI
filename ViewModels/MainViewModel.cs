@@ -2,9 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -13,10 +16,17 @@ namespace AutoPBI.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    [ObservableProperty] private DispatcherTimer _timer;
+    
     [ObservableProperty] private User _user = null!;
     [ObservableProperty] private bool _isLoggedIn;
 
     [ObservableProperty] private bool _isReloading = true;
+    
+    [ObservableProperty] private bool _isToasting;
+    [ObservableProperty] private Toast.StatusType _toastStatus;
+    [ObservableProperty] private string _toastTitle;
+    [ObservableProperty] private string _toastDescription;
     
     [ObservableProperty] private ObservableCollection<Workspace> _workspaces = [];
     [ObservableProperty] private ObservableHashMap<string, Dataset> _datasets = [];
@@ -48,6 +58,12 @@ public partial class MainViewModel : ViewModelBase
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
         LoginPopup = AddPopup(new LoginPopupViewModel(this));
+
+        Timer = new DispatcherTimer();
+        Timer.Tick += (s, e) =>
+        {
+            CloseToast();
+        };
     }
 
     private PopupViewModel AddPopup(PopupViewModel popup)
@@ -86,6 +102,8 @@ public partial class MainViewModel : ViewModelBase
             workspace.Name = obj.Properties["Name"].Value.ToString();
             workspace.IsLoading = false;
         }
+
+        Toast(Controls.Toast.StatusType.Normal, "Finished fetching workspaces!", "Select a workspace to show reports.");
     }
 
     [RelayCommand]
@@ -314,5 +332,53 @@ public partial class MainViewModel : ViewModelBase
                 SelectedWorkspaces.Remove(workspace);
             }
         }
+    }
+
+    private void Toast(Toast.StatusType statusType, string title, string description)
+    {
+        ToastStatus = statusType;
+        ToastTitle = title;
+        ToastDescription = description;
+        
+        IsToasting = true;
+        Timer.Stop();
+        Timer.Interval = TimeSpan.FromSeconds(5);
+        Timer.Start();
+    }
+
+    [RelayCommand]
+    private void Success(object? parameter)
+    {
+        if (parameter is (string title, string description))
+        {
+            Toast(Controls.Toast.StatusType.Success, title, description);
+        }
+    }
+    
+    [RelayCommand]
+    private void Error(object? parameter)
+    {
+        if (parameter is (string title, string description))
+        {
+            Toast(Controls.Toast.StatusType.Error, title, description);
+        }
+    }
+    
+    [RelayCommand]
+    private void Warning(object? parameter)
+    {
+        if (parameter is (string title, string description))
+        {
+            Toast(Controls.Toast.StatusType.Warning, title, description);
+        }
+    }
+
+    [RelayCommand]
+    private void CloseToast()
+    {
+        IsToasting = false;
+        ToastTitle = "";
+        ToastDescription = "";
+        Timer.Stop();
     }
 }

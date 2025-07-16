@@ -32,4 +32,11 @@ public abstract partial class PopupViewModel: ViewModelBase
         Console.Error.WriteLine("Process stopped...");
         IsProcessing =  false;
     }
+
+    public IRelayCommand<object?> ToastCommand(int successes, int warnings, int errors)
+    {
+        return errors > 0
+            ? (successes > 0 ? MainViewModel.WarningCommand : MainViewModel.ErrorCommand)
+            : (warnings > 0 ? MainViewModel.WarningCommand : MainViewModel.SuccessCommand);
+    }
 }

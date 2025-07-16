@@ -29,7 +29,7 @@
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center">
-                        <Label FontSize="13"
+                        <Label FontSize="{TemplateBinding IconSize}"
                                IsVisible="{TemplateBinding IconUnicode}"
                                FontFamily="{DynamicResource Icon}" 
                                Content="{TemplateBinding IconUnicode}"

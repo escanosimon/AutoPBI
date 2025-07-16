@@ -78,6 +78,10 @@ public partial class ScriptPopupViewModel : PopupViewModel
         IsProcessing = true;
         ShowReports();
         
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
+        
         foreach (var report in MainViewModel.SelectedReports)
         {
             if (!IsProcessing) return;
@@ -103,10 +107,14 @@ public partial class ScriptPopupViewModel : PopupViewModel
             catch (Exception e)
             {
                 report.Error(e.Message);
+                errors++;
                 continue;
             }
             report.Success("Successfully applied script to dataset");
+            successes++;
         }
+        
+        ToastCommand(successes, warnings, errors).Execute(("Scripting finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
     }
 
     [RelayCommand]
