@@ -26,7 +26,6 @@
             <SolidColorBrush x:Key="ForegroundSemiTransparent">#1A403F44</SolidColorBrush>
             <SolidColorBrush x:Key="ForegroundMuted">#76757A</SolidColorBrush>
             <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
-            <SolidColorBrush x:Key="PrimaryDark">#0F6152</SolidColorBrush>
             <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
             <SolidColorBrush x:Key="Secondary">#ecc92a</SolidColorBrush>
             

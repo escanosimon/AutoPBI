@@ -22,9 +22,9 @@
                         HorizontalAlignment="Stretch"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
                         Padding="{TemplateBinding Padding}" 
                         Command="{TemplateBinding Command}" 
-                        BorderThickness="{TemplateBinding BorderThickness}"
                         CommandParameter="{TemplateBinding CommandParameter}">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"

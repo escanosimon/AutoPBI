@@ -83,6 +83,6 @@ public partial class ReportItem : UserControl
 
     private void CopyMessage(object? sender, RoutedEventArgs e)
     {
-        ClipboardService.SetTextAsync(Report.Message!);
+        ClipboardService.SetTextAsync(Report.Message!.ToString()!);
     }
 }

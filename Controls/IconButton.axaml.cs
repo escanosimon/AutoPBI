@@ -108,4 +108,13 @@ public class IconButton : TemplatedControl
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);
     }
+
+    public static readonly StyledProperty<EventHandler<RoutedEventArgs>?> ClickProperty = AvaloniaProperty.Register<IconButton, EventHandler<RoutedEventArgs>?>(
+        nameof(Click));
+
+    public EventHandler<RoutedEventArgs>? Click
+    {
+        get => GetValue(ClickProperty);
+        set => SetValue(ClickProperty, value);
+    }
 }

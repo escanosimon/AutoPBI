@@ -5,7 +5,7 @@
         xmlns:c="clr-namespace:AutoPBI.Controls"
         xmlns:vm="clr-namespace:AutoPBI.ViewModels"
         xmlns:popups="clr-namespace:AutoPBI.Views.Popups"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="300"
         Width="1000" Height="600"
         x:Name="MainWindow"
         x:Class="AutoPBI.MainView"
@@ -58,7 +58,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <c:IconButton Command="{Binding OpenPopupCommand}" CommandParameter="{Binding PublishPopup}"
-                                  Classes.Disabled="{Binding !IsLoggedIn}" Padding="12 0" CornerRadius="12"
+                                  Classes.Disabled="{Binding !Workspaces.Count}" Padding="12 0" CornerRadius="12"
                                   VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
                                   Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
                     <c:IconButton IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Log in"
@@ -69,7 +69,49 @@
                                   BorderBrush="{DynamicResource NeutralMuted}" 
                                   Command="{Binding OpenPopupCommand}" CommandParameter="{Binding LoginPopup}"
                                   BorderThickness="1" />
-                    <c:UserImage Color="{Binding User.Color}" Initials="{Binding User.Initials}" Margin="8 0 0 0" IsVisible="{Binding IsLoggedIn}" />
+                    <Button
+                        x:Name="SignOutButton"
+                        Classes="NoHover"
+                        Background="Transparent"
+                        Padding="0"
+                        Margin="8 0 0 0"
+                        CornerRadius="999"
+                        IsVisible="{Binding IsLoggedIn}">
+                        <c:UserImage 
+                            Color="{Binding User.Color}" 
+                            Initials="{Binding User.Initials}" />
+                        
+                        <Button.Flyout>
+                            <Flyout FlyoutPresenterClasses="custom">
+                                <Border
+                                    MaxWidth="250"
+                                    CornerRadius="8"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Neutral}"
+                                    Background="{DynamicResource Background}"
+                                    Padding="16">
+                                    <StackPanel>
+                                        <c:UserImage 
+                                            Margin="0 0 0 8"
+                                            Color="{Binding User.Color}" 
+                                            Initials="{Binding User.Initials}" />
+                                        <TextBlock
+                                            Margin="0 0 0 16"
+                                            FontSize="12"
+                                            Foreground="{DynamicResource ForegroundMuted}"
+                                            Text="simon.escano@amcsgroup.com" />
+                                        <c:IconButton
+                                            Command="{Binding LogoutCommand}"
+                                            Click="OnSignOutButton_Click"
+                                            Text="Sign out"
+                                            Padding="12 6"
+                                            Foreground="{DynamicResource White}"
+                                            Background="{DynamicResource Primary}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -78,22 +120,22 @@
                 <Grid RowDefinitions="Auto, Auto, Auto, *, 36">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
                     <TextBox Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" />
-                    <Button Grid.Row="2" Classes.Disabled="{Binding !IsLoggedIn}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
+                    <Button Grid.Row="2" Classes.Disabled="{Binding !Workspaces.Count}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
                         <Grid ColumnDefinitions="*, Auto">
                             <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}">All workspaces</TextBlock>
-                            <c:StatusIcon Grid.Column="1" IsChecked="{Binding IsAllWorkspacesShown}" VerticalAlignment="Center" BorderBrush="{DynamicResource Neutral}" Classes="Custom"/>
+                            <c:StatusIcon Grid.Column="1" IsShown="{Binding IsAllWorkspacesShown}" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
                     <ScrollViewer Grid.Row="3" Margin="0 0 0 12">
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <c:WorkspaceItem Workspace="{Binding}" Command="{Binding ShowCommand}" IsChecked="{Binding IsShown}" />
+                                    <c:WorkspaceItem Workspace="{Binding}" Command="{Binding ShowCommand}" Status="Showable" IsShown="{Binding IsShown}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <c:IconButton Text="Reload selected" 
+                    <c:IconButton Text="Reload shown reports" 
                                   Classes.Disabled="{Binding IsReloading}"
                                   Grid.Row="4" 
                                   IconUnicode="&#xf021;"
@@ -170,7 +212,7 @@
                                             Background="{DynamicResource Background}"
                                             >
                                             <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
-                                                <c:StatusIcon Status="Selectable" IsChecked="{Binding IsAllReportsSelected}" Margin="0 0 10 0" IsVisible="{Binding Reports.Count}"></c:StatusIcon>
+                                                <c:StatusIcon Status="Selectable" IsSelected="{Binding IsAllReportsSelected}" Margin="0 0 10 0" IsVisible="{Binding Reports.Count}"></c:StatusIcon>
                                                 <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
                                                 <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}"/>
                                                 <Border Grid.Column="3" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding Reports.Count}">

@@ -25,6 +25,7 @@ public abstract partial class PopupViewModel: ViewModelBase
         foreach (var report in MainViewModel.SelectedReports)
         {
             report.Selectable();
+            report.Message = false;
         }
         
         if (!IsProcessing) return;

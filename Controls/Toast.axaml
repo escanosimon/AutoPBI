@@ -10,12 +10,12 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border 
-                    Opacity="0.85"
+                    Opacity="0.95"
                     MaxWidth="400"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="12"
+                    CornerRadius="8"
                     Padding="12">
                     <Grid 
                         ColumnDefinitions="Auto, *, Auto">

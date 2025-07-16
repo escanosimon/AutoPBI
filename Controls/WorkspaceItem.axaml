@@ -27,8 +27,13 @@
                                  VerticalAlignment="Center" 
                                  HorizontalAlignment="Left" 
                                  Foreground="{DynamicResource Primary}" />
-            <c:StatusIcon Grid.Column="2" Status="Selectable" IsChecked="{Binding #Root.IsChecked}" Margin="8 0 0 0"></c:StatusIcon>
-            
+            <c:StatusIcon 
+                Grid.Column="2" 
+                Status="{Binding #Root.Status}" 
+                IsShown="{Binding #Root.IsShown}" 
+                IsSelected="{Binding #Root.IsSelected}" 
+                Margin="8 0 0 0" />
+
             <ToolTip.Tip>
                 <c:TooltipContent Text="{Binding #Root.Workspace.Name}" />
             </ToolTip.Tip>

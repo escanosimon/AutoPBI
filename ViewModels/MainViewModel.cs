@@ -66,6 +66,29 @@ public partial class MainViewModel : ViewModelBase
         };
     }
 
+    [RelayCommand]
+    private async void Logout()
+    {
+        try
+        {
+            await PowerShellService.BuildCommand()
+                .WithCommand("Disconnect-PowerBIServiceAccount")
+                .ExecuteAsync();
+            Workspaces = [];
+            Datasets = [];
+            ShownWorkspaces = [];
+            SelectedWorkspaces = [];
+            SelectedReports = [];
+            User = null!;
+            IsLoggedIn = false;
+            Success(("Success!", "Logged out successfully."));
+        }
+        catch (Exception)
+        {
+            Error(("Failed to log out!", "Something went wrong."));
+        }
+    }
+
     private PopupViewModel AddPopup(PopupViewModel popup)
     {
         Popups.Add(popup);

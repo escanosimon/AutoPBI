@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace AutoPBI;
 
@@ -17,5 +18,10 @@ public partial class MainView : Window
         {
             BeginMoveDrag(e);
         }
+    }
+
+    private void OnSignOutButton_Click(object? sender, RoutedEventArgs e)
+    {
+        SignOutButton.Flyout!.Hide();
     }
 }

@@ -28,18 +28,7 @@ namespace AutoPBI.Models
             IsLoading = true;
             IsAllReportsSelected = false;
         }
-        
-        public Workspace(string? id, string? name, MainViewModel mainViewModel)
-        {
-            Id = id;
-            Name = name;
-            IsShown = false;
-            IsSelected = false;
-            IsAllReportsSelected = false;
-            IsLoading = true;
-            MainViewModel = mainViewModel;
-        }
-        
+
         [RelayCommand]
         public void Show()
         {

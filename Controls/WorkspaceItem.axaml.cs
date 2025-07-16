@@ -10,13 +10,31 @@ namespace AutoPBI.Controls;
 
 public partial class WorkspaceItem : UserControl
 {
-    public static readonly StyledProperty<bool> IsCheckedProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
-        nameof(IsChecked));
+    public static readonly StyledProperty<StatusIcon.StatusType> StatusProperty = AvaloniaProperty.Register<WorkspaceItem, StatusIcon.StatusType>(
+        nameof(Status), StatusIcon.StatusType.Selectable);
 
-    public bool IsChecked
+    public StatusIcon.StatusType Status
     {
-        get => GetValue(IsCheckedProperty);
-        set => SetValue(IsCheckedProperty, value);
+        get => GetValue(StatusProperty);
+        set => SetValue(StatusProperty, value);
+    }
+    
+    public static readonly StyledProperty<bool> IsShownProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
+        nameof(IsShown));
+
+    public bool IsShown
+    {
+        get => GetValue(IsShownProperty);
+        set => SetValue(IsShownProperty, value);
+    }
+    
+    public static readonly StyledProperty<bool> IsSelectedProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
+        nameof(IsSelected));
+
+    public bool IsSelected
+    {
+        get => GetValue(IsSelectedProperty);
+        set => SetValue(IsSelectedProperty, value);
     }
     
     public static readonly StyledProperty<Workspace> WorkspaceProperty = AvaloniaProperty.Register<WorkspaceItem, Workspace>(

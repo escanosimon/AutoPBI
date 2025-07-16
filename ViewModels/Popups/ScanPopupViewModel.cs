@@ -97,8 +97,17 @@ public partial class ScanPopupViewModel : PopupViewModel
                             }
                             catch (Exception)
                             {
-                                report.Error(MainViewModel.ErrorMessages[serviceException["errorCode"]]);
-                                errors++;
+                                try
+                                {
+                                    report.Error(MainViewModel.ErrorMessages[serviceException["errorCode"]]);
+                                    errors++;
+                                }
+                                catch (Exception)
+                                {
+                                    report.Error(serviceException["errorCode"]);
+                                    Console.Error.WriteLine($"{report.Name}({report.Workspace!.Name}): {obj.Properties["serviceExceptionJson"].Value}");
+                                    errors++;
+                                }
                             }
                             break;
                         case "Unknown":

@@ -3,7 +3,7 @@
         xmlns:li="using:LoadingIndicators.Avalonia"
         xmlns:c="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <c:StatusIcon Status="Success"/>
+        <c:StatusIcon Status="Showable" IsShown="False" />
     </Design.PreviewWith>
     
     <Style Selector="c|StatusIcon">
@@ -20,7 +20,8 @@
                     
                     <Label 
                         FontFamily="{DynamicResource Icon}" 
-                        FontSize="12" VerticalAlignment="Center" 
+                        FontSize="{TemplateBinding FontSize}" 
+                        VerticalAlignment="Center" 
                         HorizontalAlignment="Center"
                         Content="{TemplateBinding IconUnicode}" 
                         Foreground="{TemplateBinding Foreground}"/>
@@ -36,13 +37,15 @@
                             
                             <TextBlock 
                                 MaxWidth="200" 
-                                Foreground="{DynamicResource ForegroundMuted}" 
+                                Foreground="{TemplateBinding Foreground}" 
                                 Text="{TemplateBinding Tooltip}" />
                         </Border>
                     </ToolTip.Tip>
                 </Border>
             </ControlTemplate>
         </Setter>
+        
+        <Setter Property="FontSize" Value="12" />
     </Style>
     
     <Style Selector="c|StatusIcon[Status=Loading]">
@@ -56,17 +59,33 @@
         </Setter>
     </Style>
     
-    <Style Selector="c|StatusIcon[Status=Selectable][IsChecked=True]">
+    <Style Selector="c|StatusIcon[Status=Selectable]">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Neutral}"/>
+    </Style>
+    
+    <Style Selector="c|StatusIcon[Status=Selectable][IsSelected=True]">
         <Setter Property="Background" Value="{DynamicResource Primary}" />
         <Setter Property="Foreground" Value="{DynamicResource White}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Primary}"/>
         <Setter Property="IconUnicode" Value="&#xf00c;" />
     </Style>
     
-    <Style Selector="c|StatusIcon[Status=Selectable][IsChecked=False]">
+    <Style Selector="c|StatusIcon[Status=Showable]">
+        <Setter Property="FontSize" Value="9" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Neutral}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundMuted}" />
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="IconUnicode" Value="&#xf070;" />
+    </Style>
+    
+    <Style Selector="c|StatusIcon[Status=Showable][IsShown=True]">
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="Background" Value="{DynamicResource Primary}" />
+        <Setter Property="Foreground" Value="{DynamicResource White}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Primary}"/>
+        <Setter Property="IconUnicode" Value="&#xf06e;" />
     </Style>
     
     <Style Selector="c|StatusIcon[Status=Success]">

@@ -1,72 +1,64 @@
-﻿using Avalonia.Controls;
+﻿using AutoPBI.Controls;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AutoPBI.Models;
 
 public class Report : ObservableObject
 {
-    public enum StatusType
-    {
-        Selectable,
-        Success,
-        Loading,
-        Warning,
-        Error
-    }
-    
-    private StatusType _status;
+    private StatusIcon.StatusType _status;
     private string? _id;
     private string? _name;
     private string? _webUrl;
     private string? _datasetId;
     private bool? _isSelected;
     private Workspace? _workspace;
-    private string? _message;
+    private object? _message;
 
     public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
     {
-        Status = StatusType.Selectable;
+        Status = StatusIcon.StatusType.Selectable;
         Id = id;
         Name = name;
         WebUrl = webUrl;
         DatasetId = datasetId;
         Workspace = workspace;
         IsSelected = false;
-        Message = null;
+        Message = false;
     }
 
     public void Selectable()
     {
-        SetStatus(StatusType.Selectable, "");
+        SetStatus(StatusIcon.StatusType.Selectable, "");
     }
 
     public void Loading()
     {
-        SetStatus(StatusType.Loading, "Processing...");
+        SetStatus(StatusIcon.StatusType.Loading, "Processing...");
     }
     
-    public void Success(string? message)
+    public void Success(object? message)
     {
-        SetStatus(StatusType.Success, message);
+        SetStatus(StatusIcon.StatusType.Success, message);
     }
 
-    public void Warning(string? message)
+    public void Warning(object? message)
     {
-        SetStatus(StatusType.Warning, message);
+        SetStatus(StatusIcon.StatusType.Warning, message);
     }
 
-    public void Error(string? message)
+    public void Error(object? message)
     {
-        SetStatus(StatusType.Error, message);
+        SetStatus(StatusIcon.StatusType.Error, message);
     }
 
-    public void SetStatus(StatusType status, string? message = null)
+    public void SetStatus(StatusIcon.StatusType status, object? message = null)
     {
         Status = status;
         Message = message;
     }
 
-    public StatusType Status
+    public StatusIcon.StatusType Status
     {
         get => _status;
         set => SetProperty(ref _status, value);
@@ -108,7 +100,7 @@ public class Report : ObservableObject
         set => SetProperty(ref _workspace, value);
     }
     
-    public string? Message
+    public object? Message
     {
         get => _message;
         set => SetProperty(ref _message, value);

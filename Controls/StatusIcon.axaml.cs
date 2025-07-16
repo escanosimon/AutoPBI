@@ -8,10 +8,20 @@ namespace AutoPBI.Controls;
 
 public class StatusIcon : TemplatedControl
 {
-    public static readonly StyledProperty<string> TooltipProperty = AvaloniaProperty.Register<StatusIcon, string>(
-        nameof(Tooltip));
+    public enum StatusType
+    {
+        Showable,
+        Selectable,
+        Success,
+        Loading,
+        Warning,
+        Error
+    }
+    
+    public static readonly StyledProperty<object?> TooltipProperty = AvaloniaProperty.Register<StatusIcon, object?>(
+        nameof(Tooltip), false);
 
-    public string Tooltip
+    public object? Tooltip
     {
         get => GetValue(TooltipProperty);
         set => SetValue(TooltipProperty, value);
@@ -35,22 +45,13 @@ public class StatusIcon : TemplatedControl
         set => SetValue(CommandParameterProperty, value);
     }
     
-    public static readonly StyledProperty<Report.StatusType> StatusProperty = AvaloniaProperty.Register<StatusIcon, Report.StatusType>(
+    public static readonly StyledProperty<StatusType> StatusProperty = AvaloniaProperty.Register<StatusIcon, StatusType>(
         nameof(Status));
 
-    public Report.StatusType Status
+    public StatusType Status
     {
         get => GetValue(StatusProperty);
         set => SetValue(StatusProperty, value);
-    }
-    
-    public static readonly StyledProperty<bool> IsCheckedProperty = AvaloniaProperty.Register<ReportItem, bool>(
-        nameof(IsChecked));
-
-    public bool IsChecked
-    {
-        get => GetValue(IsCheckedProperty);
-        set => SetValue(IsCheckedProperty, value);
     }
 
     public static readonly StyledProperty<object?> IconUnicodeProperty = AvaloniaProperty.Register<StatusIcon, object?>(
@@ -60,5 +61,23 @@ public class StatusIcon : TemplatedControl
     {
         get => GetValue(IconUnicodeProperty);
         set => SetValue(IconUnicodeProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> IsSelectedProperty = AvaloniaProperty.Register<StatusIcon, bool>(
+        nameof(IsSelected));
+
+    public bool IsSelected
+    {
+        get => GetValue(IsSelectedProperty);
+        set => SetValue(IsSelectedProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> IsShownProperty = AvaloniaProperty.Register<StatusIcon, bool>(
+        nameof(IsShown));
+
+    public bool IsShown
+    {
+        get => GetValue(IsShownProperty);
+        set => SetValue(IsShownProperty, value);
     }
 }
