@@ -118,7 +118,7 @@
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
                 <Grid RowDefinitions="Auto, Auto, Auto, *, 36">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
-                    <TextBox x:Name="WorkspaceSearchBox" Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" Text="{Binding WorkspaceSearchText, Mode=TwoWay}" />
+                    <TextBox x:Name="WorkspaceSearchBox" Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" Text="{Binding WorkspaceSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !Workspaces.Count}"/>
                     <Button Grid.Row="2" Classes.Disabled="{Binding !Workspaces.Count}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
                         <Grid ColumnDefinitions="*, Auto">
                             <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}">All workspaces</TextBlock>
@@ -154,7 +154,7 @@
                 <Grid RowDefinitions="Auto, Auto, *">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Reports</TextBlock>
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
-                        <TextBox x:Name="ReportSearchBox" Watermark="Search reports" Text="{Binding ReportSearchText, Mode=TwoWay}" />
+                        <TextBox x:Name="ReportSearchBox" Watermark="Search reports" Text="{Binding ReportSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !ShownWorkspaces.Count}" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
                                           IconUnicode="&#xf7ea;"

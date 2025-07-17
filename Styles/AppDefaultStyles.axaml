@@ -61,7 +61,7 @@
         <Setter Property="Background" Value="{DynamicResource NeutralMuted}" />
     </Style>
     
-    <Style Selector="Button.Disabled">
+    <Style Selector="Button.Disabled, TextBox.Disabled">
         <Setter Property="Opacity" Value="0.5"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
     </Style>
