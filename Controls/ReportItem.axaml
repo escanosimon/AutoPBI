@@ -6,7 +6,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="Root"
              x:Class="AutoPBI.Controls.ReportItem">
-    <Button Command="{Binding #Root.Command}" CommandParameter="{Binding #Root.CommandParameter}" Padding="6" Background="Transparent" CornerRadius="6" HorizontalAlignment="Stretch">
+    <Button 
+        IsVisible="{Binding #Root.Report.IsSearched}"
+        Command="{Binding #Root.Command}" 
+        CommandParameter="{Binding #Root.CommandParameter}" 
+        Padding="6" Background="Transparent" CornerRadius="6" 
+        HorizontalAlignment="Stretch">
         <Grid ColumnDefinitions="Auto, Auto, *">
             <c:StatusIcon 
                 Tooltip="{Binding #Root.Report.Message}"

@@ -1,4 +1,5 @@
 using System;
+using AutoPBI.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;

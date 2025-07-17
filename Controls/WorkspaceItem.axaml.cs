@@ -19,24 +19,6 @@ public partial class WorkspaceItem : UserControl
         set => SetValue(StatusProperty, value);
     }
     
-    public static readonly StyledProperty<bool> IsShownProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
-        nameof(IsShown));
-
-    public bool IsShown
-    {
-        get => GetValue(IsShownProperty);
-        set => SetValue(IsShownProperty, value);
-    }
-    
-    public static readonly StyledProperty<bool> IsSelectedProperty = AvaloniaProperty.Register<WorkspaceItem, bool>(
-        nameof(IsSelected));
-
-    public bool IsSelected
-    {
-        get => GetValue(IsSelectedProperty);
-        set => SetValue(IsSelectedProperty, value);
-    }
-    
     public static readonly StyledProperty<Workspace> WorkspaceProperty = AvaloniaProperty.Register<WorkspaceItem, Workspace>(
         nameof(Workspace));
 

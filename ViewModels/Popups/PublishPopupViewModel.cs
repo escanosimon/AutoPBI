@@ -68,7 +68,7 @@ public partial class PublishPopupViewModel : PopupViewModel
         var selectedFiles = await MainViewModel.DialogService.OpenFileDialogAsync(options);
         foreach (var selectedFile in selectedFiles)
         {
-            var report = new Report(null, selectedFile, null, null, null);
+            var report = new Report(MainViewModel, null, selectedFile, null, null, null);
             ImportedReports.Add(report);
             report.Selectable();
             report.IsSelected = true;

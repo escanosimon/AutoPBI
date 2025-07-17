@@ -23,6 +23,9 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isReloading = true;
     
+    [ObservableProperty] private string _workspaceSearchText;
+    [ObservableProperty] private string _reportSearchText;
+    
     [ObservableProperty] private bool _isToasting;
     [ObservableProperty] private Toast.StatusType _toastStatus;
     [ObservableProperty] private string _toastTitle;
@@ -64,6 +67,39 @@ public partial class MainViewModel : ViewModelBase
         {
             CloseToast();
         };
+    }
+
+    partial void OnWorkspaceSearchTextChanged(string value)
+    {
+        foreach (var workspace in Workspaces)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                workspace.IsSearched = true;
+            }
+            else
+            {
+                workspace.IsSearched = workspace.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+            }
+        }
+    }
+    
+    partial void OnReportSearchTextChanged(string value)
+    {
+        foreach (var workspace in ShownWorkspaces)
+        {
+            foreach (var report in workspace.Reports)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    report.IsSearched = true;
+                }
+                else
+                {
+                    report.IsSearched = report.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+                }
+            }
+        }
     }
 
     [RelayCommand]
@@ -220,7 +256,9 @@ public partial class MainViewModel : ViewModelBase
         {
             try
             {
-                var report = new Report(obj.Properties["Id"].Value?.ToString(),
+                var report = new Report(
+                    this,
+                    obj.Properties["Id"].Value?.ToString(),
                     obj.Properties["Name"].Value?.ToString(),
                     obj.Properties["WebUrl"].Value?.ToString(),
                     obj.Properties["DatasetId"].Value?.ToString(),

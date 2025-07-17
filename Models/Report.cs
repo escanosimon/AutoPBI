@@ -1,4 +1,5 @@
 ﻿using AutoPBI.Controls;
+using AutoPBI.ViewModels;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -12,11 +13,14 @@ public class Report : ObservableObject
     private string? _webUrl;
     private string? _datasetId;
     private bool? _isSelected;
+    private bool? _isSearched;
     private Workspace? _workspace;
     private object? _message;
+    private MainViewModel? _mainViewModel;
 
-    public Report(string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
+    public Report(MainViewModel mainViewModel, string? id, string? name, string? webUrl, string? datasetId, Workspace? workspace)
     {
+        MainViewModel = mainViewModel;
         Status = StatusIcon.StatusType.Selectable;
         Id = id;
         Name = name;
@@ -24,6 +28,7 @@ public class Report : ObservableObject
         DatasetId = datasetId;
         Workspace = workspace;
         IsSelected = false;
+        IsSearched = true;
         Message = false;
     }
 
@@ -93,6 +98,13 @@ public class Report : ObservableObject
         get => (bool)_isSelected!;
         set => SetProperty(ref _isSelected, value);
     }
+    
+    public bool IsSearched
+    {
+        get => (bool)_isSearched!;
+        set => SetProperty(ref _isSearched, value);
+    }
+
 
     public Workspace? Workspace
     {
@@ -104,5 +116,11 @@ public class Report : ObservableObject
     {
         get => _message;
         set => SetProperty(ref _message, value);
+    }
+    
+    public MainViewModel MainViewModel
+    {
+        get => _mainViewModel;
+        set => SetProperty(ref _mainViewModel, value);
     }
 }

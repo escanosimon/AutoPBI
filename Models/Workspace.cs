@@ -11,6 +11,7 @@ namespace AutoPBI.Models
         private string? _id;
         private string? _name;
         private bool? _isShown;
+        private bool? _isSearched;
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private bool? _isLoading;
@@ -74,6 +75,12 @@ namespace AutoPBI.Models
         {
             get => (bool)_isShown!;
             set => SetProperty(ref _isShown, value);
+        }
+        
+        public bool IsSearched
+        {
+            get => (bool)_isSearched!;
+            set => SetProperty(ref _isSearched, value);
         }
         
         public bool IsSelected

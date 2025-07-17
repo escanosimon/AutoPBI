@@ -45,7 +45,6 @@
                                                 <DataTemplate>
                                                     <c:WorkspaceItem Workspace="{Binding}"
                                                         Command="{Binding SelectCommand}"
-                                                        IsSelected="{Binding IsSelected}"
                                                         />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

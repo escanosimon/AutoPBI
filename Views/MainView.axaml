@@ -53,7 +53,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/PowerBILogo.svg}" Height="24" Margin="0 0 8 0"/>
-                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}">AutoPBI</TextBlock>
+                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="AutoPBI" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
@@ -102,7 +102,6 @@
                                             Text="simon.escano@amcsgroup.com" />
                                         <c:IconButton
                                             Command="{Binding LogoutCommand}"
-                                            Click="OnSignOutButton_Click"
                                             Text="Sign out"
                                             Padding="12 6"
                                             Foreground="{DynamicResource White}"
@@ -119,7 +118,7 @@
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
                 <Grid RowDefinitions="Auto, Auto, Auto, *, 36">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
-                    <TextBox Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" />
+                    <TextBox x:Name="WorkspaceSearchBox" Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" Text="{Binding WorkspaceSearchText, Mode=TwoWay}" />
                     <Button Grid.Row="2" Classes.Disabled="{Binding !Workspaces.Count}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
                         <Grid ColumnDefinitions="*, Auto">
                             <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}">All workspaces</TextBlock>
@@ -130,7 +129,7 @@
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <c:WorkspaceItem Workspace="{Binding}" Command="{Binding ShowCommand}" Status="Showable" IsShown="{Binding IsShown}" />
+                                    <c:WorkspaceItem Workspace="{Binding}" Command="{Binding ShowCommand}" Status="Showable" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -151,10 +150,9 @@
                 <Grid RowDefinitions="Auto, Auto, *">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Reports</TextBlock>
                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0 0 0 12">
-                        <TextBox Watermark="Search reports" />
+                        <TextBox x:Name="ReportSearchBox" Watermark="Search reports" Text="{Binding ReportSearchText, Mode=TwoWay}" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
-                                          Classes="Ghost"
                                           IconUnicode="&#xf7ea;"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
@@ -163,7 +161,6 @@
                                           Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ScriptPopup}"
                                           Text="Script" Margin="8 0 0  0" />
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
-                                          Classes="Ghost"
                                           IconUnicode="&#xf0c5;"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
@@ -172,7 +169,6 @@
                                           Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}"
                                           Text="Clone" />
                             <c:IconButton Classes.Disabled="{Binding !SelectedReports.Count}"
-                                          Classes="Ghost"
                                           IconUnicode="&#xf002;"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
