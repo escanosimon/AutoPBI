@@ -14,6 +14,7 @@ public partial class LoginPopupViewModel : PopupViewModel
 {
     [ObservableProperty] private string? _usernameText = "";
     [ObservableProperty] private string? _passwordText = "";
+    [ObservableProperty] private bool _isRememberMeChecked;
     
     public LoginPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
@@ -72,5 +73,16 @@ public partial class LoginPopupViewModel : PopupViewModel
         MainViewModel.IsReloading = false;
         Close();
         await MainViewModel.FetchWorkspacesCommand.ExecuteAsync(null);
+    }
+    
+    [RelayCommand]
+    private void RememberMe()
+    {
+        IsRememberMeChecked = !IsRememberMeChecked;
+
+        if (IsRememberMeChecked)
+        {
+            Console.Write("Remembering...");
+        }
     }
 }

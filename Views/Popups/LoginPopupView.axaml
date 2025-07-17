@@ -15,33 +15,48 @@
                 IsVisible="{Binding IsVisible}"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Stretch"
-                MaxWidth="350"
-                >
+                MaxWidth="300">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Login to Power BI</TextBlock>
                 </Border>
                 <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                   <Grid RowDefinitions="Auto, Auto">
+                   <StackPanel>
                        <TextBox
                            Name="UsernameTextBox"
                            IsHitTestVisible="{Binding !IsProcessing}"
                            Margin="0 0 0 8"
                            Watermark="Enter email or username"
                            Text="{Binding UsernameText, Mode=TwoWay}"
-                           TextChanged="TextBox_OnTextChanged"
-                           ></TextBox>
+                           TextChanged="TextBox_OnTextChanged" />
                        <TextBox
                            Name="PasswordTextBox"
                            IsHitTestVisible="{Binding !IsProcessing}"
-                           Grid.Row="1"
+                           Margin="0 0 0 16"
                            Watermark="Enter password"
                            PasswordChar="*"
                            Text="{Binding PasswordText, Mode=TwoWay}"
-                           TextChanged="TextBox_OnTextChanged"
-                           >
-                       </TextBox>
-                   </Grid>
+                           TextChanged="TextBox_OnTextChanged" />
+                       <StackPanel Orientation="Horizontal">
+                           <Button 
+                               Padding="0"
+                               Background="Transparent"
+                               VerticalAlignment="Center"
+                               Classes="NoHover"
+                               Command="{Binding RememberMeCommand}">
+                               <StackPanel Orientation="Horizontal">
+                                   <c:StatusIcon 
+                                       Margin="0 0 12 0"
+                                       IsSelected="{Binding IsRememberMeChecked}"
+                                       Status="Selectable" />
+                                   <TextBlock 
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource ForegroundMuted}"
+                                       Text="Remember me" />
+                               </StackPanel>
+                           </Button>
+                       </StackPanel>
+                   </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
