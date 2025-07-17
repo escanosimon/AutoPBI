@@ -197,12 +197,10 @@ public class CommandBuilder
             // Run external executable
             return await _service.ExecuteExternalCommandAsync(_executablePath, $"{Escape(_command)} {arguments}", _outputHandler, _errorHandler);
         }
-        else
-        {
-            // Run PowerShell command
-            var fullCommand = $"{_command} {arguments}";
-            return await _service.ExecutePowerShellCommandAsync(fullCommand, _outputHandler, _errorHandler);
-        }
+
+        // Run PowerShell command
+        var fullCommand = $"{_command} {arguments}";
+        return await _service.ExecutePowerShellCommandAsync(fullCommand, _outputHandler, _errorHandler);
     }
 
     private static string Escape(string argument)

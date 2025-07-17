@@ -3,18 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoPBI.Controls;
 using AutoPBI.Models;
-using AutoPBI.Services;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using AvaloniaEdit.Document;
-using CliWrap;
-using CliWrap.Buffered;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using CommunityToolkit.Mvvm.Input;
 using CommandResult = AutoPBI.Services.CommandResult;
 

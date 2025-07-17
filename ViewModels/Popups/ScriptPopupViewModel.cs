@@ -3,17 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using AutoPBI.Controls;
-using AutoPBI.Models;
-using AutoPBI.Services;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using AvaloniaEdit.Document;
 using CliWrap;
-using CliWrap.Buffered;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
@@ -76,7 +69,11 @@ public partial class ScriptPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Script()
     {
-        if (SelectedScriptPath == null) return;
+        if (SelectedScriptPath == null)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot proceed with script!", "Please import a C# script to apply."));
+            return;
+        }
         await File.WriteAllTextAsync(SelectedScriptPath, ScriptContents.Text);
         
         IsProcessing = true;
@@ -91,24 +88,34 @@ public partial class ScriptPopupViewModel : PopupViewModel
             if (!IsProcessing) return;
             
             report.Loading();
-            
+
+            var sbOutput = new StringBuilder();
             try
             {
                 await Cli.Wrap(TabularEditorPath)
                     .WithArguments(args => args
-                        .Add(
-                            $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")
+                        .Add($"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")
                         .Add($"{report.DatasetId}")
                         .Add("-S")
                         .Add($"{SelectedScriptPath}")
                         .Add("-D")
+                        .Add("-W")
+                        .Add("-E")
                     )
-                    .WithStandardOutputPipe(PipeTarget.ToDelegate(Console.WriteLine))
+                    .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sbOutput))
                     .ExecuteAsync();
             }
             catch (Exception e)
             {
-                report.Error(e.Message);
+                var result = sbOutput.ToString();
+                var lines = result.Split([Environment.NewLine], StringSplitOptions.None);
+                foreach (var line in lines)
+                {
+                    if (line.Contains("Error", StringComparison.OrdinalIgnoreCase))
+                    {
+                        report.Error(line);
+                    }
+                }
                 errors++;
                 continue;
             }
