@@ -129,7 +129,11 @@
                         <ItemsControl ItemsSource="{Binding Workspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <c:WorkspaceItem Workspace="{Binding}" Command="{Binding ShowCommand}" Status="Showable" />
+                                    <c:WorkspaceItem 
+                                        IsVisible="{Binding IsSearched}"
+                                        Workspace="{Binding}" 
+                                        Command="{Binding ShowCommand}" 
+                                        Status="Showable" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -205,8 +209,7 @@
                                             IsHitTestVisible="{Binding Reports.Count}"
                                             Command="{Binding DataContext.SelectAllReportsCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"
                                             Classes="NoHover"
-                                            Background="{DynamicResource Background}"
-                                            >
+                                            Background="{DynamicResource Background}">
                                             <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left">
                                                 <c:StatusIcon Status="Selectable" IsSelected="{Binding IsAllReportsSelected}" Margin="0 0 10 0" IsVisible="{Binding Reports.Count}"></c:StatusIcon>
                                                 <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
@@ -219,7 +222,11 @@
                                         <ItemsControl ItemsSource="{Binding Reports}" IsVisible="{Binding IsDroppedDown}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Report="{Binding}" Command="{Binding DataContext.SelectReportCommand, ElementName=MainWindow, FallbackValue={x:Null}}" CommandParameter="{Binding}"></c:ReportItem>
+                                                    <c:ReportItem 
+                                                        IsVisible="{Binding IsSearched}"
+                                                        Report="{Binding}" 
+                                                        Command="{Binding DataContext.SelectReportCommand, ElementName=MainWindow, FallbackValue={x:Null}}" 
+                                                        CommandParameter="{Binding}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

@@ -46,9 +46,9 @@ public partial class LoginPopupViewModel : PopupViewModel
                 .WithStandardErrorPipe(Console.Error.WriteLine)
                 .ExecuteAsync()).Objects[0];
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            MainViewModel.ErrorCommand.Execute(("Login failed!", "Check your credentials."));
+            MainViewModel.ErrorCommand.Execute(("Login failed!", e.Message));
             IsProcessing = false;
             return;
         }

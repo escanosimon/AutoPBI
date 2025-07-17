@@ -7,7 +7,6 @@
              x:Name="Root"
              x:Class="AutoPBI.Controls.ReportItem">
     <Button 
-        IsVisible="{Binding #Root.Report.IsSearched}"
         Command="{Binding #Root.Command}" 
         CommandParameter="{Binding #Root.CommandParameter}" 
         Padding="6" Background="Transparent" CornerRadius="6" 

@@ -8,7 +8,6 @@
              x:Name="Root"
              x:Class="AutoPBI.Controls.WorkspaceItem">
     <Button
-        IsVisible="{Binding #Root.Workspace.IsSearched}"
         Command="{Binding #Root.Command}" 
         CommandParameter="{Binding #Root.CommandParameter}" 
         HorizontalAlignment="Stretch" 

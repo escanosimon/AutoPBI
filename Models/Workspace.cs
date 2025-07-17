@@ -25,6 +25,7 @@ namespace AutoPBI.Models
             Name = null;
             MainViewModel = mainViewModel;
             IsShown = false;
+            IsSearched = true;
             IsSelected = false;
             IsLoading = true;
             IsAllReportsSelected = false;
@@ -44,13 +45,8 @@ namespace AutoPBI.Models
 
         public void CheckSelectedReports()
         {
-            if (Reports.Any(report => !report.IsSelected))
-            {
-                IsAllReportsSelected = false;
-                return;
-            }
-
-            IsAllReportsSelected = true;
+            var searchedReports = Reports.Where(r => r.IsSearched).ToList();
+            IsAllReportsSelected = searchedReports.Count != 0 && searchedReports.All(r => r.IsSelected);
         }
         
         public MainViewModel? MainViewModel

@@ -82,6 +82,7 @@ public partial class MainViewModel : ViewModelBase
                 workspace.IsSearched = workspace.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
             }
         }
+        CheckShownWorkspaces();
     }
     
     partial void OnReportSearchTextChanged(string value)
@@ -99,6 +100,7 @@ public partial class MainViewModel : ViewModelBase
                     report.IsSearched = report.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
                 }
             }
+            workspace.CheckSelectedReports();
         }
     }
 
@@ -189,13 +191,8 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void CheckShownWorkspaces()
     {
-        if (Workspaces.Any(workspace => !workspace.IsShown))
-        {
-            IsAllWorkspacesShown = false;
-            return;
-        }
-
-        IsAllWorkspacesShown = true;
+        var searchedWorkspaces = Workspaces.Where(w => w.IsSearched).ToList();
+        IsAllWorkspacesShown = searchedWorkspaces.Count != 0 && searchedWorkspaces.All(w => w.IsSelected);
     }
     
     [RelayCommand]
@@ -329,6 +326,7 @@ public partial class MainViewModel : ViewModelBase
         {
             foreach (var report in workspace.Reports)
             {
+                if (!report.IsSearched) continue;
                 if (report.IsSelected) continue;
                 report.IsSelected = true;
                 SelectedReports.Add(report);
@@ -354,6 +352,7 @@ public partial class MainViewModel : ViewModelBase
         {
             foreach (var workspace in Workspaces)
             {
+                if (!workspace.IsSearched) continue;
                 if (workspace.IsShown) continue;
                 workspace.IsShown = true;
                 ShownWorkspaces.Add(workspace);
