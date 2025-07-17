@@ -28,10 +28,10 @@
                                 Text1="Selected Reports"
                                 Text2="Select C# Script"
                                 />
-                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8" Padding="12">
+                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8" Padding="8">
                                 <Grid>
                                     <ScrollViewer IsVisible="{Binding !IsScriptShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}" Padding="8">
+                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <c:ReportItem Report="{Binding}" />
@@ -39,7 +39,8 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <Grid IsVisible="{Binding IsScriptShown}" RowDefinitions="Auto, *">
+                                    <Border Padding="4">
+                                        <Grid IsVisible="{Binding IsScriptShown}" RowDefinitions="Auto, *">
                                         <c:IconButton 
                                             Command="{Binding OpenScriptRepositoryCommand}"
                                             Margin="0 0 0 8"
@@ -81,7 +82,8 @@
                                             WordWrap="True"
                                             Foreground="{DynamicResource Foreground}"
                                             LineNumbersForeground="{DynamicResource PrimaryLight}"/>
-                                    </Grid>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </Grid>

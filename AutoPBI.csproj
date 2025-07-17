@@ -24,6 +24,7 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="LoadingIndicators.Avalonia" Version="11.0.11.1" />
         <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.5.2" />
+        <PackageReference Include="SecureStore" Version="1.2.2" />
         <PackageReference Include="System.Management.Automation" Version="7.5.2" />
         <PackageReference Include="TextCopy" Version="6.2.1" />
     </ItemGroup>
@@ -31,10 +32,11 @@
     <ItemGroup>
       <Folder Include="Assets\Fonts\" />
       <Folder Include="Assets\Images\" />
+      <Folder Include="Tools\" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Assets\Images\PowerBILogo.svg" />
+        <None Update="Tools\**\*" CopyToOutputDirectory="Always" />
       <None Remove="Assets\Fonts\Inter-Medium.otf" />
       <AvaloniaResource Include="Assets\Fonts\Inter-Medium.otf" />
       <None Remove="Assets\Fonts\Inter-Regular.otf" />

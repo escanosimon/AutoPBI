@@ -20,6 +20,8 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class ScriptPopupViewModel : PopupViewModel
 {
+    [ObservableProperty] private string _tabularEditorPath;
+    
     [ObservableProperty] private bool _isScriptShown;
     [ObservableProperty] private bool _importButtonVisibility;
     [ObservableProperty] private bool _editScriptVisibility;
@@ -29,6 +31,8 @@ public partial class ScriptPopupViewModel : PopupViewModel
     public ScriptPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+
+        TabularEditorPath = Path.Combine(MainViewModel.ToolsFolder, "TabularEditor.2.26.0/TabularEditor.exe");
     }
 
     public ScriptPopupViewModel() : base(new MainViewModel()) {}
@@ -88,11 +92,9 @@ public partial class ScriptPopupViewModel : PopupViewModel
             
             report.Loading();
             
-            var tabularEditorPath = "C:/Users/simon.escano/Downloads/TabularEditor.2.26.0/TabularEditor.exe";
-
             try
             {
-                await Cli.Wrap(tabularEditorPath)
+                await Cli.Wrap(TabularEditorPath)
                     .WithArguments(args => args
                         .Add(
                             $"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")

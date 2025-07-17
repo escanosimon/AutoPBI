@@ -1,21 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
+using Avalonia.Controls.Shapes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NeoSmart.SecureStore;
+using Path = System.IO.Path;
 
 namespace AutoPBI.ViewModels;
 
 
 public partial class MainViewModel : ViewModelBase
 {
+    [ObservableProperty] private string _exePath;
+    [ObservableProperty] private string _toolsFolder;
+    
     [ObservableProperty] private DispatcherTimer _timer;
     
     [ObservableProperty] private User _user = null!;
@@ -54,6 +64,22 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
+        ExePath = Assembly.GetExecutingAssembly().Location;
+        ToolsFolder = Path.Combine(Path.GetDirectoryName(ExePath)!, "Tools");
+        
+        CheckSavedLogin();
+        
+        InitializePopups();
+
+        Timer = new DispatcherTimer();
+        Timer.Tick += (s, e) =>
+        {
+            CloseToast();
+        };
+    }
+
+    private void InitializePopups()
+    {
         DownloadPopup = AddPopup(new DownloadPopupViewModel(this));
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
@@ -61,12 +87,6 @@ public partial class MainViewModel : ViewModelBase
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
         LoginPopup = AddPopup(new LoginPopupViewModel(this));
-
-        Timer = new DispatcherTimer();
-        Timer.Tick += (s, e) =>
-        {
-            CloseToast();
-        };
     }
 
     partial void OnWorkspaceSearchTextChanged(string value)
@@ -104,6 +124,64 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    private async void CheckSavedLogin()
+    {
+        try
+        {
+            var credentials = SecureStorageService.LoadSavedCredentials();
+            if (!credentials.HasValue) return;
+            
+            var (username, password) = credentials.Value;
+            await Login(username, password);
+            await FetchWorkspaces();
+        }
+        catch (Exception e)
+        {
+            Error(("Failed to load saved credentials!", e.Message));
+        }
+    }
+
+    public async Task Login(string username, string password)
+    {
+        PSObject loginResult;
+        try
+        {
+            loginResult = (await PowerShellService
+                .BuildCommand()
+                .WithCommand($@"
+                $password = '{password}' | ConvertTo-SecureString -asPlainText -Force;
+                $username = '{username}';
+                $credential = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $username, $password;
+                Connect-PowerBIServiceAccount -Credential $credential
+            ")
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync()).Objects[0];
+        }
+        catch (Exception e)
+        {
+            Error(("Login failed!", e.Message));
+            throw;
+        }
+        var accessTokenResult = (await PowerShellService
+            .BuildCommand()
+            .WithCommand("(Get-PowerBIAccessToken).Values[0]")
+            .WithStandardErrorPipe(Console.Error.WriteLine)
+            .ExecuteAsync()).Objects[0];
+
+        User = new User(
+            loginResult.Properties["Environment"].Value.ToString(),
+            loginResult.Properties["TenantId"].Value.ToString(),
+            username,
+            password
+        );
+
+        User.AccessToken = (string)accessTokenResult.BaseObject;
+        
+        Success(("Login successful!", "Fetching workspaces..."));
+        IsLoggedIn = true;
+        IsReloading = false;
+    }
+
     [RelayCommand]
     private async void Logout()
     {
@@ -119,6 +197,8 @@ public partial class MainViewModel : ViewModelBase
             SelectedReports = [];
             User = null!;
             IsLoggedIn = false;
+            SecureStorageService.ClearSavedCredentials();
+            
             Success(("Success!", "Logged out successfully."));
         }
         catch (Exception)
