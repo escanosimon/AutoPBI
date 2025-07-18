@@ -15,7 +15,10 @@ namespace AutoPBI.Models
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private bool? _isLoading;
+        
         private bool? _isDroppedDown;
+        private object? _dropDownIconUnicode;
+        
         private ObservableCollection<Report> _reports = [];
         private MainViewModel? _mainViewModel;
 
@@ -28,7 +31,10 @@ namespace AutoPBI.Models
             IsSearched = true;
             IsSelected = false;
             IsLoading = true;
+            
             IsDroppedDown = true;
+            DropDownIconUnicode = "\uf078";
+            
             IsAllReportsSelected = false;
         }
 
@@ -48,6 +54,7 @@ namespace AutoPBI.Models
         public void DropDown()
         {
             IsDroppedDown = !IsDroppedDown;
+            DropDownIconUnicode = IsDroppedDown ? "\uf078" : "\uf054";
         }
 
         public void CheckSelectedReports()
@@ -108,6 +115,12 @@ namespace AutoPBI.Models
         {
             get => (bool)_isDroppedDown!;
             set => SetProperty(ref _isDroppedDown, value);
+        }
+        
+        public object? DropDownIconUnicode
+        {
+            get => _dropDownIconUnicode!;
+            set => SetProperty(ref _dropDownIconUnicode, value);
         }
 
         public ObservableCollection<Report> Reports

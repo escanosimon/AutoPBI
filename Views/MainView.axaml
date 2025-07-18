@@ -204,43 +204,45 @@
                         <ItemsControl ItemsSource="{Binding ShownWorkspaces}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Margin="0 0 0 24">
-                                        <Grid ColumnDefinitions="Auto, Auto, *, Auto" HorizontalAlignment="Left" Margin="0 0 0 12">
+                                    <StackPanel Orientation="Vertical">
+                                        <Grid ColumnDefinitions="*, Auto" HorizontalAlignment="Left" Margin="0 0 0 12">
                                             <Button
                                                 Command="{Binding DataContext.SelectAllReportsCommand, ElementName=MainWindow, FallbackValue={x:Null}}"
                                                 CommandParameter="{Binding}" 
                                                 IsVisible="{Binding Reports.Count}" 
                                                 Classes="NoHover" Background="Transparent" 
-                                                Padding="0"
-                                                Margin="0 0 10 0">
-                                                <c:StatusIcon
-                                                    Status="Selectable"
-                                                    IsSelected="{Binding IsAllReportsSelected}" />
+                                                Padding="0">
+                                                <Grid ColumnDefinitions="Auto, Auto, *" HorizontalAlignment="Left">
+                                                    <c:StatusIcon
+                                                        Status="Selectable"
+                                                        IsSelected="{Binding IsAllReportsSelected}" 
+                                                        Margin="0 0 10 0"/>
+                                                    <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
+                                                    <Grid Grid.Column="2" ColumnDefinitions="*, Auto">
+                                                        <TextBlock TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}">
+                                                            <ToolTip.Tip>
+                                                                <c:TooltipContent Text="{Binding Name}"/>
+                                                            </ToolTip.Tip>
+                                                        </TextBlock>
+                                                        <Border Grid.Column="1" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding Reports.Count}">
+                                                            <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
                                             </Button>
-                                            <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
-                                            <Grid Grid.Column="2" ColumnDefinitions="*, Auto">
-                                                <TextBlock TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}">
-                                                    <ToolTip.Tip>
-                                                        <c:TooltipContent Text="{Binding Name}"/>
-                                                    </ToolTip.Tip>
-                                                </TextBlock>
-                                                <Border Grid.Column="1" Padding="4 2" BorderBrush="{DynamicResource Primary}" BorderThickness="1" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding Reports.Count}">
-                                                    <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding Reports.Count}"/>
-                                                </Border>
-                                            </Grid>
                                                 
                                             <c:IconButton 
                                                 Command="{Binding DropDownCommand}" 
-                                                Grid.Column="3" 
+                                                Grid.Column="1" 
                                                 Margin="16 0 0 0"
-                                                IconUnicode="&#xf078;"
+                                                IconUnicode="{Binding DropDownIconUnicode}"
                                                 IconMargin="0"
                                                 BorderThickness="1"
                                                 HoverBackground="{DynamicResource PrimaryLight}"
                                                 HoverBorderBrush="{DynamicResource Primary}"
                                                 Foreground="{DynamicResource Primary}" />
                                         </Grid>
-                                        <ItemsControl ItemsSource="{Binding Reports}" IsVisible="{Binding IsDroppedDown}">
+                                        <ItemsControl Margin="0 0 0 24" ItemsSource="{Binding Reports}" IsVisible="{Binding IsDroppedDown}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <c:ReportItem 
