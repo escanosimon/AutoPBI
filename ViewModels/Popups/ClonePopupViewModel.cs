@@ -106,6 +106,13 @@ public partial class ClonePopupViewModel : PopupViewModel
         }
 
         ToastCommand(successes, warnings, errors).Execute(("Cloning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
-        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
+    }
+
+    public override void Close(Action? whileProcessingAction = null)
+    {
+        base.Close(() =>
+        {
+            MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
+        });
     }
 }

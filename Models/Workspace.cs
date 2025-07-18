@@ -28,6 +28,7 @@ namespace AutoPBI.Models
             IsSearched = true;
             IsSelected = false;
             IsLoading = true;
+            IsDroppedDown = true;
             IsAllReportsSelected = false;
         }
 
@@ -41,6 +42,12 @@ namespace AutoPBI.Models
         public void Select()
         {
             MainViewModel!.SelectWorkspaceCommand.Execute(this);
+        }
+
+        [RelayCommand]
+        public void DropDown()
+        {
+            IsDroppedDown = !IsDroppedDown;
         }
 
         public void CheckSelectedReports()
@@ -108,5 +115,6 @@ namespace AutoPBI.Models
             get => _reports;
             set => SetProperty(ref _reports, value);
         }
+        
     }
 }

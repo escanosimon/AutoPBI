@@ -101,10 +101,9 @@ public partial class PublishPopupViewModel : PopupViewModel
             {
                 if (!IsProcessing) return;
                 
-                CommandResult result;
                 try
                 {
-                    result = await MainViewModel.PowerShellService
+                    await MainViewModel.PowerShellService
                         .BuildCommand()
                         .WithCommand("New-PowerBIReport")
                         .WithArguments(args => args
@@ -124,17 +123,9 @@ public partial class PublishPopupViewModel : PopupViewModel
                 catch (Exception e)
                 {
                     reportErrors.Add(e.Message);
-                    Console.Error.WriteLine(e.Message);
                     continue;
                 }
-                if (result.Error.Count > 0)
-                {
-                    reportErrors = result.Error.ToList();
-                }
-                else
-                {
-                    reportSuccesses++;
-                }
+                reportSuccesses++;
             }
 
             if (reportErrors.Count > 0)
@@ -158,7 +149,6 @@ public partial class PublishPopupViewModel : PopupViewModel
         }
         
         ToastCommand(successes, warnings, errors).Execute(("Publishing finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
-        MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
     }
     
     private void UpdateVisibilities()
@@ -169,9 +159,11 @@ public partial class PublishPopupViewModel : PopupViewModel
 
     public override void Close(Action? whileProcessingAction = null)
     {
+        ImportedReports.Clear();
+        ImportButtonVisibility = true;
         base.Close(() =>
         {
-            ImportedReports.Clear();
+            MainViewModel.ReloadWorkspacesCommand.Execute(MainViewModel.SelectedWorkspaces);
         });
     }
 }

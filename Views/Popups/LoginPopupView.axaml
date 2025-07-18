@@ -15,7 +15,7 @@
                 IsVisible="{Binding IsVisible}"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Stretch"
-                MaxWidth="300">
+                MaxWidth="350">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Login to Power BI</TextBlock>
