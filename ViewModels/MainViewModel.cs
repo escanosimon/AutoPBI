@@ -65,16 +65,9 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
-        Initialize();
-    }
-
-    private async void Initialize()
-    {
-        await InitializeMicrosoftPowerBiMgmt();
-        
         ExePath = Assembly.GetExecutingAssembly().Location;
         ToolsFolder = Path.Combine(Path.GetDirectoryName(ExePath)!, "Tools");
-        
+
         try
         {
             var (username, password) = CheckSavedLogin();
@@ -95,7 +88,7 @@ public partial class MainViewModel : ViewModelBase
         };
     }
 
-    private async Task InitializeMicrosoftPowerBiMgmt()
+    private async Task InitializeMicrosoftPowerBIMgmt()
     {
         try
         {

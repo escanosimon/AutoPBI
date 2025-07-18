@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Management.Automation;
+using System.Text;
 using System.Text.Json;
 using AutoPBI.Models;
 using AutoPBI.Services;
@@ -10,6 +11,7 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class ScanPopupViewModel : PopupViewModel
 {
+    public StringBuilder output = new StringBuilder();
     public ScanPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
@@ -21,6 +23,7 @@ public partial class ScanPopupViewModel : PopupViewModel
     private async void Scan()
     {
         IsProcessing = true;
+        output.Clear();
 
         var successes = 0;
         var warnings = 0;
@@ -28,6 +31,8 @@ public partial class ScanPopupViewModel : PopupViewModel
         
         foreach (var report in MainViewModel.SelectedReports)
         {
+            var workspaceNameString = $"[{report.Workspace!.Name}] | ";
+            var message = "";
             if (!IsProcessing) return;
             report.Loading();
             Dataset dataset;
@@ -35,7 +40,9 @@ public partial class ScanPopupViewModel : PopupViewModel
             {
                 if (report.DatasetId == null)
                 {
-                    report.Error("Report has no linked dataset.");
+                    message = "Report has no linked dataset.";
+                    report.Error(message);
+                    output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {message}");
                     errors++;
                     continue;
                 }
@@ -43,7 +50,9 @@ public partial class ScanPopupViewModel : PopupViewModel
             }
             catch (Exception)
             {
-                report.Error("You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.");
+                message = "You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.";
+                report.Error(message);
+                output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {message}");
                 errors++;
                 continue;
             }
@@ -74,6 +83,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                 catch (Exception e)
                 {
                     report.Error(e.Message);
+                    output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {e.Message}");
                     errors++;
                     continue;
                 }
@@ -92,47 +102,62 @@ public partial class ScanPopupViewModel : PopupViewModel
                             var serviceException = JsonSerializer.Deserialize<Dictionary<string, string>>(serviceExceptionJson)!;
                             try
                             {
-                                report.Error(serviceException["errorDescription"]);
+                                message = serviceException["errorDescription"];
+                                report.Error(message);
+                                output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {message}");
                                 errors++;
                             }
                             catch (Exception)
                             {
                                 try
                                 {
-                                    report.Error(MainViewModel.ErrorMessages[serviceException["errorCode"]]);
+                                    message = MainViewModel.ErrorMessages[serviceException["errorCode"]];
+                                    report.Error(message);
+                                    output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {message}");
                                     errors++;
                                 }
                                 catch (Exception)
                                 {
-                                    report.Error(serviceException["errorCode"]);
+                                    message = serviceException["errorCode"];
+                                    report.Error(message);
+                                    output.AppendLine($"{workspaceNameString}{report.Name}:\t Error: {message}");
                                     Console.Error.WriteLine($"{report.Name}({report.Workspace!.Name}): {obj.Properties["serviceExceptionJson"].Value}");
                                     errors++;
                                 }
                             }
                             break;
                         case "Unknown":
-                            report.Warning("Last refresh is still loading.");
+                            message = "Last refresh is still loading.";
+                            report.Warning(message);
+                            output.AppendLine($"{workspaceNameString}{report.Name}:\t Warning: {message}");
                             warnings++;
                             break;
                         default:
-                            report.Success("Last refresh was successful.");
+                            message = "Last refresh was successful.";
+                            report.Success(message);
+                            output.AppendLine($"{workspaceNameString}{report.Name}:\t Success: {message}");
                             successes++;
                             break;
                     }
                 }
                 else
                 {
-                    report.Warning("Dataset is refreshable, but no refresh history (try refreshing the dataset).");
+                    message = "Dataset is refreshable, but no refresh history (try refreshing the dataset).";
+                    report.Warning(message);
+                    output.AppendLine($"{workspaceNameString}{report.Name}:\t Warning: {message}");
                     warnings++;
                 }
             }
             else
             {
-                report.Warning("Dataset is not refreshable (DirectQuery or Live Connection).");
+                message = "Dataset is not refreshable (DirectQuery or Live Connection).";
+                report.Warning(message);
+                output.AppendLine($"{workspaceNameString}{report.Name}:\t Warning: {message}");
                 warnings++;
             }
         }
         
+        Console.Error.WriteLine(output.ToString());
         ToastCommand(successes, warnings, errors).Execute(("Scanning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
         IsProcessing = false;
     }
