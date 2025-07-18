@@ -30,6 +30,7 @@ public partial class MainViewModel : ViewModelBase
     
     [ObservableProperty] private User _user = null!;
     [ObservableProperty] private bool _isLoggedIn;
+    [ObservableProperty] private bool _hasSavedLoginInfo;
 
     [ObservableProperty] private bool _isReloading = true;
     
@@ -64,11 +65,27 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
+        Initialize();
+    }
+
+    private async void Initialize()
+    {
+        await InitializeMicrosoftPowerBiMgmt();
+        
         ExePath = Assembly.GetExecutingAssembly().Location;
         ToolsFolder = Path.Combine(Path.GetDirectoryName(ExePath)!, "Tools");
         
-        CheckSavedLogin();
-        
+        try
+        {
+            var (username, password) = CheckSavedLogin();
+            AutoLogin(username, password);
+            HasSavedLoginInfo = true;
+        }
+        catch (Exception)
+        {
+            HasSavedLoginInfo = false;
+        }
+
         InitializePopups();
 
         Timer = new DispatcherTimer();
@@ -76,6 +93,23 @@ public partial class MainViewModel : ViewModelBase
         {
             CloseToast();
         };
+    }
+
+    private async Task InitializeMicrosoftPowerBiMgmt()
+    {
+        try
+        {
+            await PowerShellService.BuildCommand().WithCommand($@"
+            if (-not (Get-Module -ListAvailable -Name MicrosoftPowerBIMgmt)) {{
+                Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser
+                Import-Module MicrosoftPowerBIMgmt
+            }}
+            ").ExecuteAsync();
+        }
+        catch (Exception)
+        {
+            Console.Error.WriteLine("Failed to initialize Module.");
+        }
     }
 
     private void InitializePopups()
@@ -124,21 +158,19 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private async void CheckSavedLogin()
+    private (string username, string password) CheckSavedLogin()
     {
-        try
-        {
-            var credentials = SecureStorageService.LoadSavedCredentials();
-            if (!credentials.HasValue) return;
+        var credentials = SecureStorageService.LoadSavedCredentials();
+        if (!credentials.HasValue) throw new Exception("No saved credentials found.");
             
-            var (username, password) = credentials.Value;
-            await Login(username, password);
-            await FetchWorkspaces();
-        }
-        catch (Exception e)
-        {
-            Error(("Failed to load saved credentials!", e.Message));
-        }
+        var (username, password) = credentials.Value;
+        return (username, password);
+    }
+
+    private async void AutoLogin(string username, string password)
+    {
+        await Login(username, password);
+        await FetchWorkspaces();
     }
 
     public async Task Login(string username, string password)
@@ -265,6 +297,7 @@ public partial class MainViewModel : ViewModelBase
                 report.IsSelected = false;
                 SelectedReports.Remove(report);
             }
+            workspace.CheckSelectedReports();
         }
     }
 
