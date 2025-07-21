@@ -1,0 +1,79 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:AutoPBI.Models"
+             xmlns:controls="clr-namespace:AutoPBI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="Root"
+             x:DataType="models:Workspace"
+             d:DataContext="{Binding #Root.Workspace}"
+             x:Class="AutoPBI.Controls.WorkspaceWithReports">
+    <StackPanel Orientation="Vertical">
+        <Grid ColumnDefinitions="*, Auto" HorizontalAlignment="Left" Margin="0 0 0 4">
+            <Button
+                IsHitTestVisible="{Binding #Root.IsEnabled}"
+                Command="{Binding SelectAllReportsCommand}"
+                IsVisible="{Binding Reports.Count}" 
+                Classes="NoHover" Background="Transparent" 
+                Padding="0">
+                <Grid ColumnDefinitions="Auto, Auto, *" HorizontalAlignment="Left">
+                    <controls:StatusIcon
+                        Status="Selectable"
+                        IsSelected="{Binding IsAllReportsSelected}" 
+                        IsVisible="{Binding #Root.IsEnabled}"
+                        Margin="0 0 10 0"/>
+                    <Label Grid.Column="1" Margin="0 0 10 0" FontFamily="{DynamicResource Icon}" FontSize="17" Content="&#xf0c0;" VerticalAlignment="Center" Foreground="{DynamicResource Primary}" />
+                    <Grid Grid.Column="2" ColumnDefinitions="*, Auto">
+                        <TextBlock TextTrimming="CharacterEllipsis" FontFamily="{DynamicResource InterMedium}" FontSize="16" Foreground="{DynamicResource Primary}" VerticalAlignment="Center" Margin="0 0 10 0" Text="{Binding Name}">
+                            <ToolTip.Tip>
+                                <controls:TooltipContent Text="{Binding Name}"/>
+                            </ToolTip.Tip>
+                        </TextBlock>
+                        <Border 
+                            Grid.Column="1" 
+                            Padding="4 2" 
+                            BorderBrush="{DynamicResource Primary}" 
+                            BorderThickness="1" CornerRadius="4"
+                            VerticalAlignment="Center" 
+                            IsVisible="{Binding SelectedReports.Count}">
+                            <TextBlock Foreground="{DynamicResource Primary}" FontSize="10" Text="{Binding SelectedReports.Count}"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Button>
+                
+            <controls:IconButton 
+                Command="{Binding DropDownCommand}" 
+                Grid.Column="1" 
+                Margin="8 0 0 0"
+                IconUnicode="{Binding DropDownIconUnicode}"
+                IconMargin="0"
+                BorderThickness="1"
+                HoverBackground="{DynamicResource PrimaryLight}"
+                HoverBorderBrush="{DynamicResource Primary}"
+                Foreground="{DynamicResource Primary}" />
+        </Grid>
+        <StackPanel IsVisible="{Binding IsDroppedDown}" Margin="0 0 0 24">
+            <ItemsControl IsVisible="{Binding #Root.IsEnabled}" ItemsSource="{Binding Reports}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ReportItem 
+                            IsVisible="{Binding IsSearched}"
+                            Report="{Binding}" 
+                            Command="{Binding SelectReportCommand}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl IsVisible="{Binding !#Root.IsEnabled}" ItemsSource="{Binding SelectedReports}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ReportItem 
+                            IsVisible="{Binding IsSearched}"
+                            Report="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

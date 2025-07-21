@@ -49,59 +49,62 @@ public partial class ClonePopupViewModel : PopupViewModel
         var errors = 0;
         var warnings = 0;
         var successes = 0;
-        
-        foreach (var report in MainViewModel.SelectedReports)
+
+        foreach (var workspace in MainViewModel.Workspaces)
         {
-            foreach (var workspace in MainViewModel.SelectedWorkspaces)
+            foreach (var report in workspace.SelectedReports)
             {
-                if (!IsProcessing) return;
-                report.Loading();
-
-                try
+                foreach (var selectedWorkspace in MainViewModel.SelectedWorkspaces)
                 {
-                    var result = await MainViewModel.PowerShellService.BuildCommand()
-                        .WithCommand("Copy-PowerBIReport")
-                        .WithArguments(args => args
-                            .Add("-Name")
-                            .Add($"{report.Name} - Copy")
-                            .Add("-Id")
-                            .Add($"{report.Id}")
-                            .Add("-TargetWorkspaceId")
-                            .Add($"{workspace.Id}")
-                            .Add("-TargetDatasetId")
-                            .Add($"{report.DatasetId}")
-                        )
-                        .WithStandardErrorPipe(Console.Error.WriteLine)
-                        .ExecuteAsync();
+                    if (!IsProcessing) return;
+                    report.Loading();
+
+                    try
+                    {
+                        var result = await MainViewModel.PowerShellService.BuildCommand()
+                            .WithCommand("Copy-PowerBIReport")
+                            .WithArguments(args => args
+                                .Add("-Name")
+                                .Add($"{report.Name} - Copy")
+                                .Add("-Id")
+                                .Add($"{report.Id}")
+                                .Add("-TargetWorkspaceId")
+                                .Add($"{selectedWorkspace.Id}")
+                                .Add("-TargetDatasetId")
+                                .Add($"{report.DatasetId}")
+                            )
+                            .WithStandardErrorPipe(Console.Error.WriteLine)
+                            .ExecuteAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        report.Error(e.Message);
+                        errors++;
+                        continue;
+                    }
+
+                    report.Success($"Successfully cloned report to {selectedWorkspace.Name}");
+                    successes++;
                 }
-                catch (Exception e)
-                {
-                    report.Error(e.Message);
-                    errors++;
-                    continue;
-                }
 
-                report.Success($"Successfully cloned report to {workspace.Name}");
-                successes++;
-            }
-
-            if (errors > 0)
-            {
-                if (successes > 0)
+                if (errors > 0)
                 {
-                    report.Warning("Report failed to clone to some selected workspaces.");
-                    warnings++;
+                    if (successes > 0)
+                    {
+                        report.Warning("Report failed to clone to some selected workspaces.");
+                        warnings++;
+                    }
+                    else
+                    {
+                        report.Error("Report failed to clone to any selected workspaces.");
+                        errors++;
+                    }
                 }
                 else
                 {
-                    report.Error("Report failed to clone to any selected workspaces.");
-                    errors++;
+                    report.Success("Successfully cloned report to selected workspaces.");
+                    successes++;
                 }
-            }
-            else
-            {
-                report.Success("Successfully cloned report to selected workspaces.");
-                successes++;
             }
         }
 

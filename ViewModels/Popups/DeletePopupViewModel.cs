@@ -22,37 +22,40 @@ public partial class DeletePopupViewModel : PopupViewModel
         var successes = 0;
         var warnings = 0;
         var errors = 0;
-        
-        foreach (var report in MainViewModel.SelectedReports)
+
+        foreach (var workspace in MainViewModel.Workspaces)
         {
-            if (!IsProcessing) return;
-            
-            report.Loading();
-            
-            Dataset dataset;
-            try
+            foreach (var report in workspace.SelectedReports)
             {
-                dataset = MainViewModel.Datasets[report.DatasetId!];
-                if (dataset.Name == report.Name && dataset.Workspace.Id == report.Workspace!.Id)
+                if (!IsProcessing) return;
+            
+                report.Loading();
+            
+                Dataset dataset;
+                try
                 {
-                    await DeleteDataset(report);
-                    report.Success("Successfully deleted report and underlying dataset.");
-                    successes++;
+                    dataset = MainViewModel.Datasets[report.DatasetId!];
+                    if (dataset.Name == report.Name && dataset.Workspace.Id == report.Workspace!.Id)
+                    {
+                        await DeleteDataset(report);
+                        report.Success("Successfully deleted report and underlying dataset.");
+                        successes++;
+                    }
+                    else
+                    {
+                        await DeleteReport(report);
+                        report.Warning("Report successfully deleted but failed to delete underlying dataset with a different name/workspace.");
+                        warnings++;
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     await DeleteReport(report);
-                    report.Warning("Report successfully deleted but failed to delete underlying dataset with a different name/workspace.");
+                    report.Warning("Report successfully deleted but failed to delete underlying dataset (No dataset or permissions to dataset).");
                     warnings++;
                 }
+                report.IsSelected = false;
             }
-            catch (Exception)
-            {
-                await DeleteReport(report);
-                report.Warning("Report successfully deleted but failed to delete underlying dataset (No dataset or permissions to dataset).");
-                warnings++;
-            }
-            report.IsSelected = false;
         }
         
         ToastCommand(successes, warnings, errors).Execute(("Deleting finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));

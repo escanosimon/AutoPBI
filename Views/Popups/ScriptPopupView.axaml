@@ -31,10 +31,10 @@
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8" Padding="8">
                                 <Grid>
                                     <ScrollViewer IsVisible="{Binding !IsScriptShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.SelectedReports}">
+                                        <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <c:ReportItem Report="{Binding}" />
+                                                    <c:WorkspaceWithReports IsVisible="{Binding SelectedReports.Count}" Workspace="{Binding}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

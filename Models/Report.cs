@@ -2,10 +2,11 @@
 using AutoPBI.ViewModels;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.Models;
 
-public class Report : ObservableObject
+public partial class Report : ObservableObject
 {
     private StatusIcon.StatusType _status;
     private string? _id;
@@ -30,6 +31,24 @@ public class Report : ObservableObject
         IsSelected = false;
         IsSearched = true;
         Message = false;
+    }
+    
+    [RelayCommand]
+    private void SelectReport()
+    {
+        IsSelected = !IsSelected;
+        Workspace?.CheckSelectedReports();
+        
+        if (IsSelected)
+        { 
+            Workspace?.SelectedReports.Add(this);
+            MainViewModel.TotalSelectedReports++;
+        }
+        else
+        {
+            Workspace?.SelectedReports.Remove(this);
+            MainViewModel.TotalSelectedReports--;
+        }
     }
 
     public void Selectable()

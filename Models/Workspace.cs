@@ -20,6 +20,7 @@ namespace AutoPBI.Models
         private object? _dropDownIconUnicode;
         
         private ObservableCollection<Report> _reports = [];
+        private ObservableCollection<Report> _selectedReports = [];
         private MainViewModel? _mainViewModel;
 
         public Workspace(string? id, MainViewModel? mainViewModel)
@@ -36,6 +37,34 @@ namespace AutoPBI.Models
             DropDownIconUnicode = "\uf078";
             
             IsAllReportsSelected = false;
+        }
+        
+        [RelayCommand]
+        private void SelectAllReports()
+        {
+            IsAllReportsSelected = !IsAllReportsSelected;
+
+            if (IsAllReportsSelected)
+            {
+                foreach (var report in Reports)
+                {
+                    if (!report.IsSearched) continue;
+                    if (report.IsSelected) continue;
+                    report.IsSelected = true;
+                    SelectedReports.Add(report);
+                    MainViewModel!.TotalSelectedReports++;
+                }
+            }
+            else
+            {
+                foreach (var report in Reports)
+                {
+                    if (!report.IsSelected) continue;
+                    report.IsSelected = false;
+                    SelectedReports.Remove(report);
+                    MainViewModel!.TotalSelectedReports--;
+                }
+            }
         }
 
         [RelayCommand]
@@ -129,5 +158,10 @@ namespace AutoPBI.Models
             set => SetProperty(ref _reports, value);
         }
         
+        public ObservableCollection<Report> SelectedReports
+        {
+            get => _selectedReports;
+            set => SetProperty(ref _selectedReports, value);
+        }
     }
 }

@@ -39,40 +39,43 @@ public partial class DownloadPopupViewModel : PopupViewModel
         var successes = 0;
         var warnings = 0;
         var errors = 0;
-        
-        foreach (var report in MainViewModel.SelectedReports)
+
+        foreach (var workspace in MainViewModel.Workspaces)
         {
-            if (!IsProcessing) return;
-            report.Loading();
-            var outputFile = $"{destinationFolder}/{report.Name}.pbix";
-
-            try
+            foreach (var report in workspace.SelectedReports)
             {
-                await MainViewModel.PowerShellService
-                    .BuildCommand()
-                    .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
-                    .ExecuteAsync();
-                await MainViewModel.PowerShellService
-                    .BuildCommand()
-                    .WithCommand("Export-PowerBIReport")
-                    .WithArguments(args => args
-                        .Add("-Id")
-                        .Add($"{report.Id}")
-                        .Add("-OutFile")
-                        .Add($"{outputFile}")
-                    )
-                    .WithStandardErrorPipe(Console.Error.WriteLine)
-                    .ExecuteAsync();
-            }
-            catch (Exception e)
-            {
-                report.Error(e.Message);
-                errors++;
-                continue;
-            }
+                if (!IsProcessing) return;
+                report.Loading();
+                var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
-            report.Success("Successfully downloaded report");
-            successes++;
+                try
+                {
+                    await MainViewModel.PowerShellService
+                        .BuildCommand()
+                        .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
+                        .ExecuteAsync();
+                    await MainViewModel.PowerShellService
+                        .BuildCommand()
+                        .WithCommand("Export-PowerBIReport")
+                        .WithArguments(args => args
+                            .Add("-Id")
+                            .Add($"{report.Id}")
+                            .Add("-OutFile")
+                            .Add($"{outputFile}")
+                        )
+                        .WithStandardErrorPipe(Console.Error.WriteLine)
+                        .ExecuteAsync();
+                }
+                catch (Exception e)
+                {
+                    report.Error(e.Message);
+                    errors++;
+                    continue;
+                }
+
+                report.Success("Successfully downloaded report");
+                successes++;
+            }
         }
         
         ToastCommand(successes, warnings, errors).Execute(("Downloading finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));

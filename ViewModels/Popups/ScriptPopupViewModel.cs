@@ -82,45 +82,48 @@ public partial class ScriptPopupViewModel : PopupViewModel
         var successes = 0;
         var warnings = 0;
         var errors = 0;
-        
-        foreach (var report in MainViewModel.SelectedReports)
-        {
-            if (!IsProcessing) return;
-            
-            report.Loading();
 
-            var sbOutput = new StringBuilder();
-            try
+        foreach (var workspace in MainViewModel.Workspaces)
+        {
+            foreach (var report in workspace.SelectedReports)
             {
-                await Cli.Wrap(TabularEditorPath)
-                    .WithArguments(args => args
-                        .Add($"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")
-                        .Add($"{report.DatasetId}")
-                        .Add("-S")
-                        .Add($"{SelectedScriptPath}")
-                        .Add("-D")
-                        .Add("-W")
-                        .Add("-E")
-                    )
-                    .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sbOutput))
-                    .ExecuteAsync();
-            }
-            catch (Exception e)
-            {
-                var result = sbOutput.ToString();
-                var lines = result.Split([Environment.NewLine], StringSplitOptions.None);
-                foreach (var line in lines)
+                if (!IsProcessing) return;
+            
+                report.Loading();
+
+                var sbOutput = new StringBuilder();
+                try
                 {
-                    if (line.Contains("Error", StringComparison.OrdinalIgnoreCase))
-                    {
-                        report.Error(line);
-                    }
+                    await Cli.Wrap(TabularEditorPath)
+                        .WithArguments(args => args
+                            .Add($"Data Source=powerbi://api.powerbi.com/v1.0/myorg/{report.Workspace!.Name};User ID={MainViewModel.User.UserName};Password={MainViewModel.User.Password}")
+                            .Add($"{report.DatasetId}")
+                            .Add("-S")
+                            .Add($"{SelectedScriptPath}")
+                            .Add("-D")
+                            .Add("-W")
+                            .Add("-E")
+                        )
+                        .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sbOutput))
+                        .ExecuteAsync();
                 }
-                errors++;
-                continue;
+                catch (Exception e)
+                {
+                    var result = sbOutput.ToString();
+                    var lines = result.Split([Environment.NewLine], StringSplitOptions.None);
+                    foreach (var line in lines)
+                    {
+                        if (line.Contains("Error", StringComparison.OrdinalIgnoreCase))
+                        {
+                            report.Error(line);
+                        }
+                    }
+                    errors++;
+                    continue;
+                }
+                report.Success("Successfully applied script to dataset");
+                successes++;
             }
-            report.Success("Successfully applied script to dataset");
-            successes++;
         }
         
         ToastCommand(successes, warnings, errors).Execute(("Scripting finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));

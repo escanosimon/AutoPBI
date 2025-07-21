@@ -22,10 +22,14 @@ public abstract partial class PopupViewModel: ViewModelBase
     public virtual void Close(Action? whileProcessingAction = null)
     {
         IsVisible = false;
-        foreach (var report in MainViewModel.SelectedReports)
+
+        foreach (var workspace in MainViewModel.Workspaces)
         {
-            report.Selectable();
-            report.Message = false;
+            foreach (var report in workspace.SelectedReports)
+            {
+                report.Selectable();
+                report.Message = false;
+            }
         }
         
         if (!IsProcessing) return;

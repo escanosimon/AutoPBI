@@ -18,6 +18,7 @@
         <entry key="Controls/UserImage.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem.axaml" value="AutoPBI.csproj" />
         <entry key="Controls/WorkspaceItem1.axaml" value="AutoPBI.csproj" />
+        <entry key="Controls/WorkspaceWithReports.axaml" value="AutoPBI.csproj" />
         <entry key="MainView.axaml" value="AutoPBI.csproj" />
         <entry key="MainWindow.axaml" value="AutoPBI.csproj" />
         <entry key="Popups/DownloadPopup.axaml" value="AutoPBI.csproj" />

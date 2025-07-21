@@ -46,7 +46,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableHashMap<string, Dataset> _datasets = [];
     [ObservableProperty] private ObservableCollection<Workspace> _shownWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
-    [ObservableProperty] private ObservableCollection<Report> _selectedReports = [];
+    [ObservableProperty] private int _totalSelectedReports = 0;
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
 
     [ObservableProperty] private bool _isAllWorkspacesShown;
@@ -219,7 +219,6 @@ public partial class MainViewModel : ViewModelBase
             Datasets = [];
             ShownWorkspaces = [];
             SelectedWorkspaces = [];
-            SelectedReports = [];
             User = null!;
             IsLoggedIn = false;
             SecureStorageService.ClearSavedCredentials();
@@ -288,7 +287,7 @@ public partial class MainViewModel : ViewModelBase
             foreach (var report in workspace.Reports)
             {
                 report.IsSelected = false;
-                SelectedReports.Remove(report);
+                workspace.SelectedReports.Remove(report);
             }
             workspace.CheckSelectedReports();
         }
@@ -333,10 +332,10 @@ public partial class MainViewModel : ViewModelBase
     private async void ReloadWorkspaces(ObservableCollection<Workspace> workspaces)
     {
         IsReloading = true;
-        SelectedReports.Clear();
         foreach (var workspace in workspaces)
         {
             workspace.Reports.Clear();
+            workspace.SelectedReports.Clear();
             await FetchReports(workspace);
             await FetchDatasets(workspace);
         }
@@ -407,48 +406,6 @@ public partial class MainViewModel : ViewModelBase
         }
     }
     
-    [RelayCommand]
-    private void SelectReport(Report report)
-    {
-        report.IsSelected = !report.IsSelected;
-        report.Workspace?.CheckSelectedReports();
-        
-        if (report.IsSelected)
-        {
-            SelectedReports.Add(report);
-        }
-        else
-        {
-            SelectedReports.Remove(report);
-        }
-    }
-
-    [RelayCommand]
-    private void SelectAllReports(Workspace workspace)
-    {
-        workspace.IsAllReportsSelected = !workspace.IsAllReportsSelected;
-
-        if (workspace.IsAllReportsSelected)
-        {
-            foreach (var report in workspace.Reports)
-            {
-                if (!report.IsSearched) continue;
-                if (report.IsSelected) continue;
-                report.IsSelected = true;
-                SelectedReports.Add(report);
-            }
-        }
-        else
-        {
-            foreach (var report in workspace.Reports)
-            {
-                if (!report.IsSelected) continue;
-                report.IsSelected = false;
-                SelectedReports.Remove(report);
-            }
-        }
-    }
-
     [RelayCommand]
     private void ShowAllWorkspaces()
     {
