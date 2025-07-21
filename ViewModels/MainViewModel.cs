@@ -11,7 +11,9 @@ using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
+using Avalonia;
 using Avalonia.Controls.Shapes;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -27,7 +29,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private string _toolsFolder;
     
     [ObservableProperty] private DispatcherTimer _timer;
-    
+
     [ObservableProperty] private User _user = null!;
     [ObservableProperty] private bool _isLoggedIn;
     [ObservableProperty] private bool _hasSavedLoginInfo;
@@ -86,6 +88,19 @@ public partial class MainViewModel : ViewModelBase
         {
             CloseToast();
         };
+    }
+
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        if (Application.Current!.ActualThemeVariant == ThemeVariant.Light)
+        {
+            Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
+        }
+        else
+        {
+            Application.Current.RequestedThemeVariant = ThemeVariant.Light;
+        }
     }
 
     private async Task InitializeMicrosoftPowerBIMgmt()

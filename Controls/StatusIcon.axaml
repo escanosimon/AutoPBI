@@ -89,21 +89,21 @@
     </Style>
     
     <Style Selector="c|StatusIcon[Status=Success]">
-        <Setter Property="Background" Value="{DynamicResource SuccessLight}" />
+        <Setter Property="Background" Value="{DynamicResource SuccessBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource Success}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
         <Setter Property="IconUnicode" Value="&#xf00c;" />
     </Style>
     
     <Style Selector="c|StatusIcon[Status=Warning]">
-        <Setter Property="Background" Value="{DynamicResource WarningLight}" />
+        <Setter Property="Background" Value="{DynamicResource WarningBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource Warning}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Warning}"/>
         <Setter Property="IconUnicode" Value="&#xf071;" />
     </Style>
     
     <Style Selector="c|StatusIcon[Status=Error]">
-        <Setter Property="Background" Value="{DynamicResource ErrorLight}" />
+        <Setter Property="Background" Value="{DynamicResource ErrorBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource Error}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
         <Setter Property="IconUnicode" Value="&#xf00d;" />

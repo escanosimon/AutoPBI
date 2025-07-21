@@ -48,7 +48,7 @@
                                             IconMargin="0"
                                             CornerRadius="4"
                                             Foreground="{DynamicResource Warning}"
-                                            HoverBackground="{DynamicResource WarningLight}"
+                                            HoverBackground="{DynamicResource WarningBackground}"
                                             BorderThickness="1"
                                             BorderBrush="{DynamicResource Warning}"
                                             IconUnicode="&#xf05a;" 

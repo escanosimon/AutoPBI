@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AutoPBI.App"
-             RequestedThemeVariant="Light">
+             RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
@@ -18,23 +18,46 @@
              
     <Application.Resources>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="Background">#FAFAFA</SolidColorBrush>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="PrimaryLight">#1d2f2c</SolidColorBrush>
+                    
+                    <SolidColorBrush x:Key="Background">#171717</SolidColorBrush>
+                    <SolidColorBrush x:Key="NeutralMuted">#2e2f2f</SolidColorBrush>
+                    <SolidColorBrush x:Key="Neutral">#404040</SolidColorBrush>
+                    <SolidColorBrush x:Key="Foreground">#fafafa</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundSemiTransparent">#1A403F44</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundMuted">#a1a1a1</SolidColorBrush>
+                    
+                    <SolidColorBrush x:Key="SuccessBackground">#173623</SolidColorBrush>
+                    <SolidColorBrush x:Key="WarningBackground">#493103</SolidColorBrush>
+                    <SolidColorBrush x:Key="ErrorBackground">#431a0a</SolidColorBrush>
+                </ResourceDictionary>
+                
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
+                    
+                    <SolidColorBrush x:Key="Background">#FAFAFA</SolidColorBrush>
+                    <SolidColorBrush x:Key="Neutral">#DFDFDF</SolidColorBrush>
+                    <SolidColorBrush x:Key="NeutralMuted">#EDEDED</SolidColorBrush>
+                    <SolidColorBrush x:Key="Foreground">#403F44</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundSemiTransparent">#1A403F44</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundMuted">#76757A</SolidColorBrush>
+                    
+                    <SolidColorBrush x:Key="SuccessBackground">#f1f9f4</SolidColorBrush>
+                    <SolidColorBrush x:Key="WarningBackground">#fef7ea</SolidColorBrush>
+                    <SolidColorBrush x:Key="ErrorBackground">#fcefea</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            
             <SolidColorBrush x:Key="White">#FAFAFA</SolidColorBrush>
-            <SolidColorBrush x:Key="Neutral">#DFDFDF</SolidColorBrush>
-            <SolidColorBrush x:Key="NeutralMuted">#EDEDED</SolidColorBrush>
-            <SolidColorBrush x:Key="Foreground">#403F44</SolidColorBrush>
-            <SolidColorBrush x:Key="ForegroundSemiTransparent">#1A403F44</SolidColorBrush>
-            <SolidColorBrush x:Key="ForegroundMuted">#76757A</SolidColorBrush>
+            
             <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
-            <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
             <SolidColorBrush x:Key="Secondary">#ecc92a</SolidColorBrush>
             
-            <SolidColorBrush x:Key="SuccessLight">#f1f9f4</SolidColorBrush>
             <SolidColorBrush x:Key="Success">#51dc6b</SolidColorBrush>
-            <SolidColorBrush x:Key="WarningLight">#fef7ea</SolidColorBrush>
             <SolidColorBrush x:Key="Warning">#febf21</SolidColorBrush>
-            <SolidColorBrush x:Key="ErrorLight">#fcefea</SolidColorBrush>
-            <SolidColorBrush x:Key="Error">#fc5859</SolidColorBrush>
+            <SolidColorBrush x:Key="Error">#fb5e5f</SolidColorBrush>
         
             <FontFamily x:Key="InterRegular">/Assets/Fonts/Inter-Regular.otf#Inter</FontFamily>
             <FontFamily x:Key="InterMedium">/Assets/Fonts/Inter-Medium.otf#Inter Medium</FontFamily>

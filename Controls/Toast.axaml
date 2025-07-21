@@ -80,7 +80,7 @@
         <Setter Property="Title" Value="Success!" />
         <Setter Property="Description" Value="Action was completed successfully." />
         <Setter Property="IconUnicode" Value="&#xf00c;" />
-        <Setter Property="Background" Value="{DynamicResource SuccessLight}" />
+        <Setter Property="Background" Value="{DynamicResource SuccessBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Success}" />
     </Style>
     
@@ -88,7 +88,7 @@
         <Setter Property="Title" Value="Error!" />
         <Setter Property="Description" Value="Something went wrong." />
         <Setter Property="IconUnicode" Value="&#xf00d;" />
-        <Setter Property="Background" Value="{DynamicResource ErrorLight}" />
+        <Setter Property="Background" Value="{DynamicResource ErrorBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Error}" />
     </Style>
     
@@ -96,7 +96,7 @@
         <Setter Property="Title" Value="Warning!" />
         <Setter Property="Description" Value="Proceed with caution." />
         <Setter Property="IconUnicode" Value="&#xf071;" />
-        <Setter Property="Background" Value="{DynamicResource WarningLight}" />
+        <Setter Property="Background" Value="{DynamicResource WarningBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Warning}" />
     </Style>
 </Styles>
