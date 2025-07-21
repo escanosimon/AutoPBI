@@ -9,7 +9,7 @@
              x:DataType="models:Workspace"
              d:DataContext="{Binding #Root.Workspace}"
              x:Class="AutoPBI.Controls.WorkspaceWithReports">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical" Margin="0 0 0 8">
         <Grid ColumnDefinitions="*, Auto" HorizontalAlignment="Left" Margin="0 0 0 4">
             <Button
                 IsHitTestVisible="{Binding #Root.IsEnabled}"
@@ -54,7 +54,7 @@
                 HoverBorderBrush="{DynamicResource Primary}"
                 Foreground="{DynamicResource Primary}" />
         </Grid>
-        <StackPanel IsVisible="{Binding IsDroppedDown}" Margin="0 0 0 24">
+        <StackPanel IsVisible="{Binding IsDroppedDown}" Margin="0 0 0 12">
             <ItemsControl IsVisible="{Binding #Root.IsEnabled}" ItemsSource="{Binding Reports}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

@@ -21,7 +21,7 @@
     <Border Background="{DynamicResource Background}" ClipToBounds="True">
         <Grid RowDefinitions="56, *">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250" MaxWidth="450" Width="2*" />
+            <ColumnDefinition MinWidth="250" MaxWidth="320" Width="2*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
             
