@@ -18,7 +18,7 @@
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
-    <Border CornerRadius="8" Background="{DynamicResource Background}" ClipToBounds="True" BorderBrush="{DynamicResource Neutral}" BorderThickness="1">
+    <Border Background="{DynamicResource Background}" ClipToBounds="True">
         <Grid RowDefinitions="56, *">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" MaxWidth="450" Width="2*" />
