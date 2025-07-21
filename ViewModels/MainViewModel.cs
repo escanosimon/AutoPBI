@@ -215,6 +215,7 @@ public partial class MainViewModel : ViewModelBase
             await PowerShellService.BuildCommand()
                 .WithCommand("Disconnect-PowerBIServiceAccount")
                 .ExecuteAsync();
+            TotalSelectedReports = 0;
             Workspaces = [];
             Datasets = [];
             ShownWorkspaces = [];
@@ -249,6 +250,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchWorkspaces()
     {
+        IsReloading = true;
         var result = await PowerShellService
             .BuildCommand()
             .WithCommand("Get-PowerBIWorkspace")
@@ -268,6 +270,7 @@ public partial class MainViewModel : ViewModelBase
             workspace.IsLoading = false;
         }
 
+        IsReloading = false;
         Toast(Controls.Toast.StatusType.Normal, "Finished fetching workspaces!", "Select a workspace to show reports.");
     }
 
