@@ -25,7 +25,7 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
             
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="3">
             <Border Padding="16">
                 <c:Toast 
                     IsVisible="{Binding IsToasting}"
@@ -36,6 +36,16 @@
                     VerticalAlignment="Bottom" 
                     HorizontalAlignment="Right" />
             </Border>
+        </Grid>
+            
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
+            <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
+            <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
+            <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
+            <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
+            <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
+            <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
+            <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
         </Grid>
         
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
@@ -53,7 +63,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/PowerBILogo.svg}" Height="24" Margin="0 0 8 0"/>
-                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="{Binding TotalSelectedReports}" />
+                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="AutoPBI" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">
