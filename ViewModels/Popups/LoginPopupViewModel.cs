@@ -18,6 +18,9 @@ public partial class LoginPopupViewModel : PopupViewModel
     [ObservableProperty] private string? _usernameText = "";
     [ObservableProperty] private string? _passwordText = "";
     [ObservableProperty] private bool _isRememberMeChecked;
+    [ObservableProperty] private bool _isPasswordShown;
+    [ObservableProperty] private object? _eyeIconUnicode = "\uf070" ;
+    [ObservableProperty] private char _passwordChar = '*' ;
     
     public LoginPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
@@ -25,6 +28,14 @@ public partial class LoginPopupViewModel : PopupViewModel
     }
 
     public LoginPopupViewModel() : base(new MainViewModel()) {}
+
+    [RelayCommand]
+    private void ToggleIsPasswordShown()
+    {
+        IsPasswordShown = !IsPasswordShown;
+        EyeIconUnicode = IsPasswordShown ? "\uf06e" :  "\uf070";
+        PasswordChar = IsPasswordShown ? '\0' : '*';
+    }
 
     [RelayCommand]
     private async Task Login()

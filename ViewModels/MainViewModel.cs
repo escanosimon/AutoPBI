@@ -254,6 +254,7 @@ public partial class MainViewModel : ViewModelBase
             SelectedWorkspaces = [];
             User = null!;
             IsLoggedIn = false;
+            HasSavedLoginInfo = false;
             SecureStorageService.ClearSavedCredentials();
             
             Success(("Success!", "Logged out successfully."));
