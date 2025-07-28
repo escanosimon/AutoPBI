@@ -39,17 +39,22 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </ScrollViewer>
-                                    <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <c:WorkspaceItem Workspace="{Binding}"
-                                                        Command="{Binding SelectCommand}"
+                                    <Grid RowDefinitions="Auto, *" IsVisible="{Binding IsWorkspacesShown}">
+                                        <TextBox x:Name="WorkspaceSearchBox" Margin="8 8 8 0" Watermark="Search workspaces" Text="{Binding MainViewModel.SelectedWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !MainViewModel.Workspaces.Count}"/>
+                                        <ScrollViewer Grid.Row="1">
+                                            <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <c:WorkspaceItem 
+                                                            Workspace="{Binding}"
+                                                            Command="{Binding SelectCommand}"
+                                                            IsVisible="{Binding IsSelectedSearched}"
                                                         />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </Grid>
