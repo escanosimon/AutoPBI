@@ -12,7 +12,7 @@
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding !IsVisible}"
+                IsVisible="{Binding IsVisible}"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Stretch"
                 MaxWidth="350">
