@@ -2,7 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:AutoPBI.Controls">
     <Design.PreviewWith>
-        <controls:ToggleButtonGroup />
+        <controls:ToggleButtonGroup
+            Boolean="False"
+            NotBoolean="True"
+            Text1="Imported Reports"
+            Text2="Target Workspaces"
+            Amount1="0"
+            Amount2="3"/>
     </Design.PreviewWith>
 
     <Style Selector="controls|ToggleButtonGroup">
@@ -19,7 +25,12 @@
                             Padding="6" BorderBrush="{DynamicResource Neutral}" 
                             IsHitTestVisible="{TemplateBinding Boolean}"
                             BorderThickness="1">
-                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text1}" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border Padding="4 2" Background="{DynamicResource ForegroundMuted}" CornerRadius="4">
+                                    <TextBlock Text="{TemplateBinding Amount1}" FontSize="10" VerticalAlignment="Center" Foreground="{DynamicResource White}"/>
+                                </Border>
+                                <TextBlock Margin="6 0 0 0" Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text1}" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
                         <Button 
                             Grid.Column="1"
@@ -31,7 +42,12 @@
                             IsHitTestVisible="{TemplateBinding NotBoolean}"
                             Margin="-1 0 0 0"
                             BorderThickness="1">
-                            <TextBlock Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text2}" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border Padding="4 2" Background="{DynamicResource ForegroundMuted}" CornerRadius="4">
+                                    <TextBlock Text="{TemplateBinding Amount2}" FontSize="10" VerticalAlignment="Center" Foreground="{DynamicResource White}"/>
+                                </Border>
+                                <TextBlock Margin="6 0 0 0" Foreground="{DynamicResource ForegroundMuted}" FontSize="12" HorizontalAlignment="Center" Text="{TemplateBinding Text2}" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
                     </Grid>
                 </Border>

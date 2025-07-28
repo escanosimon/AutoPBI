@@ -7,6 +7,24 @@ namespace AutoPBI.Controls;
 
 public class ToggleButtonGroup : TemplatedControl
 {
+    public static readonly StyledProperty<int> Amount1Property = AvaloniaProperty.Register<ToggleButtonGroup, int>(
+        nameof(Amount1));
+
+    public int Amount1
+    {
+        get => GetValue(Amount1Property);
+        set => SetValue(Amount1Property, value);
+    }
+
+    public static readonly StyledProperty<int> Amount2Property = AvaloniaProperty.Register<ToggleButtonGroup, int>(
+        nameof(Amount2));
+
+    public int Amount2
+    {
+        get => GetValue(Amount2Property);
+        set => SetValue(Amount2Property, value);
+    }
+    
     public static readonly StyledProperty<bool> BooleanProperty = AvaloniaProperty.Register<ToggleButtonGroup, bool>(
         nameof(Boolean));
 

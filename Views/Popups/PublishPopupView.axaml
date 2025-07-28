@@ -28,6 +28,8 @@
                                 Command2="{Binding ShowWorkspacesCommand}"
                                 Text1="Imported Reports"
                                 Text2="Target Workspaces"
+                                Amount1="{Binding ImportedReports.Count}"
+                                Amount2="{Binding MainViewModel.SelectedWorkspaces.Count}"
                                 />
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>

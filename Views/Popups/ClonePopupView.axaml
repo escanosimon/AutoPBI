@@ -27,6 +27,8 @@
                                 Command2="{Binding ShowWorkspacesCommand}"
                                 Text1="Source Reports"
                                 Text2="Target Workspaces"
+                                Amount1="{Binding MainViewModel.TotalSelectedReports}"
+                                Amount2="{Binding MainViewModel.SelectedWorkspaces.Count}"
                                 />
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>
