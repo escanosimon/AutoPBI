@@ -145,9 +145,9 @@ public partial class ScanPopupViewModel : PopupViewModel
                     else
                     {
                         message = "Dataset is refreshable, but no refresh history (try refreshing the dataset).";
-                        report.Warning(message);
+                        report.Success(message);
                         output.AppendLine($"{report.Name}:\t Warning: {message}");
-                        warnings++;
+                        successes++;
                     }
                 }
                 else
