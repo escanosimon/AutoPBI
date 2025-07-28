@@ -129,7 +129,7 @@
             <Border BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}" CornerRadius="12" Padding="16">
                 <Grid RowDefinitions="Auto, Auto, Auto, *, 36">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontFamily="{DynamicResource InterMedium}" FontSize="16" Margin="0 0 0 12">Workspaces</TextBlock>
-                    <TextBox x:Name="WorkspaceSearchBox" Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" Text="{Binding WorkspaceSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !Workspaces.Count}"/>
+                    <TextBox x:Name="WorkspaceSearchBox" Grid.Row="1" Margin="0 0 0 12" Watermark="Search workspaces" Text="{Binding ShownWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !Workspaces.Count}"/>
                     <Button Grid.Row="2" Classes.Disabled="{Binding !Workspaces.Count}" Command="{Binding ShowAllWorkspacesCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" Background="Transparent" Padding="6">
                         <Grid ColumnDefinitions="*, Auto">
                             <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMuted}">All workspaces</TextBlock>
@@ -141,7 +141,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <c:WorkspaceItem 
-                                        IsVisible="{Binding IsSearched}"
+                                        IsVisible="{Binding IsShownSearched}"
                                         Workspace="{Binding}" 
                                         Command="{Binding ShowCommand}" 
                                         Status="Showable" />
@@ -168,6 +168,7 @@
                         <TextBox x:Name="ReportSearchBox" Watermark="Search reports" Text="{Binding ReportSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !ShownWorkspaces.Count}" />
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
+                                          IsVisible="False"
                                           IconUnicode="&#xf7ea;"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
@@ -182,7 +183,8 @@
                                           Foreground="{DynamicResource Primary}"
                                           BorderThickness="1"
                                           Command="{Binding OpenPopupCommand}" CommandParameter="{Binding ClonePopup}"
-                                          Text="Clone" />
+                                          Text="Clone"
+                                          Margin="8 0 0  0"/>
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
                                           IconUnicode="&#xf002;"
                                           HoverBorderBrush="{DynamicResource Primary}"

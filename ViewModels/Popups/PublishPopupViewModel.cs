@@ -132,18 +132,18 @@ public partial class PublishPopupViewModel : PopupViewModel
             {
                 if (reportSuccesses > 0)
                 {
-                    report.Warning("Report was not published in some selected workspaces.");
+                    report.Warning("Report was not published in some target workspaces.");
                     warnings++;
                 }
                 else
                 {
-                    report.Error("Report was not published to any selected workspaces.");
+                    report.Error("Report was not published to any target workspaces.");
                     errors++;
                 }
             }
             else
             {
-                report.Success("Successfully published to all selected workspaces.");
+                report.Success("Successfully published to all target workspaces.");
                 successes++;
             }
         }

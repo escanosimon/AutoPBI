@@ -36,7 +36,8 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isReloading = true;
     
-    [ObservableProperty] private string _workspaceSearchText;
+    [ObservableProperty] private string _shownWorkspacesSearchText;
+    [ObservableProperty] private string _selectedWorkspacesSearchText;
     [ObservableProperty] private string _reportSearchText;
     
     [ObservableProperty] private bool _isToasting;
@@ -131,20 +132,36 @@ public partial class MainViewModel : ViewModelBase
         LoginPopup = AddPopup(new LoginPopupViewModel(this));
     }
 
-    partial void OnWorkspaceSearchTextChanged(string value)
+    partial void OnShownWorkspacesSearchTextChanged(string value)
     {
         foreach (var workspace in Workspaces)
         {
             if (string.IsNullOrEmpty(value))
             {
-                workspace.IsSearched = true;
+                workspace.IsShownSearched = true;
             }
             else
             {
-                workspace.IsSearched = workspace.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+                workspace.IsShownSearched = workspace.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
             }
         }
         CheckShownWorkspaces();
+    }
+    
+    partial void OnSelectedWorkspacesSearchTextChanged(string value)
+    {
+        foreach (var workspace in Workspaces)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                workspace.IsSelectedSearched = true;
+            }
+            else
+            {
+                workspace.IsSelectedSearched = workspace.Name?.Contains(value, StringComparison.OrdinalIgnoreCase) ?? false;
+            }
+        }
+        CheckSelectedWorkspaces();
     }
     
     partial void OnReportSearchTextChanged(string value)
@@ -314,7 +331,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void CheckShownWorkspaces()
     {
-        var searchedWorkspaces = Workspaces.Where(w => w.IsSearched).ToList();
+        var searchedWorkspaces = Workspaces.Where(w => w.IsShownSearched).ToList();
         IsAllWorkspacesShown = searchedWorkspaces.Count != 0 && searchedWorkspaces.All(w => w.IsSelected);
     }
     
@@ -433,7 +450,7 @@ public partial class MainViewModel : ViewModelBase
         {
             foreach (var workspace in Workspaces)
             {
-                if (!workspace.IsSearched) continue;
+                if (!workspace.IsShownSearched) continue;
                 if (workspace.IsShown) continue;
                 workspace.IsShown = true;
                 ShownWorkspaces.Add(workspace);

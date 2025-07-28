@@ -25,8 +25,8 @@
                                 NotBoolean="{Binding !IsWorkspacesShown}"
                                 Command1="{Binding ShowReportsCommand}"
                                 Command2="{Binding ShowWorkspacesCommand}"
-                                Text1="Selected Reports"
-                                Text2="Select Workspaces"
+                                Text1="Source Reports"
+                                Text2="Target Workspaces"
                                 />
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>

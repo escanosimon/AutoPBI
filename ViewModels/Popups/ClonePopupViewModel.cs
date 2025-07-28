@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using AutoPBI.Controls;
-using AutoPBI.Models;
-using AutoPBI.Services;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -91,18 +84,18 @@ public partial class ClonePopupViewModel : PopupViewModel
                 {
                     if (successes > 0)
                     {
-                        report.Warning("Report failed to clone to some selected workspaces.");
+                        report.Warning("Report failed to clone to some target workspaces.");
                         warnings++;
                     }
                     else
                     {
-                        report.Error("Report failed to clone to any selected workspaces.");
+                        report.Error("Report failed to clone to any target workspaces.");
                         errors++;
                     }
                 }
                 else
                 {
-                    report.Success("Successfully cloned report to selected workspaces.");
+                    report.Success("Successfully cloned report to target workspaces.");
                     successes++;
                 }
             }

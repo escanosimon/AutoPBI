@@ -13,7 +13,7 @@
         <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
+                IsVisible="{Binding !IsVisible}"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
@@ -26,8 +26,8 @@
                                 NotBoolean="{Binding !IsWorkspacesShown}"
                                 Command1="{Binding ShowImportedReportsCommand}"
                                 Command2="{Binding ShowWorkspacesCommand}"
-                                Text1="Selected Reports"
-                                Text2="Select Workspaces"
+                                Text1="Imported Reports"
+                                Text2="Target Workspaces"
                                 />
                             <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
                                 <Grid>
@@ -52,17 +52,23 @@
                                                   IconUnicode="&#xf090;" 
                                                   Text="Import Power BI Files"
                                                   Foreground="{DynamicResource Primary}" />
-                                    <ScrollViewer IsVisible="{Binding IsWorkspacesShown}">
-                                        <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <c:WorkspaceItem Workspace="{Binding}"
-                                                        Command="{Binding SelectCommand}"
+                                    
+                                    <Grid RowDefinitions="Auto, *" IsVisible="{Binding IsWorkspacesShown}">
+                                        <TextBox x:Name="WorkspaceSearchBox" Margin="8 8 8 0" Watermark="Search workspaces" Text="{Binding MainViewModel.SelectedWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !MainViewModel.Workspaces.Count}"/>
+                                        <ScrollViewer Grid.Row="1">
+                                            <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <c:WorkspaceItem 
+                                                            Workspace="{Binding}"
+                                                            Command="{Binding SelectCommand}"
+                                                            IsVisible="{Binding IsSelectedSearched}"
                                                         />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </Grid>

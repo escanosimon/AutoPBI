@@ -11,7 +11,8 @@ namespace AutoPBI.Models
         private string? _id;
         private string? _name;
         private bool? _isShown;
-        private bool? _isSearched;
+        private bool? _isShownSearched;
+        private bool? _isSelectedSearched;
         private bool? _isSelected;
         private bool? _isAllReportsSelected;
         private bool? _isLoading;
@@ -29,7 +30,7 @@ namespace AutoPBI.Models
             Name = null;
             MainViewModel = mainViewModel;
             IsShown = false;
-            IsSearched = true;
+            IsShownSearched = true;
             IsSelected = false;
             IsLoading = true;
             
@@ -116,10 +117,16 @@ namespace AutoPBI.Models
             set => SetProperty(ref _isShown, value);
         }
         
-        public bool IsSearched
+        public bool IsShownSearched
         {
-            get => (bool)_isSearched!;
-            set => SetProperty(ref _isSearched, value);
+            get => (bool)_isShownSearched!;
+            set => SetProperty(ref _isShownSearched, value);
+        }
+        
+        public bool IsSelectedSearched
+        {
+            get => (bool)_isSelectedSearched!;
+            set => SetProperty(ref _isSelectedSearched, value);
         }
         
         public bool IsSelected
