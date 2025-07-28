@@ -52,32 +52,40 @@ public partial class ClonePopupViewModel : PopupViewModel
                     if (!IsProcessing) return;
                     report.Loading();
 
-                    try
+                    if (report.Workspace!.Id == selectedWorkspace.Id)
                     {
-                        var result = await MainViewModel.PowerShellService.BuildCommand()
-                            .WithCommand("Copy-PowerBIReport")
-                            .WithArguments(args => args
-                                .Add("-Name")
-                                .Add($"{report.Name} - Copy")
-                                .Add("-Id")
-                                .Add($"{report.Id}")
-                                .Add("-TargetWorkspaceId")
-                                .Add($"{selectedWorkspace.Id}")
-                                .Add("-TargetDatasetId")
-                                .Add($"{report.DatasetId}")
-                            )
-                            .WithStandardErrorPipe(Console.Error.WriteLine)
-                            .ExecuteAsync();
-                    }
-                    catch (Exception e)
-                    {
-                        report.Error(e.Message);
+                        report.Error("Cannot clone report to the same workspace.");
                         errors++;
-                        continue;
                     }
+                    else
+                    {
+                        try
+                        {
+                            var result = await MainViewModel.PowerShellService.BuildCommand()
+                                .WithCommand("Copy-PowerBIReport")
+                                .WithArguments(args => args
+                                    .Add("-Name")
+                                    .Add($"{report.Name} - Copy")
+                                    .Add("-Id")
+                                    .Add($"{report.Id}")
+                                    .Add("-TargetWorkspaceId")
+                                    .Add($"{selectedWorkspace.Id}")
+                                    .Add("-TargetDatasetId")
+                                    .Add($"{report.DatasetId}")
+                                )
+                                .WithStandardErrorPipe(Console.Error.WriteLine)
+                                .ExecuteAsync();
+                        }
+                        catch (Exception e)
+                        {
+                            report.Error(e.Message);
+                            errors++;
+                            continue;
+                        }
 
-                    report.Success($"Successfully cloned report to {selectedWorkspace.Name}");
-                    successes++;
+                        report.Success($"Successfully cloned report to {selectedWorkspace.Name}");
+                        successes++;
+                    }
                 }
 
                 if (errors > 0)
@@ -85,18 +93,15 @@ public partial class ClonePopupViewModel : PopupViewModel
                     if (successes > 0)
                     {
                         report.Warning("Report failed to clone to some target workspaces.");
-                        warnings++;
                     }
                     else
                     {
                         report.Error("Report failed to clone to any target workspaces.");
-                        errors++;
                     }
                 }
                 else
                 {
                     report.Success("Successfully cloned report to target workspaces.");
-                    successes++;
                 }
             }
         }
