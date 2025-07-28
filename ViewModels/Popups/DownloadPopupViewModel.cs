@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
@@ -11,12 +13,20 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class DownloadPopupViewModel : PopupViewModel
 {
+    [ObservableProperty] private bool _skipExisting;
+    
     public DownloadPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
     }
 
     public DownloadPopupViewModel() : base(new MainViewModel()) {}
+
+    [RelayCommand]
+    private void ToggleSkipExisting()
+    {
+        SkipExisting = !SkipExisting;
+    }
 
     [RelayCommand]
     private async void Download()
@@ -48,12 +58,21 @@ public partial class DownloadPopupViewModel : PopupViewModel
                 report.Loading();
                 var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
+                if (File.Exists(outputFile))
+                {
+                    if (SkipExisting)
+                    {
+                        Console.WriteLine($"Skipping {outputFile}");
+                        report.Success("Skipped report");
+                        successes++;
+                        continue;
+                    }
+                    File.Delete(outputFile);
+                    Console.WriteLine($"Replacing {outputFile}");
+                }
+
                 try
                 {
-                    await MainViewModel.PowerShellService
-                        .BuildCommand()
-                        .WithCommand($"if (Test-Path '{outputFile}') {{ Remove-Item '{outputFile}' -Force }}")
-                        .ExecuteAsync();
                     await MainViewModel.PowerShellService
                         .BuildCommand()
                         .WithCommand("Export-PowerBIReport")
@@ -78,6 +97,7 @@ public partial class DownloadPopupViewModel : PopupViewModel
             }
         }
         
+        IsProcessing = false;
         ToastCommand(successes, warnings, errors).Execute(("Downloading finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
     }
 }

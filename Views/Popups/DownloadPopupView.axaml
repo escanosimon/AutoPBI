@@ -19,17 +19,31 @@
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Download Reports</TextBlock>
                 </Border>
                 <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                    <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <c:WorkspaceWithReports IsVisible="{Binding SelectedReports.Count}" Workspace="{Binding}" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </Border>
+                    <Grid VerticalAlignment="Stretch" RowDefinitions="*, Auto">
+                        <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                            <ScrollViewer>
+                                <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <c:WorkspaceWithReports IsVisible="{Binding SelectedReports.Count}" Workspace="{Binding}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+                        <Button 
+                            Grid.Row="1"
+                            Margin="0 12 0 0"
+                            Padding="0"
+                            Classes="NoHover"
+                            Background="Transparent"
+                            Command="{Binding ToggleSkipExistingCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <c:StatusIcon IsSelected="{Binding SkipExisting}" Status="Selectable" VerticalAlignment="Center" Margin="0 0 8 0"></c:StatusIcon>
+                                <TextBlock Foreground="{DynamicResource ForegroundMuted}" VerticalAlignment="Center">Skip existing files (replaces by default)</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
                 </Border>
                 <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
