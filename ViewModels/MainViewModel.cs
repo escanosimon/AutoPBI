@@ -320,6 +320,7 @@ public partial class MainViewModel : ViewModelBase
         else
         {
             ShownWorkspaces.Remove(workspace);
+            TotalSelectedReports -= workspace.SelectedReports.Count;
             foreach (var report in workspace.Reports)
             {
                 report.IsSelected = false;
@@ -371,6 +372,7 @@ public partial class MainViewModel : ViewModelBase
         foreach (var workspace in workspaces)
         {
             workspace.Reports.Clear();
+            TotalSelectedReports -=  workspace.SelectedReports.Count;
             workspace.SelectedReports.Clear();
             await FetchReports(workspace);
             await FetchDatasets(workspace);

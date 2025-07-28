@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -42,6 +43,8 @@ public partial class ClonePopupViewModel : PopupViewModel
         var errors = 0;
         var warnings = 0;
         var successes = 0;
+        
+        var tempFolderPath = GetTempFolderPath();
 
         foreach (var workspace in MainViewModel.Workspaces)
         {
@@ -61,20 +64,10 @@ public partial class ClonePopupViewModel : PopupViewModel
                     {
                         try
                         {
-                            var result = await MainViewModel.PowerShellService.BuildCommand()
-                                .WithCommand("Copy-PowerBIReport")
-                                .WithArguments(args => args
-                                    .Add("-Name")
-                                    .Add($"{report.Name} - Copy")
-                                    .Add("-Id")
-                                    .Add($"{report.Id}")
-                                    .Add("-TargetWorkspaceId")
-                                    .Add($"{selectedWorkspace.Id}")
-                                    .Add("-TargetDatasetId")
-                                    .Add($"{report.DatasetId}")
-                                )
-                                .WithStandardErrorPipe(Console.Error.WriteLine)
-                                .ExecuteAsync();
+                            var name = $"{report.Name} - Copy";
+                            var outputFile = Path.Combine(tempFolderPath, $"{name}.pbix");
+                            await ExecuteDownload(report, outputFile);
+                            await ExecutePublish(outputFile, name, selectedWorkspace);
                         }
                         catch (Exception e)
                         {
@@ -106,7 +99,31 @@ public partial class ClonePopupViewModel : PopupViewModel
             }
         }
 
+        DeleteTempFolder(tempFolderPath);
         ToastCommand(successes, warnings, errors).Execute(("Cloning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
+    }
+
+    private static string GetTempFolderPath()
+    {
+        var tempFolderPath = Path.Combine(Path.GetTempPath(), $"PowerBiTemp_{Guid.NewGuid()}");
+        if (!Directory.Exists(tempFolderPath))
+        {
+            Directory.CreateDirectory(tempFolderPath);
+        }
+        return tempFolderPath;
+    }
+
+    private static void DeleteTempFolder(string tempFolderPath)
+    {
+        if (!Directory.Exists(tempFolderPath)) return;
+        try
+        {
+            Directory.Delete(tempFolderPath, true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to delete temporary folder: {ex.Message}");
+        }
     }
 
     public override void Close(Action? whileProcessingAction = null)

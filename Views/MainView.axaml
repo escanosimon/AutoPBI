@@ -53,7 +53,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/PowerBILogo.svg}" Height="24" Margin="0 0 8 0"/>
-                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="AutoPBI" />
+                        <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="{Binding TotalSelectedReports}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Right">

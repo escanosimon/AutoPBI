@@ -14,7 +14,6 @@
             <Button
                 IsHitTestVisible="{Binding #Root.IsEnabled}"
                 Command="{Binding SelectAllReportsCommand}"
-                IsVisible="{Binding Reports.Count}" 
                 Classes="NoHover" Background="Transparent" 
                 Padding="0">
                 <Grid ColumnDefinitions="Auto, Auto, *" HorizontalAlignment="Left">

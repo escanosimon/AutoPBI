@@ -73,17 +73,7 @@ public partial class DownloadPopupViewModel : PopupViewModel
 
                 try
                 {
-                    await MainViewModel.PowerShellService
-                        .BuildCommand()
-                        .WithCommand("Export-PowerBIReport")
-                        .WithArguments(args => args
-                            .Add("-Id")
-                            .Add($"{report.Id}")
-                            .Add("-OutFile")
-                            .Add($"{outputFile}")
-                        )
-                        .WithStandardErrorPipe(Console.Error.WriteLine)
-                        .ExecuteAsync();
+                    await ExecuteDownload(report, outputFile);
                 }
                 catch (Exception e)
                 {
