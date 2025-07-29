@@ -1,0 +1,49 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AutoPBI.ViewModels.Overlays"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPBI.Views.Overlays.ReportsSummaryOverlay"
+             x:DataType="vm:OverlayViewModel">
+    <Design.DataContext><vm:OverlayViewModel></vm:OverlayViewModel></Design.DataContext>
+    
+    <Grid IsVisible="{Binding IsOpen}">
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
+        
+        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource Primary}"
+                IsVisible="{Binding IsOpen}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="450" MaxWidth="500">
+            <Grid RowDefinitions="*, 56">
+                <Border Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <Grid RowDefinitions="Auto, *">
+                        <TextBox x:Name="ReportSearchBox" Watermark="Search reports" Text="{Binding PopupViewModel.MainViewModel.ReportSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !PopupViewModel.MainViewModel.TotalSelectedReports}" Margin="0 0 0 16" />
+                        <ScrollViewer Grid.Row="1">
+                            <ItemsControl ItemsSource="{Binding PopupViewModel.MainViewModel.Workspaces}" Padding="8">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <c:WorkspaceWithReports 
+                                            IsTabular="True"
+                                            IsVisible="{Binding SelectedReports.Count}" 
+                                            Workspace="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="1" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Back"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

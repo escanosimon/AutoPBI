@@ -23,15 +23,21 @@
         <entry key="MainWindow.axaml" value="AutoPBI.csproj" />
         <entry key="Popups/DownloadPopup.axaml" value="AutoPBI.csproj" />
         <entry key="Styles/AppDefaultStyles.axaml" value="AutoPBI.csproj" />
+        <entry key="ViewModels/Overlays/ScanSummaryOverlayViewModel.axaml" value="AutoPBI.csproj" />
         <entry key="ViewModels/Popups/LoginPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Overlays/ReportsSummaryOverlay.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Overlays/ScanSummaryOverlay.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Overlays/SelectedWorkspacesOverlay.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ClonePopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DeletePopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/DownloadPopupViewModel.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/LoginPopupView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/Overlay/SelectedWorkspacesPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/PublishPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/RefreshPopupView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/ReviewSelectedWorkspacesPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScanPopupVIew.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScanPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScriptPopupView.axaml" value="AutoPBI.csproj" />

@@ -10,10 +10,10 @@
              x:DataType="vm:ScriptPopupViewModel">
     <Design.DataContext><vm:ScriptPopupViewModel></vm:ScriptPopupViewModel></Design.DataContext>
     <Grid>
-        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
+                IsVisible="{Binding IsOpen}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="400" MaxHeight="450">
             <Grid RowDefinitions="Auto, *, 56">
                 <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
                     <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Script Reports</TextBlock>

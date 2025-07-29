@@ -4,92 +4,97 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
+             xmlns:ol="clr-namespace:AutoPBI.Views.Overlays"
              mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="450"
              x:Name="PublishPopupControl"
              x:Class="AutoPBI.Views.Popups.PublishPopupView"
              x:DataType="vm:PublishPopupViewModel">
     <Design.DataContext><vm:PublishPopupViewModel></vm:PublishPopupViewModel></Design.DataContext>
     <Grid>
-        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
-        
-        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="350" MaxHeight="450">
-            <Grid RowDefinitions="Auto, *, 56">
-                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Publish Reports</TextBlock>
-                </Border>   
-                    <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                        <Grid RowDefinitions="Auto, *">
-                            <c:ToggleButtonGroup
-                                Boolean="{Binding IsWorkspacesShown}"
-                                NotBoolean="{Binding !IsWorkspacesShown}"
-                                Command1="{Binding ShowImportedReportsCommand}"
-                                Command2="{Binding ShowWorkspacesCommand}"
-                                Text1="Imported Reports"
-                                Text2="Target Workspaces"
-                                Amount1="{Binding ImportedReports.Count}"
-                                Amount2="{Binding MainViewModel.SelectedWorkspaces.Count}"
-                                />
-                            <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
-                                <Grid>
-                                    <ScrollViewer IsVisible="{Binding !IsWorkspacesShown}">
-                                        <ItemsControl ItemsSource="{Binding ImportedReports}" Padding="8">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <c:ReportItem Report="{Binding}"></c:ReportItem>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-                                    <c:IconButton Command="{Binding ImportReportsCommand}"
-                                                  IsVisible="{Binding ImportButtonVisibility}"
-                                                  Classes.Disabled="{Binding IsProcessing}" 
-                                                  Padding="12 0"
-                                                  VerticalAlignment="Stretch"
-                                                  BorderThickness="1"
-                                                  HoverBackground="{DynamicResource PrimaryLight}"
-                                                  HoverBorderBrush="{DynamicResource Primary}"
-                                                  HorizontalAlignment="Stretch"
-                                                  IconUnicode="&#xf090;" 
-                                                  Text="Import Power BI Files"
-                                                  Foreground="{DynamicResource Primary}" />
-                                    
-                                    <Grid RowDefinitions="Auto, *" IsVisible="{Binding IsWorkspacesShown}">
-                                        <TextBox x:Name="WorkspaceSearchBox" Margin="8 8 8 0" Watermark="Search workspaces" Text="{Binding MainViewModel.SelectedWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !MainViewModel.Workspaces.Count}"/>
-                                        <ScrollViewer Grid.Row="1">
-                                            <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+        <ol:SelectedWorkspacesOverlay DataContext="{Binding SelectedWorkspacesOverlay}" ZIndex="2"/>
+        <Grid ZIndex="1">
+            <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
+            
+            <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
+                    IsVisible="{Binding IsOpen}"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="400" MaxHeight="450">
+                <Grid RowDefinitions="Auto, *, 56">
+                    <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                        <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Publish Reports</TextBlock>
+                    </Border>   
+                        <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                            <Grid RowDefinitions="Auto, *">
+                                <c:ToggleButtonGroup
+                                    Boolean="{Binding IsWorkspacesShown}"
+                                    NotBoolean="{Binding !IsWorkspacesShown}"
+                                    Command1="{Binding ShowImportedReportsCommand}"
+                                    Command2="{Binding ShowWorkspacesCommand}"
+                                    Text1="Imported Reports"
+                                    Text2="Target Workspaces"
+                                    Amount1="{Binding ImportedReports.Count}"
+                                    Amount2="{Binding MainViewModel.SelectedWorkspaces.Count}"
+                                    />
+                                <Border Grid.Row="1" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                                    <Grid>
+                                        <ScrollViewer IsVisible="{Binding !IsWorkspacesShown}">
+                                            <ItemsControl ItemsSource="{Binding ImportedReports}" Padding="8">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <c:WorkspaceItem 
-                                                            Workspace="{Binding}"
-                                                            Command="{Binding SelectCommand}"
-                                                            IsVisible="{Binding IsSelectedSearched}"
-                                                        />
+                                                        <c:ReportItem Report="{Binding}"></c:ReportItem>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                         </ScrollViewer>
+                                        <c:IconButton Command="{Binding ImportReportsCommand}"
+                                                      IsVisible="{Binding ImportButtonVisibility}"
+                                                      Classes.Disabled="{Binding IsProcessing}" 
+                                                      Padding="12 0"
+                                                      VerticalAlignment="Stretch"
+                                                      BorderThickness="1"
+                                                      HoverBackground="{DynamicResource PrimaryLight}"
+                                                      HoverBorderBrush="{DynamicResource Primary}"
+                                                      HorizontalAlignment="Stretch"
+                                                      IconUnicode="&#xf090;" 
+                                                      Text="Import Power BI Files"
+                                                      Foreground="{DynamicResource Primary}" />
+                                        
+                                        <Grid RowDefinitions="Auto, *" IsVisible="{Binding IsWorkspacesShown}">
+                                            <TextBox x:Name="WorkspaceSearchBox" Margin="8 8 8 0" Watermark="Search workspaces" Text="{Binding MainViewModel.SelectedWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !MainViewModel.Workspaces.Count}"/>
+                                            <ScrollViewer Grid.Row="1">
+                                                <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <c:WorkspaceItem 
+                                                                Workspace="{Binding}"
+                                                                Command="{Binding SelectCommand}"
+                                                                IsVisible="{Binding IsSelectedSearched}"
+                                                            />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Border>
-                        </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <c:IconButton Command="{Binding OpenOverlayCommand}"
+                                          CommandParameter="{Binding SelectedWorkspacesOverlay}"
+                                          Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
+                                          VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
+                                          Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                            <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                          Margin="8 0 0 0"
+                                          Foreground="{DynamicResource Foreground}" 
+                                          BorderBrush="{DynamicResource NeutralMuted}" 
+                                          Command="{Binding CloseCommand}"
+                                          BorderThickness="1" />
+                        </StackPanel>
                     </Border>
-                <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Command="{Binding PublishCommand}"
-                                      Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
-                                      VerticalAlignment="Stretch" IconUnicode="&#xe0a5;" Text="Publish"
-                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
-                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
-                                      Margin="8 0 0 0"
-                                      Foreground="{DynamicResource Foreground}" 
-                                      BorderBrush="{DynamicResource NeutralMuted}" 
-                                      Command="{Binding CloseCommand}"
-                                      BorderThickness="1" />
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

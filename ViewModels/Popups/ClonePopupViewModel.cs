@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
+using AutoPBI.ViewModels.Overlays;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -8,13 +10,25 @@ namespace AutoPBI.ViewModels.Popups;
 public partial class ClonePopupViewModel : PopupViewModel
 {
     [ObservableProperty] private bool _isWorkspacesShown;
+    [ObservableProperty] private OverlayViewModel _selectedWorkspacesOverlay;
     
     public ClonePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+        SelectedWorkspacesOverlay = AddOverlay(new OverlayViewModel(this, CloneCommand, "I'm sure, clone to selected"));
     }
 
     public ClonePopupViewModel() : base(new MainViewModel()) {}
+
+    public override void OpenOverlay(OverlayViewModel overlay)
+    {
+        if (MainViewModel.SelectedWorkspaces.Count == 0)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot proceed with cloning.", "Please select at least one workspace"));
+            return;
+        }
+        base.OpenOverlay(overlay);
+    }
 
     [RelayCommand]
     private void ShowWorkspaces()
@@ -31,12 +45,6 @@ public partial class ClonePopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Clone()
     {
-        if (MainViewModel.SelectedWorkspaces.Count == 0)
-        {
-            MainViewModel.WarningCommand.Execute(("Cannot proceed with cloning.", "Please select at least one workspace"));
-            return;
-        }
-        
         IsProcessing = true;
         ShowReports();
         
@@ -99,6 +107,7 @@ public partial class ClonePopupViewModel : PopupViewModel
             }
         }
 
+        IsProcessing = false;
         DeleteTempFolder(tempFolderPath);
         ToastCommand(successes, warnings, errors).Execute(("Cloning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
     }

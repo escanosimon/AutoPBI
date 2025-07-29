@@ -5,6 +5,7 @@
         xmlns:c="clr-namespace:AutoPBI.Controls"
         xmlns:vm="clr-namespace:AutoPBI.ViewModels"
         xmlns:popups="clr-namespace:AutoPBI.Views.Popups"
+        xmlns:services="clr-namespace:AutoPBI.Services"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="300"
         Width="1000" Height="600"
         x:Name="MainWindow"
@@ -25,7 +26,7 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
             
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="3">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
             <Border Padding="16">
                 <c:Toast 
                     IsVisible="{Binding IsToasting}"
@@ -38,16 +39,6 @@
             </Border>
         </Grid>
             
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="2">
-            <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
-            <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
-            <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
-            <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
-            <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
-            <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
-            <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
-        </Grid>
-        
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" ZIndex="1">
             <popups:DownloadPopupView DataContext="{Binding DownloadPopup}" />
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
@@ -120,7 +111,7 @@
                                             Margin="0 0 0 16"
                                             FontSize="12"
                                             Foreground="{DynamicResource ForegroundMuted}"
-                                            Text="simon.escano@amcsgroup.com" />
+                                            Text="{Binding User.UserName}" />
                                         <c:IconButton
                                             Command="{Binding LogoutCommand}"
                                             Text="Sign out"

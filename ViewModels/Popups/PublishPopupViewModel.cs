@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using AutoPBI.Models;
+using AutoPBI.ViewModels.Overlays;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,14 +18,26 @@ public partial class PublishPopupViewModel : PopupViewModel
     [ObservableProperty] private bool _importButtonVisibility;
     [ObservableProperty] private bool _importedReportsVisibility;
     [ObservableProperty] private ObservableCollection<Report> _importedReports = [];
+    [ObservableProperty] private OverlayViewModel _selectedWorkspacesOverlay;
     
     public PublishPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
         UpdateVisibilities();
+        SelectedWorkspacesOverlay = AddOverlay(new OverlayViewModel(this, PublishCommand, "I'm sure, publish"));
     }
 
     public PublishPopupViewModel() : base(new MainViewModel()) {}
+    
+    public override void OpenOverlay(OverlayViewModel selectedOverlay)
+    {
+        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0)
+        {
+            MainViewModel.WarningCommand.Execute(("Cannot publish!", "Select at least one workspace and one report to publish."));
+            return;
+        }
+        base.OpenOverlay(selectedOverlay);
+    }
 
     [RelayCommand]
     private void ShowWorkspaces()
@@ -76,12 +89,6 @@ public partial class PublishPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void Publish()
     {
-        if (ImportedReports.Count == 0 || MainViewModel.SelectedWorkspaces.Count == 0)
-        {
-            MainViewModel.WarningCommand.Execute(("Cannot publish!", "Select at least one workspace and one report to publish."));
-            return;
-        }
-        
         IsProcessing = true;
         ShowImportedReports();
         

@@ -276,7 +276,7 @@ public partial class MainViewModel : ViewModelBase
     {
         foreach (var popup in Popups)
         {
-            popup.IsVisible = popup == selectedPopup;
+            popup.IsOpen = popup == selectedPopup;
         }
     }
     

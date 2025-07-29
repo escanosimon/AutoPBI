@@ -17,6 +17,15 @@ public partial class WorkspaceWithReports : UserControl
         set => SetValue(WorkspaceProperty, value);
     }
 
+    public static readonly StyledProperty<bool> IsTabularProperty = AvaloniaProperty.Register<WorkspaceWithReports, bool>(
+        nameof(IsTabular));
+
+    public bool IsTabular
+    {
+        get => GetValue(IsTabularProperty);
+        set => SetValue(IsTabularProperty, value);
+    }
+
     public new static readonly StyledProperty<bool> IsEnabledProperty = AvaloniaProperty.Register<WorkspaceWithReports, bool>(
         nameof(IsEnabled));
 

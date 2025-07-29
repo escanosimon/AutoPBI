@@ -4,11 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:AutoPBI.Models"
              xmlns:controls="clr-namespace:AutoPBI.Controls"
+             xmlns:services="clr-namespace:AutoPBI.Services"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="Root"
              x:DataType="models:Workspace"
              d:DataContext="{Binding #Root.Workspace}"
              x:Class="AutoPBI.Controls.WorkspaceWithReports">
+    <UserControl.Resources>
+        <services:StatusToBackgroundConverter x:Key="StatusToBackgroundConverter" />
+        <services:StatusToForegroundConverter x:Key="StatusToForegroundConverter" />
+    </UserControl.Resources>
+    
     <StackPanel Orientation="Vertical" Margin="0 0 0 8">
         <Grid ColumnDefinitions="*, Auto" HorizontalAlignment="Left" Margin="0 0 0 4">
             <Button
@@ -53,26 +59,68 @@
                 HoverBorderBrush="{DynamicResource Primary}"
                 Foreground="{DynamicResource Primary}" />
         </Grid>
-        <StackPanel IsVisible="{Binding IsDroppedDown}" Margin="0 0 0 12">
-            <ItemsControl IsVisible="{Binding #Root.IsEnabled}" ItemsSource="{Binding Reports}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ReportItem 
-                            IsVisible="{Binding IsSearched}"
-                            Report="{Binding}" 
-                            Command="{Binding SelectReportCommand}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <ItemsControl IsVisible="{Binding !#Root.IsEnabled}" ItemsSource="{Binding SelectedReports}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ReportItem 
-                            IsVisible="{Binding IsSearched}"
-                            Report="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+        <Grid IsVisible="{Binding IsDroppedDown}">
+            <StackPanel IsVisible="{Binding !#Root.IsTabular}" Margin="0 0 0 12">
+                <ItemsControl IsVisible="{Binding #Root.IsEnabled}" ItemsSource="{Binding Reports}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ReportItem 
+                                IsVisible="{Binding IsSearched}"
+                                Report="{Binding}" 
+                                Command="{Binding SelectReportCommand}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl IsVisible="{Binding !#Root.IsEnabled}" ItemsSource="{Binding SelectedReports}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ReportItem 
+                                IsVisible="{Binding IsSearched}"
+                                Report="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <DataGrid IsVisible="{Binding #Root.IsTabular}" 
+                      Margin="0 0 0 12"
+                      IsReadOnly="True"
+                      CanUserResizeColumns="True"
+                      CanUserReorderColumns="True"
+                      CanUserSortColumns="True"
+                      ItemsSource="{Binding SelectedReports}"
+                      GridLinesVisibility="Vertical"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource NeutralMuted}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" MaxWidth="200" />
+                    <DataGridTemplateColumn Header="Status" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="models:Report">
+                                <Border 
+                                    Background="{Binding Status, Converter={StaticResource StatusToBackgroundConverter}}"
+                                    Padding="8 4" IsVisible="{Binding Message}">
+                                    <TextBlock 
+                                        Text="{Binding Message}" 
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Status, Converter={StaticResource StatusToForegroundConverter}}"/>
+                                    <ToolTip.Tip>
+                                        <controls:TooltipContent 
+                                            Text="{Binding Message}"
+                                            BorderBrush="{Binding Status, Converter={StaticResource StatusToForegroundConverter}}"
+                                            Background="{Binding Status, Converter={StaticResource StatusToBackgroundConverter}}"
+                                            Foreground="{Binding Status, Converter={StaticResource StatusToForegroundConverter}}"/>
+                                    </ToolTip.Tip>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.Styles>
+                    <Style Selector="DataGridRow">
+                        <Setter Property="IsVisible" Value="{Binding (models:Report).IsSearched}" />
+                    </Style>
+                </DataGrid.Styles>
+            </DataGrid>
+        </Grid>
     </StackPanel>
 </UserControl>

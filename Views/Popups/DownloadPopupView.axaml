@@ -4,62 +4,77 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="clr-namespace:AutoPBI.Controls"
              xmlns:vm="clr-namespace:AutoPBI.ViewModels.Popups"
+             xmlns:ol="clr-namespace:AutoPBI.Views.Overlays"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
              x:Class="AutoPBI.Views.Popups.DownloadPopupView"
              x:DataType="vm:DownloadPopupViewModel">
     <Design.DataContext><vm:DownloadPopupViewModel></vm:DownloadPopupViewModel></Design.DataContext>
     <Grid>
-        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
-        
-        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="400" MaxWidth="350">
-            <Grid RowDefinitions="Auto, *, 56">
-                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Download Reports</TextBlock>
-                </Border>
-                <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
-                    <Grid VerticalAlignment="Stretch" RowDefinitions="*, Auto">
-                        <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
-                            <ScrollViewer>
-                                <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <c:WorkspaceWithReports IsVisible="{Binding SelectedReports.Count}" Workspace="{Binding}" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </Border>
-                        <Button 
-                            Grid.Row="1"
-                            Margin="0 12 0 0"
-                            Padding="0"
-                            Classes="NoHover"
-                            Background="Transparent"
-                            Command="{Binding ToggleSkipExistingCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <c:StatusIcon IsSelected="{Binding SkipExisting}" Status="Selectable" VerticalAlignment="Center" Margin="0 0 8 0"></c:StatusIcon>
-                                <TextBlock Foreground="{DynamicResource ForegroundMuted}" VerticalAlignment="Center">Skip existing files (replaces by default)</TextBlock>
-                            </StackPanel>
-                        </Button>
-                    </Grid>
-                </Border>
-                <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <c:IconButton Command="{Binding DownloadCommand}"
-                                      Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
-                                      VerticalAlignment="Stretch" IconUnicode="&#xf33d;" Text="Download"
-                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
-                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
-                                      Margin="8 0 0 0"
-                                      Foreground="{DynamicResource Foreground}" 
-                                      BorderBrush="{DynamicResource NeutralMuted}" 
-                                      Command="{Binding CloseCommand}"
-                                      BorderThickness="1" />
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
+        <ol:ReportsSummaryOverlay DataContext="{Binding ReportsSummaryOverlay}" ZIndex="2"/>
+        <Grid ZIndex="1">
+            <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
+            
+            <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
+                    IsVisible="{Binding IsOpen}"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="450" MaxWidth="400">
+                <Grid RowDefinitions="Auto, *, 56">
+                    <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Download Reports</TextBlock>
+                            <c:IconButton 
+                                Padding="0"
+                                Grid.Column="1"
+                                Foreground="{DynamicResource Primary}"
+                                IconUnicode="&#xf0ce;"
+                                IconMargin="0"
+                                Command="{Binding OpenOverlayCommand}"
+                                CommandParameter="{Binding ReportsSummaryOverlay}"
+                            />
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                        <Grid VerticalAlignment="Stretch" RowDefinitions="*, Auto">
+                            <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                                <ScrollViewer>
+                                    <ItemsControl ItemsSource="{Binding MainViewModel.Workspaces}" Padding="8">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <c:WorkspaceWithReports IsVisible="{Binding SelectedReports.Count}" Workspace="{Binding}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Border>
+                            <Button 
+                                Grid.Row="1"
+                                Margin="0 12 0 0"
+                                Padding="0"
+                                Classes="NoHover"
+                                Background="Transparent"
+                                Command="{Binding ToggleSkipExistingCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <c:StatusIcon IsSelected="{Binding SkipExisting}" Status="Selectable" VerticalAlignment="Center" Margin="0 0 8 0"></c:StatusIcon>
+                                    <TextBlock Foreground="{DynamicResource ForegroundMuted}" VerticalAlignment="Center">Skip existing files (replaces by default)</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <c:IconButton Command="{Binding DownloadCommand}"
+                                          Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
+                                          VerticalAlignment="Stretch" IconUnicode="&#xf33d;" Text="Download"
+                                          Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                            <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Close"
+                                          Margin="8 0 0 0"
+                                          Foreground="{DynamicResource Foreground}" 
+                                          BorderBrush="{DynamicResource NeutralMuted}" 
+                                          Command="{Binding CloseCommand}"
+                                          BorderThickness="1" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

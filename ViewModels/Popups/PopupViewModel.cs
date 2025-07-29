@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
+using AutoPBI.ViewModels.Overlays;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,20 +12,38 @@ namespace AutoPBI.ViewModels.Popups;
 
 public abstract partial class PopupViewModel: ViewModelBase
 {
-    [ObservableProperty] private bool _isVisible;
+    [ObservableProperty] private bool _isOpen;
     [ObservableProperty] private bool _isProcessing;
     [ObservableProperty] private MainViewModel _mainViewModel;
+    [ObservableProperty] private ObservableCollection<OverlayViewModel> _overlays = [];
+    [ObservableProperty] private OverlayViewModel _reportsSummaryOverlay;
 
     protected PopupViewModel(MainViewModel mainViewModel)
     {
-        IsVisible = false;
+        IsOpen = false;
         MainViewModel = mainViewModel;
+        ReportsSummaryOverlay = AddOverlay(new OverlayViewModel(this));
+    }
+
+    public OverlayViewModel AddOverlay(OverlayViewModel overlay)
+    {
+        Overlays.Add(overlay);
+        return overlay;
+    }
+    
+    [RelayCommand]
+    public virtual void OpenOverlay(OverlayViewModel selectedOverlay)
+    {
+        foreach (var overlay in Overlays)
+        {
+            overlay.IsOpen = overlay == selectedOverlay;
+        }
     }
     
     [RelayCommand]
     public virtual void Close(Action? whileProcessingAction = null)
     {
-        IsVisible = false;
+        IsOpen = false;
 
         foreach (var workspace in MainViewModel.Workspaces)
         {

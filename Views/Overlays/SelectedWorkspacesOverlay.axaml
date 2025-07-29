@@ -1,0 +1,60 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AutoPBI.ViewModels.Overlays"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPBI.Views.Overlays.SelectedWorkspacesOverlay"
+             x:DataType="vm:OverlayViewModel">
+    <Design.DataContext><vm:OverlayViewModel></vm:OverlayViewModel></Design.DataContext>
+    
+    <Grid IsVisible="{Binding IsOpen}">
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
+        
+        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource Primary}"
+                IsVisible="{Binding IsOpen}"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="350" MaxWidth="350">
+            <Grid RowDefinitions="Auto, *, 56">
+                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <TextBlock Foreground="{DynamicResource Primary}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Review selected workspaces</TextBlock>
+                </Border>
+                <Border Grid.Row="1" Padding="16" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <Border BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="1" CornerRadius="8">
+                        <Grid RowDefinitions="Auto, *">
+                            <TextBox x:Name="WorkspaceSearchBox" Margin="8 8 8 0" Watermark="Search workspaces" Text="{Binding PopupViewModel.MainViewModel.SelectedWorkspacesSearchText, Mode=TwoWay}" Classes.Disabled="{Binding !PopupViewModel.MainViewModel.Workspaces.Count}"/>
+                            <ScrollViewer Grid.Row="1">
+                                <ItemsControl ItemsSource="{Binding PopupViewModel.MainViewModel.SelectedWorkspaces}" Padding="8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <c:WorkspaceItem 
+                                                Workspace="{Binding}"
+                                                IsVisible="{Binding IsSelectedSearched}"
+                                            />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Border>
+                <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <c:IconButton Command="{Binding ExecuteCommand}"
+                                      Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" 
+                                      Text="{Binding ButtonText}"
+                                      IconMargin="0"
+                                      Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Back"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

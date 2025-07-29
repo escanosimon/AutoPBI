@@ -9,10 +9,10 @@
              x:DataType="vm:LoginPopupViewModel">
     <Design.DataContext><vm:LoginPopupViewModel></vm:LoginPopupViewModel></Design.DataContext>
     <Grid>
-        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsVisible}"/>
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
         
         <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
-                IsVisible="{Binding IsVisible}"
+                IsVisible="{Binding IsOpen}"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Stretch"
                 MaxWidth="350">

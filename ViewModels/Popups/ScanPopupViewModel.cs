@@ -5,13 +5,14 @@ using System.Text;
 using System.Text.Json;
 using AutoPBI.Models;
 using AutoPBI.Services;
+using AutoPBI.ViewModels.Overlays;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
 public partial class ScanPopupViewModel : PopupViewModel
 {
-    public StringBuilder output = new StringBuilder();
     public ScanPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
@@ -23,7 +24,6 @@ public partial class ScanPopupViewModel : PopupViewModel
     private async void Scan()
     {
         IsProcessing = true;
-        output.Clear();
 
         var successes = 0;
         var warnings = 0;
@@ -31,7 +31,6 @@ public partial class ScanPopupViewModel : PopupViewModel
 
         foreach (var workspace in MainViewModel.Workspaces)
         {
-            Console.Error.WriteLine(workspace.Name);
             foreach (var report in workspace.SelectedReports)
             {
                 var message = "";
@@ -44,7 +43,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                     {
                         message = "Report has no linked dataset.";
                         report.Error(message);
-                        output.AppendLine($"{report.Name}:\t Error: {message}");
                         errors++;
                         continue;
                     }
@@ -54,7 +52,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                 {
                     message = "You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.";
                     report.Error(message);
-                    output.AppendLine($"{report.Name}:\t Error: {message}");
                     errors++;
                     continue;
                 }
@@ -85,7 +82,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                     catch (Exception e)
                     {
                         report.Error(e.Message);
-                        output.AppendLine($"{report.Name}:\t Error: {e.Message}");
                         errors++;
                         continue;
                     }
@@ -106,7 +102,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                                 {
                                     message = serviceException["errorDescription"];
                                     report.Error(message);
-                                    output.AppendLine($"{report.Name}:\t Error: {message}");
                                     errors++;
                                 }
                                 catch (Exception)
@@ -115,14 +110,12 @@ public partial class ScanPopupViewModel : PopupViewModel
                                     {
                                         message = MainViewModel.ErrorMessages[serviceException["errorCode"]];
                                         report.Error(message);
-                                        output.AppendLine($"{report.Name}:\t Error: {message}");
                                         errors++;
                                     }
                                     catch (Exception)
                                     {
                                         message = serviceException["errorCode"];
                                         report.Error(message);
-                                        output.AppendLine($"{report.Name}:\t Error: {message}");
                                         Console.Error.WriteLine($"{report.Name}({report.Workspace!.Name}): {obj.Properties["serviceExceptionJson"].Value}");
                                         errors++;
                                     }
@@ -131,13 +124,11 @@ public partial class ScanPopupViewModel : PopupViewModel
                             case "Unknown":
                                 message = "Last refresh is still loading.";
                                 report.Warning(message);
-                                output.AppendLine($"{report.Name}:\t Warning: {message}");
                                 warnings++;
                                 break;
                             default:
                                 message = "Last refresh was successful.";
                                 report.Success(message);
-                                output.AppendLine($"{report.Name}:\t Success: {message}");
                                 successes++;
                                 break;
                         }
@@ -146,7 +137,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                     {
                         message = "Dataset is refreshable, but no refresh history (try refreshing the dataset).";
                         report.Success(message);
-                        output.AppendLine($"{report.Name}:\t Warning: {message}");
                         successes++;
                     }
                 }
@@ -154,13 +144,11 @@ public partial class ScanPopupViewModel : PopupViewModel
                 {
                     message = "Dataset is not refreshable (DirectQuery or Live Connection).";
                     report.Warning(message);
-                    output.AppendLine($"{report.Name}:\t Warning: {message}");
                     warnings++;
                 }
             }
         }
         
-        Console.Error.WriteLine(output.ToString());
         ToastCommand(successes, warnings, errors).Execute(("Scanning finished!", $"{successes} successful, {warnings} warnings, {errors} errors."));
         IsProcessing = false;
     }
@@ -266,7 +254,6 @@ public partial class ScanPopupViewModel : PopupViewModel
                 foreach (var datasourceObj in  datasourceResult.Objects)
                 {
                     var gatewayId = datasourceObj.Properties["GatewayId"].Value.ToString();
-                    Console.Error.WriteLine(gatewayId);
                     CommandResult gatewayResult;
                     try
                     {
