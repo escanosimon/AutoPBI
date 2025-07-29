@@ -23,6 +23,5 @@ public class Dataset : ObservableObject
         IsRefreshable = isRefreshable;
         CreatedDate = DateTime.Parse(createdDate);
         Workspace = workspace;
-        Console.WriteLine(createdDate);
     }
 }
