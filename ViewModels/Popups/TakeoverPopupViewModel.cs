@@ -15,7 +15,7 @@ public partial class TakeoverPopupViewModel : PopupViewModel
     public TakeoverPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
-        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, TakeoverCommand, "Yes, take over"));
+        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, TakeoverCommand, "Yes, take over", "This action will transfer the ownership of the linked dataset and its associated data sources to you. Do you wish to proceed?"));
     }
 
     public TakeoverPopupViewModel() : base(new MainViewModel()) {}

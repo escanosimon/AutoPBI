@@ -40,6 +40,20 @@
                                FontFamily="{DynamicResource InterRegular}" 
                                Foreground="{TemplateBinding Foreground}"
                                Content="{TemplateBinding Text}" />
+                        <StackPanel Orientation="Horizontal" IsVisible="{TemplateBinding ExtraText}" VerticalAlignment="Center">
+                            <TextBlock FontSize="{TemplateBinding FontSize}" 
+                                   FontFamily="{DynamicResource InterRegular}" 
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text="(" />
+                            <TextBlock FontSize="{TemplateBinding FontSize}" 
+                                   FontFamily="{DynamicResource InterRegular}" 
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text="{TemplateBinding ExtraText}" />
+                            <TextBlock FontSize="{TemplateBinding FontSize}" 
+                                   FontFamily="{DynamicResource InterRegular}" 
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text=")" />
+                        </StackPanel>
                     </StackPanel>
                     
                     <Button.Styles>

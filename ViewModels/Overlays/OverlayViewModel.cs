@@ -11,8 +11,9 @@ public partial class OverlayViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _popupViewModel;
     [ObservableProperty] private IRelayCommand? _command;
     [ObservableProperty] private string? _buttonText;
+    [ObservableProperty] private string? _bodyText;
 
-    public OverlayViewModel(PopupViewModel popupViewModel, IRelayCommand? command = null, string? buttonText = null)
+    public OverlayViewModel(PopupViewModel popupViewModel, IRelayCommand? command = null, string? buttonText = null, string? bodyText = null)
     {
         _popupViewModel = popupViewModel;
         PopupViewModel = popupViewModel;
@@ -23,6 +24,10 @@ public partial class OverlayViewModel : ViewModelBase
         if (buttonText != null)
         {
             ButtonText = buttonText;
+        }
+        if (bodyText != null)
+        {
+            BodyText = bodyText;
         }
     }
 

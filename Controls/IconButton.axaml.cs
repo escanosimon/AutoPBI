@@ -82,6 +82,15 @@ public class IconButton : TemplatedControl
         set => SetValue(TextProperty, value);
     }
 
+    public static readonly StyledProperty<object?> ExtraTextProperty = AvaloniaProperty.Register<IconButton, object?>(
+        nameof(ExtraText), false);
+
+    public object? ExtraText
+    {
+        get => GetValue(ExtraTextProperty);
+        set => SetValue(ExtraTextProperty, value);
+    }
+
     public static readonly StyledProperty<Thickness> IconMarginProperty = AvaloniaProperty.Register<IconButton, Thickness>(
         nameof(IconMargin), new Thickness(0, 0, 8, 0));
 

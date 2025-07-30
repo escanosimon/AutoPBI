@@ -15,9 +15,12 @@ namespace AutoPBI.ViewModels.Popups;
 
 public partial class RefreshPopupViewModel : PopupViewModel
 {
+    [ObservableProperty] private OverlayViewModel _confirmationOverlay;
+    
     public RefreshPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, RefreshCommand, "Yes, refresh", "Refreshing now will overwrite the scheduled refresh for this report's dataset. Do you wish to continue?"));
     }
 
     public RefreshPopupViewModel() : base(new MainViewModel()) {}

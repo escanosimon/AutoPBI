@@ -17,7 +17,7 @@ public partial class DeletePopupViewModel : PopupViewModel
     public DeletePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
-        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, DeleteCommand, "Yes, delete"));
+        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, DeleteCommand, "Yes, delete", "This action will attempt to delete the report and its underlying dataset (if they share the same name and workspace). Do you wish to continue?"));
     }
 
     public DeletePopupViewModel() : base(new MainViewModel()) {}
