@@ -45,7 +45,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ObservableHashMap<string, Dataset> _datasets = [];
     [ObservableProperty] private ObservableCollection<Workspace> _shownWorkspaces = [];
     [ObservableProperty] private ObservableCollection<Workspace> _selectedWorkspaces = [];
-    [ObservableProperty] private int _totalSelectedReports = 0;
+    [ObservableProperty] private int _totalSelectedReports;
     [ObservableProperty] private ObservableCollection<PopupViewModel> _popups = [];
 
     [ObservableProperty] private bool _isAllWorkspacesShown;
@@ -55,6 +55,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _scriptPopup;
     [ObservableProperty] private PopupViewModel _clonePopup;
     [ObservableProperty] private PopupViewModel _scanPopup;
+    [ObservableProperty] private PopupViewModel _refreshPopup;
+    [ObservableProperty] private PopupViewModel _takeoverPopup;
     [ObservableProperty] private PopupViewModel _publishPopup;
     [ObservableProperty] private PopupViewModel _deletePopup;
     [ObservableProperty] private PopupViewModel _loginPopup;
@@ -115,6 +117,8 @@ public partial class MainViewModel : ViewModelBase
         ScriptPopup = AddPopup(new ScriptPopupViewModel(this));
         ClonePopup = AddPopup(new ClonePopupViewModel(this));
         ScanPopup = AddPopup(new ScanPopupViewModel(this));
+        RefreshPopup = AddPopup(new RefreshPopupViewModel(this));
+        TakeoverPopup = AddPopup(new TakeoverPopupViewModel(this));
         PublishPopup = AddPopup(new PublishPopupViewModel(this));
         DeletePopup = AddPopup(new DeletePopupViewModel(this));
         LoginPopup = AddPopup(new LoginPopupViewModel(this));

@@ -1,0 +1,182 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Text;
+using System.Text.Json;
+using AutoPBI.Controls;
+using AutoPBI.Models;
+using AutoPBI.Services;
+using AutoPBI.ViewModels.Overlays;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace AutoPBI.ViewModels.Popups;
+
+public partial class RefreshPopupViewModel : PopupViewModel
+{
+    public RefreshPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    {
+        MainViewModel = mainViewModel;
+    }
+
+    public RefreshPopupViewModel() : base(new MainViewModel()) {}
+
+    [RelayCommand]
+    private async void Refresh()
+    {
+        IsProcessing = true;
+        RestartCts();
+        
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
+        
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
+        {
+            foreach (var report in workspace.SelectedReports.ToList())
+            {
+                report.Loading();
+                Dataset dataset;
+                try
+                {
+                    if (report.DatasetId == null)
+                    {
+                        report.Error("Report has no linked dataset.");
+                        errors++;
+                        continue;
+                    }
+                    dataset = MainViewModel.Datasets[report.DatasetId];
+                }
+                catch (Exception)
+                {
+                    report.Error("You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.");
+                    errors++;
+                    continue;
+                }
+
+                if (dataset.IsRefreshable)
+                {
+                    var apiUrl =
+                        $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/refreshes";
+                    try
+                    {
+                        await Psr.Wrap()
+                            .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
+                            .WithArguments(args => args
+                                .Add("-Url")
+                                .Add(apiUrl)
+                                .Add("-Method")
+                                .Add("Post")
+                            )
+                            .WithStandardErrorPipe(Console.Error.WriteLine)
+                            .ExecuteAsync(Cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        SetReportsSelectable();
+                        MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        report.Error(e.Message);
+                        errors++;
+                        continue;
+                    }
+                }
+                else
+                {
+                    report.Warning("Dataset is not refreshable (DirectQuery or Live Connection).");
+                    warnings++;
+                    continue;
+                }
+                report.Success("Refreshed dataset successfully");
+                successes++;
+            }
+        }
+
+        ToastCommand(successes, warnings, errors).Execute(("Refreshing finished!", $"{successes} refreshed, {warnings} warnings, {errors} errors."));
+        IsProcessing = false;
+    }
+
+    [RelayCommand]
+    private async void ReAuth()
+    {
+        IsProcessing = true;
+        RestartCts();
+        
+        var successes = 0;
+        var warnings = 0;
+        var errors = 0;
+
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
+        {
+            foreach (var report in workspace.SelectedReports.ToList())
+            {
+                Dataset dataset;
+                try
+                {
+                    dataset = MainViewModel.Datasets[report.DatasetId!];
+                }
+                catch (Exception e)
+                {
+                    report.Error(e.Message);
+                    errors++;
+                    continue;
+                }
+
+                CommandResult datasourceResult;
+                try
+                {
+                    datasourceResult = await Psr.Wrap()
+                        .WithArguments(args => args.Add($"Get-PowerBIDataSource -DatasetId {dataset.Id}"))
+                        .ExecuteAsync(Cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                    return;
+                }
+                
+                foreach (var datasourceObj in  datasourceResult.Objects)
+                {
+                    var gatewayId = datasourceObj.Properties["GatewayId"].Value.ToString();
+                    CommandResult gatewayResult;
+                    try
+                    {
+                        gatewayResult = await Psr.Wrap()
+                            .WithArguments(args => args.Add(
+                                $"Invoke-PowerBIRestMethod -Url 'gateways/{gatewayId}' -Method Get | ConvertFrom-Json"))
+                            .ExecuteAsync(Cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        SetReportsSelectable();
+                        MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        report.Error(e.Message);
+                        errors++;
+                        continue;
+                    }
+
+                    foreach (var obj in gatewayResult.Objects)
+                    {
+                    
+                    }
+                    // var gateway = gatewayResult.Objects[0];
+                    // foreach (var gatewayProperty in gateway.Properties)
+                    // {
+                    //     Console.WriteLine($"{gatewayProperty.Name}: {gatewayProperty.Value}");
+                    // }
+                }
+            }
+        }
+        
+        ToastCommand(successes, warnings, errors).Execute(("Re-auth finished!", $"{successes} re-authed, {warnings} warnings, {errors} errors."));
+    }
+}

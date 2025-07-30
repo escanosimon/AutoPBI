@@ -7,7 +7,7 @@
         xmlns:popups="clr-namespace:AutoPBI.Views.Popups"
         xmlns:services="clr-namespace:AutoPBI.Services"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="300"
-        Width="1000" Height="600"
+        Width="1200" Height="600"
         x:Name="MainWindow"
         x:Class="AutoPBI.MainView"
         x:DataType="vm:MainViewModel"
@@ -44,6 +44,8 @@
             <popups:ScriptPopupView DataContext="{Binding ScriptPopup}" />
             <popups:ClonePopupView DataContext="{Binding ClonePopup}" />
             <popups:ScanPopupView DataContext="{Binding ScanPopup}" />
+            <popups:RefreshPopupView DataContext="{Binding RefreshPopup}" />
+            <popups:TakeoverPopupView DataContext="{Binding TakeoverPopup}" />
             <popups:PublishPopupView DataContext="{Binding PublishPopup}" />
             <popups:DeletePopupView DataContext="{Binding DeletePopup}" />
             <popups:LoginPopupView DataContext="{Binding LoginPopup}" />
@@ -171,6 +173,7 @@
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
                                           IsVisible="False"
                                           IconUnicode="&#xf7ea;"
+                                          IconMargin="0 0 4 0"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
                                           Foreground="{DynamicResource Primary}"
@@ -179,6 +182,7 @@
                                           Text="Script" Margin="8 0 0  0" />
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
                                           IconUnicode="&#xf0c5;"
+                                          IconMargin="0 0 4 0"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
                                           Foreground="{DynamicResource Primary}"
@@ -188,6 +192,7 @@
                                           Margin="8 0 0  0"/>
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
                                           IconUnicode="&#xf002;"
+                                          IconMargin="0 0 4 0"
                                           HoverBorderBrush="{DynamicResource Primary}"
                                           HoverBackground="{DynamicResource PrimaryLight}"
                                           Foreground="{DynamicResource Primary}"
@@ -195,6 +200,26 @@
                                           Command="{Binding OpenPopupCommand}"
                                           CommandParameter="{Binding ScanPopup}"
                                           Text="Scan" />
+                            <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
+                                          IconUnicode="&#xf021;"
+                                          IconMargin="0 0 4 0"
+                                          HoverBorderBrush="{DynamicResource Primary}"
+                                          HoverBackground="{DynamicResource PrimaryLight}"
+                                          Foreground="{DynamicResource Primary}"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}"
+                                          CommandParameter="{Binding RefreshPopup}"
+                                          Text="Refresh" />
+                            <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
+                                          IconUnicode="&#xf47b;"
+                                          IconMargin="0 0 4 0"
+                                          HoverBorderBrush="{DynamicResource Primary}"
+                                          HoverBackground="{DynamicResource PrimaryLight}"
+                                          Foreground="{DynamicResource Primary}"
+                                          BorderThickness="1"
+                                          Command="{Binding OpenPopupCommand}"
+                                          CommandParameter="{Binding TakeoverPopup}"
+                                          Text="Takeover" />
                             <c:IconButton Classes.Disabled="{Binding !TotalSelectedReports}"
                                           IconUnicode="&#xf33d;"
                                           IconMargin="0"
