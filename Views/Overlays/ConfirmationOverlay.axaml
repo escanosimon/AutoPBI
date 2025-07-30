@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AutoPBI.ViewModels.Overlays"
+             xmlns:c="clr-namespace:AutoPBI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPBI.Views.Overlays.ConfirmationOverlay"
+             x:DataType="vm:OverlayViewModel">
+    <Design.DataContext><vm:OverlayViewModel></vm:OverlayViewModel></Design.DataContext>
+    
+    <Grid IsVisible="{Binding IsOpen}">
+        <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
+        
+        <Border Background="{DynamicResource Background}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource NeutralMuted}"
+                IsVisible="{Binding IsOpen}"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" MaxWidth="300">
+            <Grid RowDefinitions="Auto, 56">
+                <Border Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}" BorderThickness="0 0 0 1">
+                    <TextBlock Foreground="{DynamicResource Foreground}" FontSize="16" FontFamily="{DynamicResource InterMedium}">Are you sure?</TextBlock>
+                </Border>
+                <Border Grid.Row="1" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <c:IconButton Command="{Binding ExecuteCommand}"
+                                      Padding="12 0" CornerRadius="12"
+                                      VerticalAlignment="Stretch" 
+                                      Text="{Binding ButtonText}"
+                                      IconMargin="0"
+                                      Background="{DynamicResource Error}" Foreground="{DynamicResource White}" />
+                        <c:IconButton HoverBackground="{DynamicResource NeutralMuted}" IconMargin="0" Padding="12 0" CornerRadius="12" VerticalAlignment="Stretch" Text="Back"
+                                      Margin="8 0 0 0"
+                                      Foreground="{DynamicResource Foreground}" 
+                                      BorderBrush="{DynamicResource NeutralMuted}" 
+                                      Command="{Binding CloseCommand}"
+                                      BorderThickness="1" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

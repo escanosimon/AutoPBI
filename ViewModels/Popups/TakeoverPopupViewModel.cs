@@ -2,15 +2,20 @@
 using System.Linq;
 using AutoPBI.Controls;
 using AutoPBI.Models;
+using AutoPBI.ViewModels.Overlays;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
 public partial class TakeoverPopupViewModel : PopupViewModel
 {
+    [ObservableProperty] private OverlayViewModel _confirmationOverlay;
+    
     public TakeoverPopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, TakeoverCommand, "Yes, take over"));
     }
 
     public TakeoverPopupViewModel() : base(new MainViewModel()) {}

@@ -4,15 +4,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoPBI.Controls;
 using AutoPBI.Models;
+using AutoPBI.ViewModels.Overlays;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AutoPBI.ViewModels.Popups;
 
 public partial class DeletePopupViewModel : PopupViewModel
 {
+    [ObservableProperty] private OverlayViewModel _confirmationOverlay;
+    
     public DeletePopupViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         MainViewModel = mainViewModel;
+        ConfirmationOverlay = AddOverlay(new OverlayViewModel(this, DeleteCommand, "Yes, delete"));
     }
 
     public DeletePopupViewModel() : base(new MainViewModel()) {}

@@ -11,6 +11,7 @@
     <Design.DataContext><vm:DeletePopupViewModel></vm:DeletePopupViewModel></Design.DataContext>
     <Grid>
         <ol:ReportsSummaryOverlay DataContext="{Binding ReportsSummaryOverlay}" ZIndex="2"/>
+        <ol:ConfirmationOverlay DataContext="{Binding ConfirmationOverlay}" ZIndex="2"/>
         <Grid ZIndex="1">
             <Button Classes="PopupBackground"  Command="{Binding CloseCommand}" IsVisible="{Binding IsOpen}"/>
             
@@ -47,7 +48,8 @@
                     </Border>
                     <Border Grid.Row="2" Padding="16 8" BorderBrush="{DynamicResource NeutralMuted}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <c:IconButton Command="{Binding DeleteCommand}"
+                            <c:IconButton Command="{Binding OpenOverlayCommand}"
+                                          CommandParameter="{Binding ConfirmationOverlay}"
                                           Classes.Disabled="{Binding IsProcessing}" Padding="12 0" CornerRadius="12"
                                           VerticalAlignment="Stretch" IconUnicode="&#xf1f8;" Text="Delete"
                                           Background="{DynamicResource Primary}" Foreground="{DynamicResource White}" />
