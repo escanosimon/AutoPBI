@@ -63,7 +63,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                         $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/refreshes";
                     try
                     {
-                        var result = await MainViewModel.Psr.Wrap()
+                        var result = await Psr.Wrap()
                             .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
                             .WithArguments(args => args
                                 .Add("-Url")
@@ -192,7 +192,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                         $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/refreshes";
                     try
                     {
-                        await MainViewModel.Psr.Wrap()
+                        await Psr.Wrap()
                             .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
                             .WithArguments(args => args
                                 .Add("-Url")
@@ -248,7 +248,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                     continue;
                 }
 
-                var datasourceResult = await MainViewModel.Psr.Wrap()
+                var datasourceResult = await Psr.Wrap()
                     .WithArguments(args => args.Add($"Get-PowerBIDataSource -DatasetId {dataset.Id}"))
                     .ExecuteAsync();
                 foreach (var datasourceObj in  datasourceResult.Objects)
@@ -257,7 +257,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                     CommandResult gatewayResult;
                     try
                     {
-                        gatewayResult = await MainViewModel.Psr.Wrap()
+                        gatewayResult = await Psr.Wrap()
                             .WithArguments(args => args.Add(
                                 $"Invoke-PowerBIRestMethod -Url 'gateways/{gatewayId}' -Method Get | ConvertFrom-Json"))
                             .ExecuteAsync();

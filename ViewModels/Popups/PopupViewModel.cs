@@ -12,6 +12,7 @@ namespace AutoPBI.ViewModels.Popups;
 
 public abstract partial class PopupViewModel: ViewModelBase
 {
+    [ObservableProperty] private Psr _psr = new();
     [ObservableProperty] private bool _isOpen;
     [ObservableProperty] private bool _isProcessing;
     [ObservableProperty] private MainViewModel _mainViewModel;
@@ -69,7 +70,7 @@ public abstract partial class PopupViewModel: ViewModelBase
 
     public async Task ExecuteDownload(Report report, string outputFile)
     {
-        await MainViewModel.Psr
+        await Psr
             .Wrap()
             .WithArguments(args => args.Add("Export-PowerBIReport"))
             .WithArguments(args => args
@@ -89,7 +90,7 @@ public abstract partial class PopupViewModel: ViewModelBase
 
     public async Task ExecutePublish(string path, string name, Workspace workspace)
     {
-        await MainViewModel.Psr
+        await Psr
             .Wrap()
             .WithArguments(args => args.Add("New-PowerBIReport"))
             .WithArguments(args => args
