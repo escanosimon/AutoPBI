@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoPBI.ViewModels.Overlays;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -54,9 +55,9 @@ public partial class ClonePopupViewModel : PopupViewModel
         
         var tempFolderPath = GetTempFolderPath();
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 foreach (var selectedWorkspace in MainViewModel.SelectedWorkspaces)
                 {

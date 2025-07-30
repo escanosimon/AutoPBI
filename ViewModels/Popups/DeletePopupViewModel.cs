@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using CommunityToolkit.Mvvm.Input;
@@ -23,9 +24,9 @@ public partial class DeletePopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 if (!IsProcessing) return;
             

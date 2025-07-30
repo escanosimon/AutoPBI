@@ -83,9 +83,9 @@ public partial class ScriptPopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 if (!IsProcessing) return;
             

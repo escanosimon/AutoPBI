@@ -295,6 +295,7 @@ public partial class MainViewModel : ViewModelBase
             await FetchDatasets(workspace);
             workspace.Name = obj.Properties["Name"].Value.ToString();
             workspace.IsLoading = false;
+            CheckShownWorkspaces();
         }
 
         IsReloading = false;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoPBI.Models;
@@ -50,9 +51,9 @@ public partial class DownloadPopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 if (!IsProcessing) return;
                 report.Loading();

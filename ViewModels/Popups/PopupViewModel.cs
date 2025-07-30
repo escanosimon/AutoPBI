@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
@@ -46,9 +47,9 @@ public abstract partial class PopupViewModel: ViewModelBase
     {
         IsOpen = false;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 report.Selectable();
                 report.Message = false;

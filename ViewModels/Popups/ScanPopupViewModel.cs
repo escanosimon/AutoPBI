@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
@@ -29,11 +30,11 @@ public partial class ScanPopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
-                var message = "";
+                string message;
                 if (!IsProcessing) return;
                 report.Loading();
                 Dataset dataset;
@@ -162,9 +163,9 @@ public partial class ScanPopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
         
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 if (!IsProcessing) return;
                 report.Loading();
@@ -232,9 +233,9 @@ public partial class ScanPopupViewModel : PopupViewModel
         var warnings = 0;
         var errors = 0;
 
-        foreach (var workspace in MainViewModel.Workspaces)
+        foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
-            foreach (var report in workspace.SelectedReports)
+            foreach (var report in workspace.SelectedReports.ToList())
             {
                 Dataset dataset;
                 try
