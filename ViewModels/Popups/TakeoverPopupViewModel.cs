@@ -31,15 +31,15 @@ public partial class TakeoverPopupViewModel : PopupViewModel
             {
                 report.Loading();
 
-                var apiUrl =
-                    $"https://api.powerbi.com/v1.0/myorg/groups/{workspace.Id}/reports/{report.Id}/Default.TakeOver";
                 try
                 {
+                    var url =
+                        $"https://api.powerbi.com/v1.0/myorg/groups/{workspace.Id}/reports/{report.Id}/Default.TakeOver";
                     await Psr.Wrap()
                         .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
                         .WithArguments(args => args
                             .Add("-Url")
-                            .Add(apiUrl)
+                            .Add(url)
                             .Add("-Method")
                             .Add("Post")
                         )
@@ -50,6 +50,51 @@ public partial class TakeoverPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Takeover cancelled!", $"Last to takeover: {report.Name}");
+                    return;
+                }
+                catch (Exception e)
+                {
+                    report.Error(e.Message);
+                    errors++;
+                    continue;
+                }
+                
+                Dataset dataset;
+                try
+                {
+                    if (report.DatasetId == null)
+                    {
+                        report.Error("Report has no linked dataset.");
+                        errors++;
+                        continue;
+                    }
+                    dataset = MainViewModel.Datasets[report.DatasetId];
+                }
+                catch (Exception)
+                {
+                    report.Error("You do not have permissions to the underlying dataset. Please contact the dataset owner to request access.");
+                    errors++;
+                    continue;
+                }
+                
+                try
+                {
+                    var url = $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/Default.TakeOver";
+                    await Psr.Wrap()
+                        .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
+                        .WithArguments(args => args
+                            .Add("-Url")
+                            .Add(url)
+                            .Add("-Method")
+                            .Add("Post")
+                        )
+                        .WithStandardErrorPipe(Console.Error.WriteLine)
+                        .ExecuteAsync(Cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
                     return;
                 }
                 catch (Exception e)
