@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoPBI.Controls;
 using AutoPBI.Models;
 using CommunityToolkit.Mvvm.Input;
 
@@ -19,6 +21,7 @@ public partial class DeletePopupViewModel : PopupViewModel
     private async void Delete()
     {
         IsProcessing = true;
+        RestartCts();
         
         var successes = 0;
         var warnings = 0;
@@ -28,8 +31,6 @@ public partial class DeletePopupViewModel : PopupViewModel
         {
             foreach (var report in workspace.SelectedReports.ToList())
             {
-                if (!IsProcessing) return;
-            
                 report.Loading();
             
                 Dataset dataset;
@@ -51,6 +52,12 @@ public partial class DeletePopupViewModel : PopupViewModel
                         warnings++;
                     }
                 }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "Delete cancelled!", $"Last to delete: {report.Name}");
+                    return;
+                }
                 catch (Exception)
                 {
                     await DeleteReport(report);
@@ -67,6 +74,7 @@ public partial class DeletePopupViewModel : PopupViewModel
     
     private async Task DeleteDataset(Report report)
     {
+        RestartCts();
         var apiUrl = $"https://api.powerbi.com/v1.0/myorg/datasets/{report.DatasetId}";
         await Psr.Wrap()
             .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
@@ -78,11 +86,12 @@ public partial class DeletePopupViewModel : PopupViewModel
                 .Add("-ErrorAction")
                 .Add("Stop"))
             .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+            .ExecuteAsync(Cts.Token);
     }
 
     private async Task DeleteReport(Report report)
     {
+        RestartCts();
         await Psr
             .Wrap()
             .WithArguments(args => args.Add("Remove-PowerBIReport"))
@@ -93,7 +102,7 @@ public partial class DeletePopupViewModel : PopupViewModel
                 .Add($"{report.Workspace!.Id}")
             )
             .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+            .ExecuteAsync(Cts.Token);
     }
 
     public override void Close(Action? action = null)

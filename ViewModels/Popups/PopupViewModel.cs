@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoPBI.Models;
 using AutoPBI.Services;
@@ -14,6 +15,7 @@ namespace AutoPBI.ViewModels.Popups;
 public abstract partial class PopupViewModel: ViewModelBase
 {
     [ObservableProperty] private Psr _psr = new();
+    [ObservableProperty] private CancellationTokenSource _cts = new();
     [ObservableProperty] private bool _isOpen;
     [ObservableProperty] private bool _isProcessing;
     [ObservableProperty] private MainViewModel _mainViewModel;
@@ -25,6 +27,14 @@ public abstract partial class PopupViewModel: ViewModelBase
         IsOpen = false;
         MainViewModel = mainViewModel;
         ReportsSummaryOverlay = AddOverlay(new OverlayViewModel(this));
+    }
+
+    public void RestartCts()
+    {
+        if (Cts.IsCancellationRequested)
+        {
+            Cts = new CancellationTokenSource();
+        }
     }
 
     public OverlayViewModel AddOverlay(OverlayViewModel overlay)
@@ -46,7 +56,18 @@ public abstract partial class PopupViewModel: ViewModelBase
     public virtual void Close(Action? whileProcessingAction = null)
     {
         IsOpen = false;
+        Cts.Cancel();
+        
+        SetReportsSelectable();
+        
+        if (!IsProcessing) return;
+        whileProcessingAction?.Invoke();
+        Console.Error.WriteLine("Process stopped...");
+        IsProcessing =  false;
+    }
 
+    public void SetReportsSelectable()
+    {
         foreach (var workspace in MainViewModel.Workspaces.ToList())
         {
             foreach (var report in workspace.SelectedReports.ToList())
@@ -55,11 +76,6 @@ public abstract partial class PopupViewModel: ViewModelBase
                 report.Message = false;
             }
         }
-        
-        if (!IsProcessing) return;
-        whileProcessingAction?.Invoke();
-        Console.Error.WriteLine("Process stopped...");
-        IsProcessing =  false;
     }
 
     public IRelayCommand<object?> ToastCommand(int successes, int warnings, int errors)
@@ -81,7 +97,7 @@ public abstract partial class PopupViewModel: ViewModelBase
                 .Add($"{outputFile}")
             )
             .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+            .ExecuteAsync(Cts.Token);
 
         if (!Path.Exists(outputFile))
         {
@@ -106,6 +122,6 @@ public abstract partial class PopupViewModel: ViewModelBase
             )
             .WithStandardOutputPipe(Console.WriteLine)
             .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+            .ExecuteAsync(Cts.Token);
     }
 }

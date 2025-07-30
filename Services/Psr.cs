@@ -5,6 +5,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AutoPBI.Services;
@@ -46,7 +47,7 @@ public class Psr : IDisposable
         return new CommandBuilder(this, executablePath);
     }
 
-    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, Action<string> outputHandler = null, Action<string> errorHandler = null)
+    internal async Task<CommandResult> ExecutePowerShellCommandAsync(string command, CancellationToken cancellationToken = default, Action<string> outputHandler = null, Action<string> errorHandler = null)
     {
         var result = new CommandResult();
         using (var pipeline = _runspace.CreatePipeline())
@@ -68,7 +69,7 @@ public class Psr : IDisposable
                 }
             };
 
-            var results = await Task.Run(() => pipeline.Invoke());
+            var results = await Task.Run(() => pipeline.Invoke(), cancellationToken);
 
             // Capture PSObjects
             result.Objects.AddRange(results);
@@ -88,7 +89,7 @@ public class Psr : IDisposable
         }
     }
 
-    internal async Task<CommandResult> ExecuteExternalCommandAsync(string executablePath, string arguments, Action<string> outputHandler = null, Action<string> errorHandler = null)
+    internal async Task<CommandResult> ExecuteExternalCommandAsync(string executablePath, string arguments, CancellationToken cancellationToken = default, Action<string> outputHandler = null, Action<string> errorHandler = null)
     {
         var result = new CommandResult();
         var process = new Process
@@ -125,7 +126,25 @@ public class Psr : IDisposable
         process.Start();
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
-        await Task.Run(() => process.WaitForExit());
+
+        // Register cancellation to kill the process
+        using (cancellationToken.Register(() =>
+        {
+            try
+            {
+                if (!process.HasExited)
+                {
+                    process.Kill();
+                }
+            }
+            catch
+            {
+                // Ignore errors when killing the process
+            }
+        }))
+        {
+            await Task.Run(() => process.WaitForExit(), cancellationToken);
+        }
 
         return result;
     }
@@ -178,7 +197,7 @@ public class CommandBuilder
         return this;
     }
 
-    public async Task<CommandResult> ExecuteAsync()
+    public async Task<CommandResult> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         if (_arguments.Count == 0)
             throw new InvalidOperationException("At least one argument (command) must be specified before execution.");
@@ -190,12 +209,12 @@ public class CommandBuilder
         if (!string.IsNullOrEmpty(_executablePath))
         {
             // Run external executable
-            return await _service.ExecuteExternalCommandAsync(_executablePath, $"{Escape(command)} {arguments}", _outputHandler, _errorHandler);
+            return await _service.ExecuteExternalCommandAsync(_executablePath, $"{Escape(command)} {arguments}", cancellationToken, _outputHandler, _errorHandler);
         }
 
         // Run PowerShell command
         var fullCommand = string.IsNullOrEmpty(arguments) ? command : $"{command} {arguments}";
-        return await _service.ExecutePowerShellCommandAsync(fullCommand, _outputHandler, _errorHandler);
+        return await _service.ExecutePowerShellCommandAsync(fullCommand, cancellationToken, _outputHandler, _errorHandler);
     }
 
     private static string Escape(string argument)

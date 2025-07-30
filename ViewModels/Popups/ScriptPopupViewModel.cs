@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using AutoPBI.Controls;
 using Avalonia.Platform.Storage;
 using AvaloniaEdit.Document;
 using CliWrap;
@@ -77,6 +78,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
         await File.WriteAllTextAsync(SelectedScriptPath, ScriptContents.Text);
         
         IsProcessing = true;
+        RestartCts();
         ShowReports();
         
         var successes = 0;
@@ -87,8 +89,6 @@ public partial class ScriptPopupViewModel : PopupViewModel
         {
             foreach (var report in workspace.SelectedReports.ToList())
             {
-                if (!IsProcessing) return;
-            
                 report.Loading();
 
                 var sbOutput = new StringBuilder();
@@ -105,7 +105,13 @@ public partial class ScriptPopupViewModel : PopupViewModel
                             .Add("-E")
                         )
                         .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sbOutput))
-                        .ExecuteAsync();
+                        .ExecuteAsync(Cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "Scripting cancelled!", $"Last to script: {report.Name}");
+                    return;
                 }
                 catch (Exception e)
                 {

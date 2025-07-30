@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoPBI.Controls;
 using AutoPBI.ViewModels.Overlays;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -61,7 +62,6 @@ public partial class ClonePopupViewModel : PopupViewModel
             {
                 foreach (var selectedWorkspace in MainViewModel.SelectedWorkspaces)
                 {
-                    if (!IsProcessing) return;
                     report.Loading();
 
                     if (report.Workspace!.Id == selectedWorkspace.Id)
@@ -77,6 +77,12 @@ public partial class ClonePopupViewModel : PopupViewModel
                             var outputFile = Path.Combine(tempFolderPath, $"{name}.pbix");
                             await ExecuteDownload(report, outputFile);
                             await ExecutePublish(outputFile, name, selectedWorkspace);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            SetReportsSelectable();
+                            MainViewModel.Toast(Toast.StatusType.Normal, "Cloning cancelled!", $"Last to clone: {report.Name}");
+                            return;
                         }
                         catch (Exception e)
                         {

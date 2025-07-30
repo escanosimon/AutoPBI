@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
+using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Overlays;
@@ -25,6 +26,7 @@ public partial class ScanPopupViewModel : PopupViewModel
     private async void Scan()
     {
         IsProcessing = true;
+        RestartCts();
 
         var successes = 0;
         var warnings = 0;
@@ -35,7 +37,6 @@ public partial class ScanPopupViewModel : PopupViewModel
             foreach (var report in workspace.SelectedReports.ToList())
             {
                 string message;
-                if (!IsProcessing) return;
                 report.Loading();
                 Dataset dataset;
                 try
@@ -77,8 +78,14 @@ public partial class ScanPopupViewModel : PopupViewModel
                                 .Add("ConvertFrom-Json")
                             )
                             .WithStandardErrorPipe(Console.Error.WriteLine)
-                            .ExecuteAsync();
+                            .ExecuteAsync(Cts.Token);
                         refreshHistory = result.Objects[0];
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        SetReportsSelectable();
+                        MainViewModel.Toast(Toast.StatusType.Normal, "Scanning cancelled!", $"Last to scan: {report.Name}");
+                        return;
                     }
                     catch (Exception e)
                     {
@@ -158,6 +165,7 @@ public partial class ScanPopupViewModel : PopupViewModel
     private async void Refresh()
     {
         IsProcessing = true;
+        RestartCts();
         
         var successes = 0;
         var warnings = 0;
@@ -167,7 +175,6 @@ public partial class ScanPopupViewModel : PopupViewModel
         {
             foreach (var report in workspace.SelectedReports.ToList())
             {
-                if (!IsProcessing) return;
                 report.Loading();
                 Dataset dataset;
                 try
@@ -202,7 +209,13 @@ public partial class ScanPopupViewModel : PopupViewModel
                                 .Add("Post")
                             )
                             .WithStandardErrorPipe(Console.Error.WriteLine)
-                            .ExecuteAsync();
+                            .ExecuteAsync(Cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        SetReportsSelectable();
+                        MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
+                        return;
                     }
                     catch (Exception e)
                     {
@@ -229,6 +242,9 @@ public partial class ScanPopupViewModel : PopupViewModel
     [RelayCommand]
     private async void ReAuth()
     {
+        IsProcessing = true;
+        RestartCts();
+        
         var successes = 0;
         var warnings = 0;
         var errors = 0;
@@ -249,9 +265,20 @@ public partial class ScanPopupViewModel : PopupViewModel
                     continue;
                 }
 
-                var datasourceResult = await Psr.Wrap()
-                    .WithArguments(args => args.Add($"Get-PowerBIDataSource -DatasetId {dataset.Id}"))
-                    .ExecuteAsync();
+                CommandResult datasourceResult;
+                try
+                {
+                    datasourceResult = await Psr.Wrap()
+                        .WithArguments(args => args.Add($"Get-PowerBIDataSource -DatasetId {dataset.Id}"))
+                        .ExecuteAsync(Cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                    return;
+                }
+                
                 foreach (var datasourceObj in  datasourceResult.Objects)
                 {
                     var gatewayId = datasourceObj.Properties["GatewayId"].Value.ToString();
@@ -261,7 +288,13 @@ public partial class ScanPopupViewModel : PopupViewModel
                         gatewayResult = await Psr.Wrap()
                             .WithArguments(args => args.Add(
                                 $"Invoke-PowerBIRestMethod -Url 'gateways/{gatewayId}' -Method Get | ConvertFrom-Json"))
-                            .ExecuteAsync();
+                            .ExecuteAsync(Cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        SetReportsSelectable();
+                        MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                        return;
                     }
                     catch (Exception e)
                     {

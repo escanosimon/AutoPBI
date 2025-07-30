@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using Avalonia.Controls;
@@ -46,6 +47,7 @@ public partial class DownloadPopupViewModel : PopupViewModel
         }
         
         IsProcessing = true;
+        RestartCts();
         
         var successes = 0;
         var warnings = 0;
@@ -55,7 +57,6 @@ public partial class DownloadPopupViewModel : PopupViewModel
         {
             foreach (var report in workspace.SelectedReports.ToList())
             {
-                if (!IsProcessing) return;
                 report.Loading();
                 var outputFile = $"{destinationFolder}/{report.Name}.pbix";
 
@@ -75,6 +76,12 @@ public partial class DownloadPopupViewModel : PopupViewModel
                 try
                 {
                     await ExecuteDownload(report, outputFile);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "Download cancelled!", $"Last to download: {report.Name}");
+                    return;
                 }
                 catch (Exception e)
                 {

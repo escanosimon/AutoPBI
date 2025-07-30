@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.ViewModels.Overlays;
 using Avalonia.Platform.Storage;
@@ -90,6 +91,7 @@ public partial class PublishPopupViewModel : PopupViewModel
     private async void Publish()
     {
         IsProcessing = true;
+        RestartCts();
         ShowImportedReports();
         
         var successes = 0;
@@ -106,11 +108,15 @@ public partial class PublishPopupViewModel : PopupViewModel
             
             foreach (var workspace in MainViewModel.SelectedWorkspaces)
             {
-                if (!IsProcessing) return;
-                
                 try
                 {
                     await ExecutePublish(path, name, workspace);
+                }
+                catch (OperationCanceledException)
+                {
+                    SetReportsSelectable();
+                    MainViewModel.Toast(Toast.StatusType.Normal, "Publishing cancelled!", $"Last to publish: {report.Name}");
+                    return;
                 }
                 catch (Exception e)
                 {

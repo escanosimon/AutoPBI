@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoPBI.Controls;
 using AutoPBI.Models;
@@ -59,6 +60,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _loginPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
+    [ObservableProperty] private CancellationTokenSource _cts = new();
     [ObservableProperty] private Psr _psr = new();
 
     public MainViewModel()
@@ -85,6 +87,14 @@ public partial class MainViewModel : ViewModelBase
             CloseToast();
         };
     }
+    
+    public void RestartCts()
+    {
+        if (Cts.IsCancellationRequested)
+        {
+            Cts = new CancellationTokenSource();
+        }
+    }
 
     [RelayCommand]
     private void ToggleTheme()
@@ -96,23 +106,6 @@ public partial class MainViewModel : ViewModelBase
         else
         {
             Application.Current.RequestedThemeVariant = ThemeVariant.Light;
-        }
-    }
-
-    private async Task InitializeMicrosoftPowerBIMgmt()
-    {
-        try
-        {
-            await Psr.Wrap().WithArguments(args => args.Add($@"
-            if (-not (Get-Module -ListAvailable -Name MicrosoftPowerBIMgmt)) {{
-                Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser
-                Import-Module MicrosoftPowerBIMgmt
-            }}
-            ")).ExecuteAsync();
-        }
-        catch (Exception)
-        {
-            Console.Error.WriteLine("Failed to initialize Module.");
         }
     }
 
@@ -190,7 +183,14 @@ public partial class MainViewModel : ViewModelBase
     private async void AutoLogin(string username, string password)
     {
         await Login(username, password);
-        await FetchWorkspaces();
+        try
+        {
+            await FetchWorkspaces();
+        }
+        catch (OperationCanceledException)
+        {
+            Toast(Controls.Toast.StatusType.Normal, "Logging out...", "Cancelling fetching workspaces...");
+        }
     }
 
     public async Task Login(string username, string password)
@@ -236,11 +236,14 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async void Logout()
     {
+        Cts.Cancel();
+        RestartCts();
+        
         try
         {
             await Psr.Wrap()
                 .WithArguments(args => args.Add("Disconnect-PowerBIServiceAccount"))
-                .ExecuteAsync();
+                .ExecuteAsync(Cts.Token);
             TotalSelectedReports = 0;
             Workspaces = [];
             Datasets = [];
@@ -253,9 +256,9 @@ public partial class MainViewModel : ViewModelBase
             
             Success(("Success!", "Logged out successfully."));
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Error(("Failed to log out!", "Something went wrong."));
+            Error(("Failed to log out!", e.Message));
         }
     }
 
@@ -277,22 +280,39 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchWorkspaces()
     {
+        RestartCts();
+        
         IsReloading = true;
-        var result = await Psr
-            .Wrap()
-            .WithArguments(args => args
-                .Add("Get-PowerBIWorkspace")
-                .Add("-All")
-            )
-            .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+        CommandResult result;
+        try
+        {
+            result = await Psr
+                .Wrap()
+                .WithArguments(args => args
+                    .Add("Get-PowerBIWorkspace")
+                    .Add("-All")
+                )
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync(Cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            throw new OperationCanceledException();
+        }
 
         foreach (var obj in result.Objects)
         {
             var workspace = new Workspace(obj.Properties["Id"].Value.ToString(), this);
             Workspaces.Add(workspace);
-            await FetchReports(workspace);
-            await FetchDatasets(workspace);
+            try
+            {
+                await FetchReports(workspace);
+                await FetchDatasets(workspace);
+            }
+            catch (OperationCanceledException)
+            {
+                throw new OperationCanceledException();
+            }
             workspace.Name = obj.Properties["Name"].Value.ToString();
             workspace.IsLoading = false;
             CheckShownWorkspaces();
@@ -378,15 +398,25 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {
-        var result = await Psr
-            .Wrap()
-            .WithArguments(args => args.Add("Get-PowerBIReport"))
-            .WithArguments(args => args
-                .Add("-WorkspaceId")
-                .Add($"{workspace.Id}")
-            )
-            .WithStandardErrorPipe(Console.Error.WriteLine)
-            .ExecuteAsync();
+        RestartCts();
+        CommandResult result;
+        
+        try
+        {
+            result = await Psr
+                .Wrap()
+                .WithArguments(args => args.Add("Get-PowerBIReport"))
+                .WithArguments(args => args
+                    .Add("-WorkspaceId")
+                    .Add($"{workspace.Id}")
+                )
+                .WithStandardErrorPipe(Console.Error.WriteLine)
+                .ExecuteAsync(Cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            throw new OperationCanceledException();
+        }
         foreach (var obj in result.Objects)
         {
             try
@@ -412,14 +442,24 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchDatasets(Workspace workspace)
     {
-        var result = await Psr.Wrap()
-            .WithArguments(args => args.Add("Get-PowerBIDataset"))
-            .WithArguments(args => args
-                .Add("-WorkspaceId")
-                .Add($"{workspace.Id}")
-            )
-            .WithStandardErrorPipe(Console.WriteLine)
-            .ExecuteAsync();
+        RestartCts();
+        CommandResult result;
+
+        try
+        {
+            result = await Psr.Wrap()
+                .WithArguments(args => args.Add("Get-PowerBIDataset"))
+                .WithArguments(args => args
+                    .Add("-WorkspaceId")
+                    .Add($"{workspace.Id}")
+                )
+                .WithStandardErrorPipe(Console.WriteLine)
+                .ExecuteAsync(Cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            throw new OperationCanceledException();
+        }
         foreach (var obj in result.Objects)
         {
             try
@@ -490,7 +530,7 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private void Toast(Toast.StatusType statusType, string title, string description)
+    public void Toast(Toast.StatusType statusType, string title, string description)
     {
         ToastStatus = statusType;
         ToastTitle = title;
