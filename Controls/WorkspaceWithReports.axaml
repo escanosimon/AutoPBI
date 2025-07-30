@@ -93,7 +93,7 @@
                       BorderThickness="1"
                       BorderBrush="{DynamicResource NeutralMuted}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" MaxWidth="200" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" MaxWidth="200" />
                     <DataGridTemplateColumn Header="Status" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="models:Report">

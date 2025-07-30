@@ -20,9 +20,4 @@ public partial class MainView : Window
             BeginMoveDrag(e);
         }
     }
-
-    private void OnSignOutButton_Click(object? sender, RoutedEventArgs e)
-    {
-        SignOutButton.Flyout!.Hide();
-    }
 }
