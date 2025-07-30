@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Timers;
 using AutoPBI.Controls;
 using AutoPBI.Models;
 using AutoPBI.Services;
 using AutoPBI.ViewModels.Popups;
 using Avalonia;
-using Avalonia.Controls.Shapes;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using NeoSmart.SecureStore;
 using Path = System.IO.Path;
 
 namespace AutoPBI.ViewModels;
