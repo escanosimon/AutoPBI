@@ -69,9 +69,9 @@ public abstract partial class PopupViewModel: ViewModelBase
 
     public async Task ExecuteDownload(Report report, string outputFile)
     {
-        await MainViewModel.PowerShellService
-            .BuildCommand()
-            .WithCommand("Export-PowerBIReport")
+        await MainViewModel.Psr
+            .Wrap()
+            .WithArguments(args => args.Add("Export-PowerBIReport"))
             .WithArguments(args => args
                 .Add("-Id")
                 .Add($"{report.Id}")
@@ -89,9 +89,9 @@ public abstract partial class PopupViewModel: ViewModelBase
 
     public async Task ExecutePublish(string path, string name, Workspace workspace)
     {
-        await MainViewModel.PowerShellService
-            .BuildCommand()
-            .WithCommand("New-PowerBIReport")
+        await MainViewModel.Psr
+            .Wrap()
+            .WithArguments(args => args.Add("New-PowerBIReport"))
             .WithArguments(args => args
                 .Add("-Path")
                 .Add($"{path}")

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace AutoPBI.Services;
 
-public class PowerShellService : IDisposable
+public class Psr : IDisposable
 {
     private readonly Runspace _runspace;
 
-    public PowerShellService()
+    public Psr()
     {
         var initialSessionState = InitialSessionState.CreateDefault();
         initialSessionState.ExecutionPolicy = Microsoft.PowerShell.ExecutionPolicy.Bypass;
@@ -41,7 +41,7 @@ public class PowerShellService : IDisposable
         _runspace.Open();
     }
 
-    public CommandBuilder BuildCommand(string executablePath = null)
+    public CommandBuilder Wrap(string executablePath = null)
     {
         return new CommandBuilder(this, executablePath);
     }
@@ -146,23 +146,16 @@ public class CommandResult
 
 public class CommandBuilder
 {
-    private readonly PowerShellService _service;
+    private readonly Psr _service;
     private readonly string _executablePath;
-    private string _command;
     private List<string> _arguments = new List<string>();
     private Action<string> _outputHandler;
     private Action<string> _errorHandler;
 
-    public CommandBuilder(PowerShellService service, string executablePath = null)
+    public CommandBuilder(Psr service, string executablePath = null)
     {
         _service = service;
         _executablePath = executablePath;
-    }
-
-    public CommandBuilder WithCommand(string command)
-    {
-        _command = command ?? throw new ArgumentNullException(nameof(command));
-        return this;
     }
 
     public CommandBuilder WithArguments(Action<ArgumentBuilder> action)
@@ -187,19 +180,21 @@ public class CommandBuilder
 
     public async Task<CommandResult> ExecuteAsync()
     {
-        if (string.IsNullOrEmpty(_command))
-            throw new InvalidOperationException("Command must be specified before execution.");
+        if (_arguments.Count == 0)
+            throw new InvalidOperationException("At least one argument (command) must be specified before execution.");
 
-        var arguments = string.Join(" ", _arguments.Select(Escape));
+        var command = _arguments[0];
+        var remainingArguments = _arguments.Skip(1).Select(Escape);
+        var arguments = string.Join(" ", remainingArguments);
 
         if (!string.IsNullOrEmpty(_executablePath))
         {
             // Run external executable
-            return await _service.ExecuteExternalCommandAsync(_executablePath, $"{Escape(_command)} {arguments}", _outputHandler, _errorHandler);
+            return await _service.ExecuteExternalCommandAsync(_executablePath, $"{Escape(command)} {arguments}", _outputHandler, _errorHandler);
         }
 
         // Run PowerShell command
-        var fullCommand = $"{_command} {arguments}";
+        var fullCommand = string.IsNullOrEmpty(arguments) ? command : $"{command} {arguments}";
         return await _service.ExecutePowerShellCommandAsync(fullCommand, _outputHandler, _errorHandler);
     }
 
@@ -231,7 +226,7 @@ public class CommandBuilder
                 {
                     buffer.Append('\\', backslashCount * 2);
                 }
-                else if (argument[i] == '"')
+                else if (i == argument.Length || argument[i] == '"')
                 {
                     buffer.Append('\\', backslashCount * 2 + 1).Append('"');
                     i++;

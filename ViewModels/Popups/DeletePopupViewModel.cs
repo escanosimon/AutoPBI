@@ -67,8 +67,8 @@ public partial class DeletePopupViewModel : PopupViewModel
     private async Task DeleteDataset(Report report)
     {
         var apiUrl = $"https://api.powerbi.com/v1.0/myorg/datasets/{report.DatasetId}";
-        await MainViewModel.PowerShellService.BuildCommand()
-            .WithCommand("Invoke-PowerBIRestMethod")
+        await MainViewModel.Psr.Wrap()
+            .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
             .WithArguments(args => args
                 .Add("-Url")
                 .Add(apiUrl)
@@ -82,9 +82,9 @@ public partial class DeletePopupViewModel : PopupViewModel
 
     private async Task DeleteReport(Report report)
     {
-        await MainViewModel.PowerShellService
-            .BuildCommand()
-            .WithCommand("Remove-PowerBIReport")
+        await MainViewModel.Psr
+            .Wrap()
+            .WithArguments(args => args.Add("Remove-PowerBIReport"))
             .WithArguments(args => args
                 .Add("-Id")
                 .Add($"{report.Id}")

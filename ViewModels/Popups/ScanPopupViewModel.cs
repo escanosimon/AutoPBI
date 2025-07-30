@@ -63,8 +63,8 @@ public partial class ScanPopupViewModel : PopupViewModel
                         $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/refreshes";
                     try
                     {
-                        var result = await MainViewModel.PowerShellService.BuildCommand()
-                            .WithCommand("Invoke-PowerBIRestMethod")
+                        var result = await MainViewModel.Psr.Wrap()
+                            .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
                             .WithArguments(args => args
                                 .Add("-Url")
                                 .Add(apiUrl)
@@ -192,8 +192,8 @@ public partial class ScanPopupViewModel : PopupViewModel
                         $"https://api.powerbi.com/v1.0/myorg/groups/{dataset.Workspace.Id}/datasets/{dataset.Id}/refreshes";
                     try
                     {
-                        await MainViewModel.PowerShellService.BuildCommand()
-                            .WithCommand("Invoke-PowerBIRestMethod")
+                        await MainViewModel.Psr.Wrap()
+                            .WithArguments(args => args.Add("Invoke-PowerBIRestMethod"))
                             .WithArguments(args => args
                                 .Add("-Url")
                                 .Add(apiUrl)
@@ -248,8 +248,8 @@ public partial class ScanPopupViewModel : PopupViewModel
                     continue;
                 }
 
-                var datasourceResult = await MainViewModel.PowerShellService.BuildCommand()
-                    .WithCommand($"Get-PowerBIDataSource -DatasetId {dataset.Id}")
+                var datasourceResult = await MainViewModel.Psr.Wrap()
+                    .WithArguments(args => args.Add($"Get-PowerBIDataSource -DatasetId {dataset.Id}"))
                     .ExecuteAsync();
                 foreach (var datasourceObj in  datasourceResult.Objects)
                 {
@@ -257,9 +257,9 @@ public partial class ScanPopupViewModel : PopupViewModel
                     CommandResult gatewayResult;
                     try
                     {
-                        gatewayResult = await MainViewModel.PowerShellService.BuildCommand()
-                            .WithCommand(
-                                $"Invoke-PowerBIRestMethod -Url 'gateways/{gatewayId}' -Method Get | ConvertFrom-Json")
+                        gatewayResult = await MainViewModel.Psr.Wrap()
+                            .WithArguments(args => args.Add(
+                                $"Invoke-PowerBIRestMethod -Url 'gateways/{gatewayId}' -Method Get | ConvertFrom-Json"))
                             .ExecuteAsync();
                     }
                     catch (Exception e)

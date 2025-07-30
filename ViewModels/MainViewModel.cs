@@ -59,7 +59,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private PopupViewModel _loginPopup;
     
     [ObservableProperty] private DialogService _dialogService = new();
-    [ObservableProperty] private PowerShellService _powerShellService = new();
+    [ObservableProperty] private Psr _psr = new();
 
     public MainViewModel()
     {
@@ -103,12 +103,12 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            await PowerShellService.BuildCommand().WithCommand($@"
+            await Psr.Wrap().WithArguments(args => args.Add($@"
             if (-not (Get-Module -ListAvailable -Name MicrosoftPowerBIMgmt)) {{
                 Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser
                 Import-Module MicrosoftPowerBIMgmt
             }}
-            ").ExecuteAsync();
+            ")).ExecuteAsync();
         }
         catch (Exception)
         {
@@ -198,14 +198,13 @@ public partial class MainViewModel : ViewModelBase
         PSObject loginResult;
         try
         {
-            loginResult = (await PowerShellService
-                .BuildCommand()
-                .WithCommand($@"
+            loginResult = (await Psr.Wrap()
+                .WithArguments(args => args.Add($@"
                 $password = '{password}' | ConvertTo-SecureString -asPlainText -Force;
                 $username = '{username}';
                 $credential = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $username, $password;
                 Connect-PowerBIServiceAccount -Credential $credential
-            ")
+            "))
                 .WithStandardErrorPipe(Console.Error.WriteLine)
                 .ExecuteAsync()).Objects[0];
         }
@@ -214,9 +213,9 @@ public partial class MainViewModel : ViewModelBase
             Error(("Login failed!", e.Message));
             throw;
         }
-        var accessTokenResult = (await PowerShellService
-            .BuildCommand()
-            .WithCommand("(Get-PowerBIAccessToken).Values[0]")
+        var accessTokenResult = (await Psr
+            .Wrap()
+            .WithArguments(args => args.Add("(Get-PowerBIAccessToken).Values[0]"))
             .WithStandardErrorPipe(Console.Error.WriteLine)
             .ExecuteAsync()).Objects[0];
 
@@ -239,8 +238,8 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            await PowerShellService.BuildCommand()
-                .WithCommand("Disconnect-PowerBIServiceAccount")
+            await Psr.Wrap()
+                .WithArguments(args => args.Add("Disconnect-PowerBIServiceAccount"))
                 .ExecuteAsync();
             TotalSelectedReports = 0;
             Workspaces = [];
@@ -279,10 +278,10 @@ public partial class MainViewModel : ViewModelBase
     private async Task FetchWorkspaces()
     {
         IsReloading = true;
-        var result = await PowerShellService
-            .BuildCommand()
-            .WithCommand("Get-PowerBIWorkspace")
+        var result = await Psr
+            .Wrap()
             .WithArguments(args => args
+                .Add("Get-PowerBIWorkspace")
                 .Add("-All")
             )
             .WithStandardErrorPipe(Console.Error.WriteLine)
@@ -378,9 +377,9 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchReports(Workspace workspace)
     {
-        var result = await PowerShellService
-            .BuildCommand()
-            .WithCommand("Get-PowerBIReport")
+        var result = await Psr
+            .Wrap()
+            .WithArguments(args => args.Add("Get-PowerBIReport"))
             .WithArguments(args => args
                 .Add("-WorkspaceId")
                 .Add($"{workspace.Id}")
@@ -412,8 +411,8 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task FetchDatasets(Workspace workspace)
     {
-        var result = await PowerShellService.BuildCommand()
-            .WithCommand("Get-PowerBIDataset")
+        var result = await Psr.Wrap()
+            .WithArguments(args => args.Add("Get-PowerBIDataset"))
             .WithArguments(args => args
                 .Add("-WorkspaceId")
                 .Add($"{workspace.Id}")
