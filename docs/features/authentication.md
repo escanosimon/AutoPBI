@@ -37,12 +37,31 @@ After successful authentication:
 - **Reports Load**: Reports within each workspace will be loaded automatically
 - **Interactive Interface**: You can click on workspaces to expand/collapse and view their reports
 - **Ready for Operations**: You can now use all the bulk operation features
+- **User Profile**: Your user image will appear in the top right corner of the application
+
+## Sign Out Process
+
+### Step 1: Access User Menu
+- Click on your user image in the top right corner of the application
+- A popup will appear displaying your username and profile image
+
+### Step 2: Sign Out
+- Click the "Sign Out" button in the popup
+- The application will immediately sign you out
+
+### Step 3: Post-Sign Out
+After signing out:
+- **Saved Credentials**: If you had "Remember me" enabled, your saved login information will be deleted
+- **Workspaces Cleared**: All previously loaded workspaces and reports will be removed from the interface
+- **Session Ended**: Your Power BI Service session will be terminated
+- **Return to Login**: The application will return to the login state
 
 ## Security Features
 
 - **Secure Storage**: If "Remember me" is enabled, credentials are encrypted and stored locally
 - **Session Management**: Login sessions are managed securely
 - **No Credential Sharing**: Your credentials are never shared or transmitted to third parties
+- **Automatic Cleanup**: Sign out automatically clears saved credentials and session data
 
 ## Troubleshooting
 
@@ -59,4 +78,9 @@ After successful authentication:
 **Workspaces Not Loading**
 - Ensure you have access to at least one Power BI workspace
 - Check your Power BI Service permissions
-- Try logging out and logging back in 
+- Try logging out and logging back in
+
+**Sign Out Issues**
+- If the sign out button doesn't respond, try clicking it again
+- If the user menu doesn't appear, ensure you're logged in
+- If saved credentials aren't cleared, manually delete them from the AppData folder 
