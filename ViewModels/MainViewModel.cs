@@ -212,6 +212,11 @@ public partial class MainViewModel : ViewModelBase
                 .WithStandardErrorPipe(Console.Error.WriteLine)
                 .ExecuteAsync()).Objects[0];
         }
+        catch (CmdletInvocationException e)
+        {
+            Error(("Failed to fetch saved login info", e.Message));
+            throw;
+        }
         catch (Exception e)
         {
             Error(("Login failed!", e.Message));

@@ -26,6 +26,7 @@
         <entry key="ViewModels/Overlays/ScanSummaryOverlayViewModel.axaml" value="AutoPBI.csproj" />
         <entry key="ViewModels/Popups/LoginPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/MainView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Overlays/ConfirmationOverlay.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Overlays/ReportsSummaryOverlay.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Overlays/ScanSummaryOverlay.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Overlays/SelectedWorkspacesOverlay.axaml" value="AutoPBI.csproj" />
@@ -41,6 +42,7 @@
         <entry key="Views/Popups/ScanPopupVIew.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScanPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/ScriptPopupView.axaml" value="AutoPBI.csproj" />
+        <entry key="Views/Popups/TakeoverPopupView.axaml" value="AutoPBI.csproj" />
         <entry key="Views/Popups/TestPopup.axaml" value="AutoPBI.csproj" />
       </map>
     </option>
