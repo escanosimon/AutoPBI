@@ -21,6 +21,7 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="Primary">#2AAC94</SolidColorBrush>
                     <SolidColorBrush x:Key="PrimaryLight">#1d2f2c</SolidColorBrush>
                     
                     <SolidColorBrush x:Key="Background">#171717</SolidColorBrush>
@@ -36,6 +37,7 @@
                 </ResourceDictionary>
                 
                 <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
                     <SolidColorBrush x:Key="PrimaryLight">#d5e5e2</SolidColorBrush>
                     
                     <SolidColorBrush x:Key="Background">#FAFAFA</SolidColorBrush>
@@ -53,7 +55,6 @@
             
             <SolidColorBrush x:Key="White">#FAFAFA</SolidColorBrush>
             
-            <SolidColorBrush x:Key="Primary">#117865</SolidColorBrush>
             <SolidColorBrush x:Key="Secondary">#ecc92a</SolidColorBrush>
             
             <SolidColorBrush x:Key="Success">#51dc6b</SolidColorBrush>
