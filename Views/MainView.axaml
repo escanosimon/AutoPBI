@@ -16,6 +16,7 @@
         CornerRadius="8"
         CanResize="True"
         SystemDecorations="Full"
+        Icon="/Assets/Images/AutoPBI_Logo.ico"
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
@@ -55,7 +56,7 @@
             <Grid ColumnDefinitions="*, *">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/PowerBILogo.svg}" Height="24" Margin="0 0 8 0"/>
+                        <Image VerticalAlignment="Center" Source="{SvgImage /Assets/Images/AutoPBI_Logo.svg}" Height="28" Margin="0 0 8 0"/>
                         <TextBlock Foreground="{DynamicResource Foreground}" VerticalAlignment="Center" FontSize="20" FontFamily="{DynamicResource InterMedium}" Text="AutoPBI" />
                     </StackPanel>
                 </StackPanel>

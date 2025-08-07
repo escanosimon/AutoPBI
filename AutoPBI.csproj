@@ -32,7 +32,6 @@
 
     <ItemGroup>
       <Folder Include="Assets\Fonts\" />
-      <Folder Include="Assets\Images\" />
       <Folder Include="Tools\" />
     </ItemGroup>
 
@@ -45,7 +44,10 @@
       <None Remove="Assets\Fonts\FontAwesome.ttf" />
       <AvaloniaResource Include="Assets\Fonts\FontAwesome.ttf" />
       <None Remove="Assets\Images\PowerBILogo.svg" />
-      <AvaloniaResource Include="Assets\Images\PowerBILogo.svg" />
+      <None Remove="Assets\Images\AutoPBI_Logo.svg" />
+      <AvaloniaResource Include="Assets\Images\AutoPBI_Logo.svg" />
+      <None Remove="Assets\Images\AutoPBI_Logo.ico" />
+      <AvaloniaResource Include="Assets\Images\AutoPBI_Logo.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,5 +58,9 @@
       <Compile Update="Controls\ToggleButtonGroup.axaml.cs">
         <DependentUpon>ToggleButtonGroup.axaml</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\Images\AutoPBI_Logo.png" />
     </ItemGroup>
 </Project>
