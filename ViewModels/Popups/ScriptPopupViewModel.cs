@@ -111,6 +111,7 @@ public partial class ScriptPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Scripting cancelled!", $"Last to script: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception e)

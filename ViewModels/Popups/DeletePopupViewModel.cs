@@ -61,6 +61,7 @@ public partial class DeletePopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Delete cancelled!", $"Last to delete: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception)

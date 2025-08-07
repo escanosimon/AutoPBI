@@ -15,12 +15,12 @@
         Background="Transparent"
         CornerRadius="8"
         CanResize="True"
-        SystemDecorations="Full"
+        SystemDecorations="None"
         Icon="/Assets/Images/AutoPBI_Logo.ico"
         Title="AutoPBI">
     <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
     
-    <Border Background="{DynamicResource Background}" ClipToBounds="True">
+    <Border ClipToBounds="True" Background="{DynamicResource Background}" BorderThickness="1" BorderBrush="{DynamicResource Neutral}" CornerRadius="8">
         <Grid RowDefinitions="56, *">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" MaxWidth="320" Width="2*" />

@@ -81,6 +81,7 @@ public partial class DownloadPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Download cancelled!", $"Last to download: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception e)

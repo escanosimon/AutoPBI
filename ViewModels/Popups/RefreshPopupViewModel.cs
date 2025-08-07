@@ -79,6 +79,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                     {
                         SetReportsSelectable();
                         MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
+                        IsProcessing = false;
                         return;
                     }
                     catch (Exception e)
@@ -140,6 +141,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 
@@ -158,6 +160,7 @@ public partial class RefreshPopupViewModel : PopupViewModel
                     {
                         SetReportsSelectable();
                         MainViewModel.Toast(Toast.StatusType.Normal, "ReAuth cancelled!", $"Last to re-auth: {report.Name}");
+                        IsProcessing = false;
                         return;
                     }
                     catch (Exception e)

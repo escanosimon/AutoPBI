@@ -82,6 +82,7 @@ public partial class ClonePopupViewModel : PopupViewModel
                         {
                             SetReportsSelectable();
                             MainViewModel.Toast(Toast.StatusType.Normal, "Cloning cancelled!", $"Last to clone: {report.Name}");
+                            IsProcessing = false;
                             return;
                         }
                         catch (Exception e)

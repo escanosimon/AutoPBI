@@ -116,6 +116,7 @@ public partial class PublishPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Publishing cancelled!", $"Last to publish: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception e)

@@ -55,6 +55,7 @@ public partial class TakeoverPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Takeover cancelled!", $"Last to takeover: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception e)
@@ -100,6 +101,7 @@ public partial class TakeoverPopupViewModel : PopupViewModel
                 {
                     SetReportsSelectable();
                     MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
+                    IsProcessing = false;
                     return;
                 }
                 catch (Exception e)

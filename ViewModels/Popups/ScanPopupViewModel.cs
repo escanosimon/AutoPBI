@@ -85,6 +85,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                     {
                         SetReportsSelectable();
                         MainViewModel.Toast(Toast.StatusType.Normal, "Scanning cancelled!", $"Last to scan: {report.Name}");
+                        IsProcessing = false;
                         return;
                     }
                     catch (Exception e)
@@ -215,6 +216,7 @@ public partial class ScanPopupViewModel : PopupViewModel
                     {
                         SetReportsSelectable();
                         MainViewModel.Toast(Toast.StatusType.Normal, "Refreshing cancelled!", $"Last to refresh: {report.Name}");
+                        IsProcessing = false;
                         return;
                     }
                     catch (Exception e)
