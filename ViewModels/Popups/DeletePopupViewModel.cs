@@ -46,14 +46,14 @@ public partial class DeletePopupViewModel : PopupViewModel
                     {
                         await DeleteDataset(report);
                         report.Success("Successfully deleted report and underlying dataset.");
-                        MainViewModel.TotalSelectedReports--;
+                        MainViewModel.DecrementTotalSelectedReports();
                         successes++;
                     }
                     else
                     {
                         await DeleteReport(report);
                         report.Warning("Report successfully deleted but failed to delete underlying dataset with a different name/workspace.");
-                        MainViewModel.TotalSelectedReports--;
+                        MainViewModel.DecrementTotalSelectedReports();
                         warnings++;
                     }
                 }
@@ -68,7 +68,7 @@ public partial class DeletePopupViewModel : PopupViewModel
                 {
                     await DeleteReport(report);
                     report.Warning("Report successfully deleted but failed to delete underlying dataset (No dataset or permissions to dataset).");
-                    MainViewModel.TotalSelectedReports--;
+                    MainViewModel.DecrementTotalSelectedReports();
                     warnings++;
                 }
                 report.IsSelected = false;

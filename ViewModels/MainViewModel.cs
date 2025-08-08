@@ -89,6 +89,15 @@ public partial class MainViewModel : ViewModelBase
             CloseToast();
         };
     }
+
+    public void DecrementTotalSelectedReports()
+    {
+        TotalSelectedReports--;
+        if (TotalSelectedReports < 0)
+        {
+            TotalSelectedReports = 0;
+        }
+    }
     
     public void RestartCts()
     {

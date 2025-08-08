@@ -49,6 +49,7 @@ public partial class ClonePopupViewModel : PopupViewModel
     {
         IsProcessing = true;
         ShowReports();
+        RestartCts();
         
         var errors = 0;
         var warnings = 0;

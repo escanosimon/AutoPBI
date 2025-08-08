@@ -63,7 +63,7 @@ namespace AutoPBI.Models
                     if (!report.IsSelected) continue;
                     report.IsSelected = false;
                     SelectedReports.Remove(report);
-                    MainViewModel!.TotalSelectedReports--;
+                    MainViewModel!.DecrementTotalSelectedReports();
                 }
             }
         }

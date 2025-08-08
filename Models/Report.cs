@@ -47,7 +47,7 @@ public partial class Report : ObservableObject
         else
         {
             Workspace?.SelectedReports.Remove(this);
-            MainViewModel.TotalSelectedReports--;
+            MainViewModel.DecrementTotalSelectedReports();
         }
     }
 
